@@ -65,13 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        mTypeface = Typeface.createFromAsset(getAssets(), "fonts/NanumSquareRoundL.ttf");
-        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
 
-
-        FontFuntion fontFuntion = new FontFuntion();
-
-        fontFuntion.setGlobalFont(root,mTypeface);
 
 
         password = (EditText) findViewById(R.id.password);
