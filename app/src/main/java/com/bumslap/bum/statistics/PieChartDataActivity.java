@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumslap.bum.DB.DBforAnalysis;
+import com.bumslap.bum.DB.Order;
+import com.bumslap.bum.POSproject.MainActivity;
 import com.bumslap.bum.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -38,15 +41,18 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
     PieChart mChart;
     private int[] yValues = {8,1,1};
     private String[] xValues = {"Steak","Juice","Cola"};
-
+    ArrayList<Integer> y;
+    ArrayList<String> x;
 
     private GestureDetector gestureDetector;
     Intent mvStaIntent;
     Button AmountStastisticBtn, SalesStatisticBtn;
 
+    MainActivity mainActivity;
+    DBforAnalysis dBforAnalysis;
     // colors for different sections in pieChart
     public static final int[] MY_COLORS = {
-             Color.rgb(240,133,44),Color.rgb(27,204,133),Color.rgb(245,231,190)};
+            Color.rgb(240,133,44),Color.rgb(27,204,133),Color.rgb(245,231,190)};
 
     @Override
 
@@ -70,8 +76,8 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         mChart.setHoleRadius(50);
 
         mChart.setRotationEnabled(false);
-       // mChart.setCenterText("50%");
-       // mChart.setCenterTextSize(20);
+        // mChart.setCenterText("50%");
+        // mChart.setCenterTextSize(20);
 
         mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 
@@ -91,13 +97,99 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
             }
         });
 
+        piecharddb();
         // setting sample Data for Pie Chart
         setDataForPieChart();
 
         this.gestureDetector = new GestureDetector(this,this);
     }
 
+    public void piecharddb(){
+        y = new ArrayList<>();
+        x = new ArrayList<>();
+        dBforAnalysis = new DBforAnalysis(this, "POS.db", null,1);
+        //dBforAnalysis = new MainActivity().dBforAnalysis;
+        ArrayList<Order> order = new ArrayList<Order>();
+        order = dBforAnalysis.getAllOrderS();
+        for(int p = 0; p < order.size(); p++) {
+            String amount = order.get(p).getOrder_amount();
+            String Date = order.get(p).getOrder_date();
+            String Time = order.get(p).getOrder_time();
+            //String menuname = order.get(p).getOrder_FK_menuId();
+
+            y.add(Integer.parseInt(amount));
+            x.add(amount);
+        }
+    }
+
+
     public void setDataForPieChart() {
+
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+
+        for (int i = 0; i < y.size(); i++)
+            yVals1.add(new Entry(y.get(i), i));
+
+        ArrayList<String> xVals = new ArrayList<String>();
+
+        for (int i = 0; i < x.size(); i++)
+            xVals.add(x.get(i));
+
+        // create pieDataSet
+        PieDataSet dataSet = new PieDataSet(yVals1, "");
+        dataSet.setSliceSpace(3);
+        dataSet.setSelectionShift(5);
+
+        // adding colors
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        // Added My Own colors
+        for (int c : MY_COLORS)
+            colors.add(c);
+
+
+        dataSet.setColors(colors);
+
+        //  create pie data object and set xValues and yValues and set it to the pieChart
+        PieData data = new PieData(xVals, dataSet);
+        //   data.setValueFormatter(new DefaultValueFormatter());
+        //   data.setValueFormatter(new PercentFormatter());
+
+        data.setValueFormatter(new MyValueFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+
+        mChart.setData(data);
+
+        // undo all highlights
+        // mChart.highlightValues(null);
+
+        // refresh/update pie chart
+        mChart.invalidate();
+
+        // animate piechart
+        mChart.animateY( 1400);
+
+
+        // Legends to show on bottom of the graph
+        Legend l = mChart.getLegend();
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        l.setXEntrySpace(7);
+        l.setYEntrySpace(5);
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < yValues.length; i++)
@@ -148,7 +240,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         Legend l = mChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         l.setXEntrySpace(7);
-        l.setYEntrySpace(5);
+        l.setYEntrySpace(5);*/
     }
 
     @Override

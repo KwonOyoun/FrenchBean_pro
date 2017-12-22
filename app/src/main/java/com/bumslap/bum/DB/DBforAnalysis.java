@@ -99,6 +99,31 @@ public class DBforAnalysis extends SQLiteOpenHelper{
         statement.executeInsert();
     }
 
+    public ArrayList<Order> getAllOrderS() {
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(" SELECT * FROM ORDER_TABLE; ");
+
+        //읽기 전용 DB 객체를 생성
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+
+        ArrayList<Order> Orderlist = new ArrayList<>();
+
+        Order order = null;
+        // moveToNext 다음에 데이터가 없으면 false, 있으면 true
+        while( cursor.moveToNext() ) {
+            order = new Order();
+            order.setOrder_amount(cursor.getString(0));
+            order.setOrder_date(cursor.getString(1));
+            order.setOrder_time(cursor.getString(2));
+            Orderlist.add(order);
+        }
+        cursor.close();
+        return Orderlist;
+    }
+
     public void addCost(Cost cost){
         //사용가능한 데이터 베이스 가져오기.
 
