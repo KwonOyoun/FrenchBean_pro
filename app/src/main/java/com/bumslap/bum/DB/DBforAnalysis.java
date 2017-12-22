@@ -72,6 +72,11 @@ public class DBforAnalysis extends SQLiteOpenHelper{
      * version이  up되어서 table 구조가 변경되었을 때 실행
      */
 
+    public Cursor getData(String sql){
+        SQLiteDatabase db = getWritableDatabase();
+        return db.rawQuery(sql, null);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         Toast.makeText(context, "버전이 올라갔습니다.", Toast.LENGTH_SHORT).show();
