@@ -106,7 +106,6 @@ public class MenuUpdateActivity extends AppCompatActivity {
 
     private void retrieve(String stringId)
     {
-
         //Intent intent = getIntent();
         //String idid = intent.getExtras().getString("id");
         //integerId = Integer.parseInt(id);
