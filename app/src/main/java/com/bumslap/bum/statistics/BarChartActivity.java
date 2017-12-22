@@ -49,7 +49,7 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_chart);
 
-        dBforAnalysis = new DBforAnalysis(this, "POS.db", null,1);
+        dBforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
         chart = (BarChart) findViewById(R.id.chart1);
 
         BARENTRY = new ArrayList<>();

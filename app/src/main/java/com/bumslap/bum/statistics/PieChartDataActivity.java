@@ -32,7 +32,9 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class PieChartDataActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
@@ -105,9 +107,12 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
     }
 
     public void piecharddb(){
+        Date now = new Date();
+        SimpleDateFormat CurrentTime = new SimpleDateFormat("yyyy-MM-dd");
+        String s = CurrentTime.format(now);
         y = new ArrayList<>();
         x = new ArrayList<>();
-        dBforAnalysis = new DBforAnalysis(this, "POS.db", null,1);
+        dBforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
         //dBforAnalysis = new MainActivity().dBforAnalysis;
         ArrayList<Order> order = new ArrayList<Order>();
         order = dBforAnalysis.getAllOrderS();

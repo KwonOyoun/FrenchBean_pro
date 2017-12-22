@@ -76,8 +76,8 @@ public class OrderActivity extends AppCompatActivity
     long CurrentTimeCall;
     Date CurrentDateCall;
     SimpleDateFormat CurrentDate;
-    SimpleDateFormat CurrentTimeS;
-    String CurrentTime;
+    SimpleDateFormat CurrentTime;
+    String CurrentTimes, CurrentDates;
     int Order_Amount;
 
     ArrayList<OrderWrapDataSet> orderwraplist;
@@ -284,8 +284,8 @@ public class OrderActivity extends AppCompatActivity
                 CurrentTimeCall = System.currentTimeMillis();
                 CurrentDateCall = new Date(CurrentTimeCall);
                 CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                CurrentTimeS = new SimpleDateFormat("hh-mm-ss");
-                CurrentTime = CurrentDate.format(CurrentDateCall);
+                CurrentTime = new SimpleDateFormat("hh-mm-ss");
+                CurrentTimes = CurrentDate.format(CurrentDateCall);
                 Order_Amount = hashmapInhashmap.get(bp).get(MenuID);
                     if (Order_Amount == 0){
                         Order_Amount = 1;
@@ -295,7 +295,7 @@ public class OrderActivity extends AppCompatActivity
                 if (toWrapmap.get(bp) != null) {
                     Order_menu_List = toWrapmap.get(bp);
                 }
-                Order_menu_List.add(new Order(String.valueOf(Order_Amount),CurrentDate.toString(),CurrentTimeS.toString(), MenuID,String.valueOf(billnumberposition), "0"));
+                Order_menu_List.add(new Order(String.valueOf(Order_Amount),CurrentDate.toString(),CurrentTime.toString(), MenuID,String.valueOf(billnumberposition), "0"));
 
                     try {
                     int k = Order_menu_List.size();
@@ -404,16 +404,22 @@ Context context= this;
                                                 putOrder.setOrder_amount(getordermenuamount);
                                                 putOrder.setOrder_number(String.valueOf(billnumberposition));
                                                 CurrentTimeCall = System.currentTimeMillis();
+
+
                                                 CurrentDateCall = new Date(CurrentTimeCall);
                                                 CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                                                CurrentTimeS = new SimpleDateFormat("hh-mm-ss");
-                                                CurrentTime = CurrentDate.format(CurrentDateCall);
+                                                CurrentTime = new SimpleDateFormat("hh-mm-ss");
+                                                CurrentDates = CurrentDate.format(CurrentDateCall);
+                                                CurrentTimes = CurrentTime.format(CurrentDateCall);
 
                                                 String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
-                                                putOrder.setOrder_date(CurrentTime.toString());
-                                                putOrder.setOrder_time(CurrentTimeS.toString());
+                                                putOrder.setOrder_date(CurrentDates.toString());
+                                                putOrder.setOrder_time(CurrentTimes.toString());
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
+
+
+
 
                                             }
                                         }
