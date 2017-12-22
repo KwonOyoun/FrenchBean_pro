@@ -48,10 +48,10 @@ public class DBforAnalysis extends SQLiteOpenHelper{
         sbOrder.append(" CREATE TABLE ORDER_TABLE ( ");
         sbOrder.append(" ORDER_AMOUNT TEXT, ");
         sbOrder.append(" ORDER_DATE TEXT, ");
-        sbOrder.append(" ORDER_TIME, ");
-        sbOrder.append(" ORDER_NUMBER, ");
+        sbOrder.append(" ORDER_TIME TEXT, ");
+        sbOrder.append(" ORDER_NUMBER TEXT, ");
         sbOrder.append(" ORDER_FK_MENUID INTEGER, ");
-        sbOrder.append(" ORDER_MENU_PRICE);");
+        sbOrder.append(" ORDER_MENU_PRICE TEXT);");
 
         db.execSQL(sbOrder.toString());
 
