@@ -78,8 +78,9 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
 
-        //UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
-        //UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
+        //천원단위 콤마 이용
+        UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
+        UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
 
         try{
 
