@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -53,7 +54,7 @@ import java.util.Locale;
 
 public class OrderActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    FloatingActionButton floatingAddBtn;
     Intent intent;
     GridView gridView;
     ArrayList<com.bumslap.bum.DB.Menu> Menulist;
@@ -91,7 +92,7 @@ public class OrderActivity extends AppCompatActivity
 
     int billnumberposition=0;
 
-    Button addpositionBTN;
+    //Button addpositionBTN;
 
     HashMap<String, HashMap<String, Integer>> hashmapInhashmap;
 
@@ -111,13 +112,14 @@ public class OrderActivity extends AppCompatActivity
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        floatingAddBtn = findViewById(R.id.floatingAddBtn);
 
-        OrderPayBTN = (Button)findViewById(R.id.OrderPay);
+       /* OrderPayBTN = (Button)findViewById(R.id.OrderPay);
         OrderCancelBTN = (Button)findViewById(R.id.OrderCancel);
 
         OrderPayBTN.setOnClickListener(SelectPayCancel);
         OrderCancelBTN.setOnClickListener(SelectPayCancel);
-
+*/
         gridView = (GridView) findViewById(R.id.gridview);
 
         Menulist = new ArrayList<>();
@@ -148,9 +150,9 @@ public class OrderActivity extends AppCompatActivity
 
         Billordermenu = new ArrayList<>();
 
-        addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
+     // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
 
-        addpositionBTN.setOnClickListener(new View.OnClickListener() {
+        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -370,7 +372,7 @@ public class OrderActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 Context context= this;
-    Button.OnClickListener SelectPayCancel = new View.OnClickListener() {
+   /* Button.OnClickListener SelectPayCancel = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()){
@@ -463,7 +465,7 @@ Context context= this;
             }
         }
     };
-
+*/
     @Override
     public void onPause(){
         super.onPause();
