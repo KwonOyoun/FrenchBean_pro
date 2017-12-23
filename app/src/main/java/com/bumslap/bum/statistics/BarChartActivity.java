@@ -43,7 +43,7 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
             g_list, h_list, i_list, j_list, k_list, l_list = null;
     ArrayList<ArrayList<Integer>> K_List;
     DBforAnalysis dBforAnalysis;
-    MainActivity mainActivity;
+   // MainActivity mainActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
