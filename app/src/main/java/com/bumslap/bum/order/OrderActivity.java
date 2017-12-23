@@ -420,11 +420,11 @@ Context context= this;
                                                 String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
                                                 putOrder.setOrder_date(CurrentDates.toString());
                                                 putOrder.setOrder_time(CurrentTimes.toString());
-                                                putOrder.setOrder_Price_perMenu("2000");
+                                                putOrder.setOrder_Price_perMenu(getordermenuprice);
                                                 newdbforAnalysis.addOrder(putOrder);
 
                                                 //없어져야하는 부분.
-
+                                                orderwraplist.remove(billnumberposition);
                                                 layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
                                                 orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                                                 billRecyclerView.setLayoutManager(layoutManager);

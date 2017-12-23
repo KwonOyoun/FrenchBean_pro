@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumslap.bum.DB.DBforAnalysis;
@@ -60,14 +61,13 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     @Override
     public void onBindViewHolder(OrderMenuViewHoler holder, int position) {
         dBforAnalysis = new DBforAnalysis(context);
-        Order menuitem = Menuitems.get(position);
+        final Order menuitem = Menuitems.get(position);
 
         MenunameDB = dBforAnalysis.getMenuName(Integer.parseInt(menuitem.getOrder_FK_menuId()));
 
         holder.Menuname.setText(MenunameDB);
         holder.MenuId.setText(menuitem.getOrder_FK_menuId());
         holder.MenuAmount.setText(menuitem.getOrder_amount());
-
     }
 
     @Override
@@ -80,6 +80,7 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
 class OrderMenuViewHoler extends RecyclerView.ViewHolder{
 
     public TextView Menuname, MenuAmount, MenuId;
+
 
     public OrderMenuViewHoler(View OrderitemView){
         super(OrderitemView);
