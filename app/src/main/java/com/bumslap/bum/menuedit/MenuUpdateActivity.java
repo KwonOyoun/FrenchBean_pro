@@ -71,8 +71,8 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
 
-        UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
-        UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
+        //UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
+        //UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
 
         Bundle bundle = getIntent().getExtras();
         stringId = bundle.getString("id","NO DATA");
