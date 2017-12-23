@@ -421,6 +421,7 @@ Context context= this;
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
                                                 putOrder.setOrder_Price_perMenu("2000");
+
                                             }
                                         }
                                     });
