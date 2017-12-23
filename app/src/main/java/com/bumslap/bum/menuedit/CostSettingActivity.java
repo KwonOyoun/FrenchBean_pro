@@ -89,7 +89,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         dbProvider = new DBProvider(this);
         dbProvider.open();
 
-        //dBforAnalysis = new DBforAnalysis(this, "POS2.db", null,1);
+        dBforAnalysis = new DBforAnalysis(this);
 
         //mdb = dBforAnalysis.getWritableDatabase();
         //costAdapter = new CostAdapter(arrayList, this);

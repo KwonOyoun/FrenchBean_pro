@@ -84,15 +84,16 @@ public class DBProvider {
         statement.clearBindings();
 
         statement.bindString(1, name);
-        statement.bindString(2, price);
-        statement.bindString(3, cost);
-        statement.bindBlob(4, image);
+        statement.bindBlob(2, image);
+        statement.bindString(3, price);
+        statement.bindString(4, cost);
+
 
         statement.executeInsert();
     }
     public void updateData(String name, String price, String cost, byte[] image, String id){
         SQLdb = dBforAnalysis.getWritableDatabase();
-        String sql = "UPDATE MENU_TABLE SET NAME = ?, PRICE = ?, COST = ?, IMAGE = ? WHERE ID = ?;";
+        String sql = "UPDATE MENU_TABLE SET MENU_NAME = ?, MENU_PRICE = ?, MENU_COST = ?, MENU_IMAGE = ? WHERE MENU_ID = ?;";
 
         SQLiteStatement statement = SQLdb.compileStatement(sql);
 
@@ -109,7 +110,7 @@ public class DBProvider {
     public void deleteData(String id) {
 
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("DELETE FROM MENU_TABLE WHERE ID = ? ");
+        stringBuffer.append("DELETE FROM MENU_TABLE WHERE MENU_ID = ? ");
         SQLdb.execSQL(stringBuffer.toString(), new Object[]{id});
         SQLdb.delete("MENU_TABLE", id   + " = ? ", new String[] { id });
     }

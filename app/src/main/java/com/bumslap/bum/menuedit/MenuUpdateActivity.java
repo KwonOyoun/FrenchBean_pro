@@ -128,9 +128,10 @@ public class MenuUpdateActivity extends AppCompatActivity {
         while (cursor.moveToNext()){
             String id = cursor.getString(0);
             String name = cursor.getString(1);
-            String price = cursor.getString(2);
-            String cost = cursor.getString(3);
-            byte[] image = cursor.getBlob(4);
+            byte[] image = cursor.getBlob(2);
+            String price = cursor.getString(3);
+            String cost = cursor.getString(4);
+
 
             menulist.add(new com.bumslap.bum.DB.Menu(id, name, image, price, cost));
 
