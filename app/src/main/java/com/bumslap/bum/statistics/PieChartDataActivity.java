@@ -107,7 +107,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
     public void piecharddb(){
         y = new ArrayList<>();
         x = new ArrayList<>();
-        dBforAnalysis = new DBforAnalysis(this, "POS.db", null,1);
+        dBforAnalysis = new DBforAnalysis(this);
         //dBforAnalysis = new MainActivity().dBforAnalysis;
         ArrayList<Order> order = new ArrayList<Order>();
         order = dBforAnalysis.getAllOrderS();

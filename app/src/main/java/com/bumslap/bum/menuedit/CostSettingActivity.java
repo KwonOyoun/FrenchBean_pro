@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumslap.bum.DB.Cost;
+import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.R;
@@ -69,6 +70,8 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     String menu_name, menu_id;
 
 
+    private DBProvider dbProvider;
+
     FloatingActionButton fab1, fab2, fab3, fab4;
     Animation fabOpen, fabClose, rotateForward, rotateBackward, costanim;
     boolean isOpen = true;
@@ -83,7 +86,11 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         this.gestureDetector = new GestureDetector(this,this);
         arrayList = new ArrayList<Cost>();  //이름수정
         costAllData = new ArrayList<Cost>();
-        dBforAnalysis = new DBforAnalysis(this, "POS.db", null,1);
+        dbProvider = new DBProvider(this);
+        dbProvider.open();
+
+        //dBforAnalysis = new DBforAnalysis(this, "POS2.db", null,1);
+
         //mdb = dBforAnalysis.getWritableDatabase();
         //costAdapter = new CostAdapter(arrayList, this);
         costAdapter = new CostAdapter(costAllData, this);
