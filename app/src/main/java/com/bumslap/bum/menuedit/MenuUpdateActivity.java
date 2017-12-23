@@ -71,8 +71,10 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
 
-        UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
-        UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
+        //UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
+        //UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
+
+        try{
 
         Bundle bundle = getIntent().getExtras();
         stringId = bundle.getString("id","NO DATA");
@@ -85,7 +87,9 @@ public class MenuUpdateActivity extends AppCompatActivity {
             Toast.makeText(context, "인텐트 석세스" + bundle.getString("id","DATA"),Toast.LENGTH_LONG).show();
         }
 
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void init() {
@@ -110,6 +114,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
         //Intent intent = getIntent();
         //String idid = intent.getExtras().getString("id");
         //integerId = Integer.parseInt(id);
+
 
         Cursor cursor =  db.getData("SELECT * FROM MENU_TABLE WHERE ID = " + stringId + ";");
         menulist.clear();
