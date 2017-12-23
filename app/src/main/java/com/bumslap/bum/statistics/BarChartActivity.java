@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.POSproject.MainActivity;
@@ -44,12 +45,16 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
     ArrayList<ArrayList<Integer>> K_List;
     DBforAnalysis dBforAnalysis;
     MainActivity mainActivity;
+    DBProvider db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_chart);
 
-        dBforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
+        db = new DBProvider(this);
+        db.open();
+
+        dBforAnalysis = new DBforAnalysis(this);
         chart = (BarChart) findViewById(R.id.chart1);
 
         BARENTRY = new ArrayList<>();

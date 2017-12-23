@@ -128,7 +128,7 @@ public class OrderActivity extends AppCompatActivity
         db.open();
         dbforAnalysis = new DBHelper(this);
 
-        newdbforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
+        newdbforAnalysis = new DBforAnalysis(this);
         try {
             Cursor cursor = db.getData("SELECT * FROM MENU_TABLE");
             Menulist.clear();
@@ -410,16 +410,15 @@ Context context= this;
                                                 putOrder.setOrder_amount(getordermenuamount);
                                                 putOrder.setOrder_number(String.valueOf(billnumberposition));
                                                 CurrentTimeCall = System.currentTimeMillis();
-
                                                 CurrentDateCall = new Date(CurrentTimeCall);
-                                                CurrentDate = new SimpleDateFormat("yyyy-MM-dd",Locale.KOREA);
-                                                CurrentTime = new SimpleDateFormat("hh-mm-ss",Locale.KOREA);
+                                                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
+                                                CurrentTime = new SimpleDateFormat("hh-mm-ss");
                                                 CurrentDates = CurrentDate.format(CurrentDateCall);
                                                 CurrentTimes = CurrentTime.format(CurrentDateCall);
 
                                                 String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
-                                                putOrder.setOrder_date(CurrentDates);
-                                                putOrder.setOrder_time(CurrentTimes);
+                                                putOrder.setOrder_date(CurrentDates.toString());
+                                                putOrder.setOrder_time(CurrentTimes.toString());
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
 

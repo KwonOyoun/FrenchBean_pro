@@ -50,7 +50,6 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
     ArrayList<Integer> y;
     ArrayList<String> x;
     ArrayList<Menu> menulist;
-    DBProvider db;
     private GestureDetector gestureDetector;
     Intent mvStaIntent;
     Button AmountStastisticBtn, SalesStatisticBtn;
@@ -58,6 +57,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
     MainActivity mainActivity;
     DBforAnalysis dBforAnalysis;
     ArrayList<Entry> yVals1;
+    DBProvider db;
     // colors for different sections in pieChart
     public static final int[] MY_COLORS = {
             Color.rgb(240,133,44),Color.rgb(27,204,133),Color.rgb(245,231,190)};
@@ -70,6 +70,8 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
 
         setContentView(R.layout.activity_salesstatus_goh);
 
+        db = new DBProvider(this);
+        db.open();
 // creating data values
 
         mChart = (PieChart) findViewById(R.id.piechart);
@@ -119,24 +121,11 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         s = CurrentTime.format(now);
         y = new ArrayList<>();
         x = new ArrayList<>();
-        dBforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
-        db = new DBProvider(this);
-        db.open();
+        dBforAnalysis = new DBforAnalysis(this);
 
         menulist = new ArrayList<>();
 
-        Cursor cursor = db.getData("SELECT * FROM MENU_TABLE");
-        menulist.clear();
-        while (cursor.moveToNext()) {
-            id = cursor.getString(0);
-            name = cursor.getString(1);
-            String price = cursor.getString(2);
-            String cost = cursor.getString(3);
-            byte[] image = cursor.getBlob(4);
-
-            menulist.add(new com.bumslap.bum.DB.Menu(id, name, image, price, cost));
-            x.add(id);
-        }
+        menulist = dBforAnalysis.getMenuAllData();
         int yy = 0;
         yVals1 = new ArrayList<Entry>();
         ArrayList<Order> order = new ArrayList<Order>();

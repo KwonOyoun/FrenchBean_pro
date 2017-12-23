@@ -21,9 +21,21 @@ public class DBforAnalysis extends SQLiteOpenHelper{
     private Context context;
     ArrayList<Cost> costlist;
     ArrayList<Order> orderlist;
+    //private static final String MENU_TABLE = "Menu";
+    private static final String DB = "POS5.db";
+   // private static final Integer ID = 0;
+    private static final int VERSION = 6;
+
+   /*
     public DBforAnalysis(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, name, factory, version);
         this.context = context;
+    }
+*/
+
+
+    public DBforAnalysis(Context c){
+        super(c, DB, null, VERSION);
     }
     /**
      * Database 가 존재하지 않을 때, 딱 한 번 실행된다.
@@ -32,7 +44,7 @@ public class DBforAnalysis extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        //String도 가능하지만, StringBuffer 가 Query 만들기 더 편하다.
+      /*  //String도 가능하지만, StringBuffer 가 Query 만들기 더 편하다.
         StringBuffer sbMenu = new StringBuffer();
         sbMenu.append(" CREATE TABLE MENU_TABLE ( ");
         sbMenu.append(" MENU_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
@@ -63,7 +75,7 @@ public class DBforAnalysis extends SQLiteOpenHelper{
         sbCost.append(" COST_FK_MENUID INTEGER );");
         db.execSQL(sbCost.toString());
 
-        Toast.makeText(context, "메뉴 정보 생성", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "메뉴 정보 생성", Toast.LENGTH_LONG).show();*/
     }
 
 
@@ -276,7 +288,6 @@ public class DBforAnalysis extends SQLiteOpenHelper{
 
 
     public ArrayList<Menu> getMenuAllData() {
-
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT * FROM MENU_TABLE");
 
@@ -332,7 +343,7 @@ public class DBforAnalysis extends SQLiteOpenHelper{
     public String getMenuName(Integer id) {
 
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT NAME FROM MENU_TABLE WHERE ID = '"+ id + "';");
+        sb.append("SELECT MENU_NAME FROM MENU_TABLE WHERE MENU_ID = '"+ id + "';");
 
         //읽기 전용 DB 객체를 생성
         SQLiteDatabase db = getReadableDatabase();

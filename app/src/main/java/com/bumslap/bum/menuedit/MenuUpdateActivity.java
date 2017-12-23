@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.bumslap.bum.DB.CustomTextWatcher;
 import com.bumslap.bum.DB.DBHelper;
 import com.bumslap.bum.DB.DBProvider;
+import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.R;
 import com.bumslap.bum.order.OrderActivity;
@@ -51,7 +52,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
 
     public static DBHelper dbforAnalysis;
     public static DBProvider db;
-
+    public DBforAnalysis newdbforanalysis;
 
     Menu menu;
     String stringId;
@@ -62,11 +63,17 @@ public class MenuUpdateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_update);
         setTitle("메뉴 등록");
         init();
+
+        //newdbforanalysis = new DBforAnalysis(this, "POS2.db", null,1);
         // DBProvider에 DBHelper 인스턴스
         db = new DBProvider(this);
         db.open();
         menulist = new ArrayList<>();
-        db.queryData("CREATE TABLE IF NOT EXISTS MENU_TABLE (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME VARCHAR, PRICE VARCHAR, COST VARCHAR, IMAGE BLOG)");
+
+        //나중에 Main 으로 보낼 부분.(Table 생성 하는 부분.)
+        //db.queryData();
+
+
 
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
@@ -111,7 +118,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
         //integerId = Integer.parseInt(id);
 
 
-        Cursor cursor =  db.getData("SELECT * FROM MENU_TABLE WHERE ID = " + stringId + ";");
+        Cursor cursor =  db.getData("SELECT * FROM MENU_TABLE WHERE MENU_ID = " + stringId + ";");
         menulist.clear();
         while (cursor.moveToNext()){
             String id = cursor.getString(0);

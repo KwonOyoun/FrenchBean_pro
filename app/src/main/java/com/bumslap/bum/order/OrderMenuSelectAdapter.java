@@ -59,7 +59,7 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
 
     @Override
     public void onBindViewHolder(OrderMenuViewHoler holder, int position) {
-        dBforAnalysis = new DBforAnalysis(context, "menu2.db", null, 6);
+        dBforAnalysis = new DBforAnalysis(context);
         Order menuitem = Menuitems.get(position);
 
         MenunameDB = dBforAnalysis.getMenuName(Integer.parseInt(menuitem.getOrder_FK_menuId()));
