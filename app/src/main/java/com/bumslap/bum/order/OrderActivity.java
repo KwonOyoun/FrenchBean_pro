@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -47,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class OrderActivity extends AppCompatActivity
@@ -277,14 +279,14 @@ public class OrderActivity extends AppCompatActivity
                         }
 
                 }
-                catch (Exception ex){}
+                catch (Exception ex){ex.getCause();}
 
 
                 OrderList.add(Ordermap);
                 CurrentTimeCall = System.currentTimeMillis();
                 CurrentDateCall = new Date(CurrentTimeCall);
-                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                CurrentTimeS = new SimpleDateFormat("hh-mm-ss");
+                CurrentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                CurrentTimeS = new SimpleDateFormat("hh-mm-ss",Locale.KOREA);
                 CurrentTime = CurrentDate.format(CurrentDateCall);
                 Order_Amount = hashmapInhashmap.get(bp).get(MenuID);
                     if (Order_Amount == 0){
@@ -312,6 +314,7 @@ public class OrderActivity extends AppCompatActivity
                         }
                     }
                 } catch (Exception ec) {
+                        ec.getCause();
 
                 }
 
@@ -337,6 +340,8 @@ public class OrderActivity extends AppCompatActivity
                         }
                     }
                 } catch (Exception ec) {
+
+                    ec.getCause();
 
                 }
 
@@ -405,12 +410,12 @@ Context context= this;
                                                 putOrder.setOrder_number(String.valueOf(billnumberposition));
                                                 CurrentTimeCall = System.currentTimeMillis();
                                                 CurrentDateCall = new Date(CurrentTimeCall);
-                                                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                                                CurrentTimeS = new SimpleDateFormat("hh-mm-ss");
+                                                CurrentDate = new SimpleDateFormat("yyyy-MM-dd",Locale.KOREA);
+                                                CurrentTimeS = new SimpleDateFormat("hh-mm-ss",Locale.KOREA);
                                                 CurrentTime = CurrentDate.format(CurrentDateCall);
 
                                                 String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
-                                                putOrder.setOrder_date(CurrentTime.toString());
+                                                putOrder.setOrder_date(CurrentTime);
                                                 putOrder.setOrder_time(CurrentTimeS.toString());
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
@@ -490,7 +495,7 @@ Context context= this;
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull  MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
