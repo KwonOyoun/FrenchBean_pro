@@ -422,6 +422,12 @@ Context context= this;
                                                 newdbforAnalysis.addOrder(putOrder);
                                                 putOrder.setOrder_Price_perMenu("2000");
 
+                                                //없어져야하는 부분.
+
+                                                layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                                                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                                                billRecyclerView.setLayoutManager(layoutManager);
+                                                billRecyclerView.setAdapter(orderWrapAdapter);
                                             }
                                         }
                                     });
