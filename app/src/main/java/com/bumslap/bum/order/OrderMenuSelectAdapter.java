@@ -64,7 +64,7 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     }
 
     @Override
-    public void onBindViewHolder(OrderMenuViewHoler holder, int position) {
+    public void onBindViewHolder(final OrderMenuViewHoler holder, final int position) {
         dBforAnalysis = new DBforAnalysis(context);
         final Order menuitem = Menuitems.get(position);
 
@@ -74,13 +74,22 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
         holder.MenuId.setText(menuitem.getOrder_FK_menuId());
         holder.MenuAmount.setText(menuitem.getOrder_amount());
 
-        String ItemName = menuitem.getOrder_FK_menuId();
-        String qty = menuitem.getOrder_amount();
-        Intent intent = new Intent("custom-message");
-        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-        intent.putExtra("quantity",qty);
-        intent.putExtra("item",ItemName);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+        holder.removeBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Integer.parseInt(menuitem.getOrder_amount())==0){
+                    Menuitems.remove(position);
+                    notifyDataSetChanged();
+                }else{
+                    holder.MenuAmount.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
+                    menuitem.setOrder_amount(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
+                }
+
+            }
+        });
+
+
 
     }
 
