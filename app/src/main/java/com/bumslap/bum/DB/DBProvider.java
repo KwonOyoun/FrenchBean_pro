@@ -45,7 +45,7 @@ public class DBProvider {
         SQLdb  = dBforAnalysis.getWritableDatabase();
         //String도 가능하지만, StringBuffer 가 Query 만들기 더 편하다.
         StringBuffer sbMenu = new StringBuffer();
-        sbMenu.append(" CREATE TABLE MENU_TABLE ( ");
+        sbMenu.append(" CREATE TABLE IF NOT EXISTS MENU_TABLE ( ");
         sbMenu.append(" MENU_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sbMenu.append(" MENU_NAME TEXT, ");
         sbMenu.append(" MENU_IMAGE BLOG, ");
@@ -56,7 +56,7 @@ public class DBProvider {
         SQLdb.execSQL(sbMenu.toString());
 
         StringBuffer sbOrder = new StringBuffer();
-        sbOrder.append(" CREATE TABLE ORDER_TABLE ( ");
+        sbOrder.append(" CREATE TABLE IF NOT EXISTS ORDER_TABLE ( ");
         sbOrder.append(" ORDER_AMOUNT TEXT, ");
         sbOrder.append(" ORDER_DATE TEXT, ");
         sbOrder.append(" ORDER_TIME TEXT, ");
@@ -67,7 +67,7 @@ public class DBProvider {
         SQLdb.execSQL(sbOrder.toString());
 
         StringBuffer sbCost = new StringBuffer();
-        sbCost.append(" CREATE TABLE COST_TABLE (");
+        sbCost.append(" CREATE TABLE IF NOT EXISTS COST_TABLE (");
         sbCost.append(" COST_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sbCost.append(" COST_NAME TEXT, ");
         sbCost.append(" COST_PRICE TEXT,");

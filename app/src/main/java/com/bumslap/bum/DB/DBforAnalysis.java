@@ -22,8 +22,8 @@ public class DBforAnalysis extends SQLiteOpenHelper{
     ArrayList<Cost> costlist;
     ArrayList<Order> orderlist;
     //private static final String MENU_TABLE = "Menu";
-    private static final String DB = "POS3.db";
-    private static final Integer ID = 0;
+    private static final String DB = "POS5.db";
+   // private static final Integer ID = 0;
     private static final int VERSION = 6;
 
    /*
@@ -341,7 +341,7 @@ public class DBforAnalysis extends SQLiteOpenHelper{
     public String getMenuName(Integer id) {
 
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT NAME FROM MENU_TABLE WHERE ID = '"+ id + "';");
+        sb.append("SELECT MENU_NAME FROM MENU_TABLE WHERE MENU_ID = '"+ id + "';");
 
         //읽기 전용 DB 객체를 생성
         SQLiteDatabase db = getReadableDatabase();

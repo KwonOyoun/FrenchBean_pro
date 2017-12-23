@@ -127,9 +127,9 @@ public class OrderActivity extends AppCompatActivity
         gridView.setAdapter(menuListAdapter);
         db = new DBProvider(this);
         db.open();
-        dbforAnalysis = new DBHelper(this);
+        //dbforAnalysis = new DBHelper(this);
 
-        //newdbforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
+        newdbforAnalysis = new DBforAnalysis(this);
         try {
             Cursor cursor = db.getData("SELECT * FROM MENU_TABLE");
             Menulist.clear();
@@ -419,6 +419,7 @@ Context context= this;
                                                 putOrder.setOrder_time(CurrentTimes.toString());
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
+                                                putOrder.setOrder_Price_perMenu("2000");
                                             }
                                         }
                                     });
