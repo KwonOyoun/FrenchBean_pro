@@ -89,7 +89,7 @@ public class OrderActivity extends AppCompatActivity
 
     public DBforAnalysis newdbforAnalysis;
     Order putOrder;
-
+    static Context context;
     int billnumberposition=0;
 
     //Button addpositionBTN;
@@ -98,7 +98,7 @@ public class OrderActivity extends AppCompatActivity
 
     Button OrderPayBTN, OrderCancelBTN;
 
-    AlertDialog.Builder PayCancelAlert;
+
     RecyclerView SelectRecyclerView;
     int SelectLength;
 
@@ -113,13 +113,9 @@ public class OrderActivity extends AppCompatActivity
         //setTitle("오늘도 달려 보세");
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         floatingAddBtn = findViewById(R.id.floatingAddBtn);
+        context = this;
 
-       /* OrderPayBTN = (Button)findViewById(R.id.OrderPay);
-        OrderCancelBTN = (Button)findViewById(R.id.OrderCancel);
 
-        OrderPayBTN.setOnClickListener(SelectPayCancel);
-        OrderCancelBTN.setOnClickListener(SelectPayCancel);
-*/
         gridView = (GridView) findViewById(R.id.gridview);
 
         Menulist = new ArrayList<>();
@@ -372,101 +368,9 @@ public class OrderActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-Context context= this;
-   /* Button.OnClickListener SelectPayCancel = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.OrderPay:
-                    PayCancelAlert = new AlertDialog.Builder(context);
-                    PayCancelAlert.setTitle("결재");
-                    PayCancelAlert
-                            .setMessage("결재를 진행 하시겠습니까?")
-                            .setCancelable(false)
-                            .setPositiveButton("취소",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                                            dialogInterface.cancel();
-                                        }
-                                    })
-                            .setNegativeButton("결재",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            //결재시 진행될 행동.
-                                            LayoutInflater inflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                            View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup)findViewById(R.id.billcon));
-                                            SelectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
-                                            SelectLength = SelectRecyclerView.getChildCount();
-                                            for(int Si = 0; Si < SelectLength ; Si++){
-                                                View v = SelectRecyclerView.getChildAt(Si);
-                                                TextView ordermenuname = v.findViewById(R.id.ordermenuname);
-                                                TextView ordermenuamount = v.findViewById(R.id.ordermenuamount);
-                                                TextView ordermenuid = v.findViewById(R.id.ordermenuID);
-                                                String getordermenuname = ordermenuname.getText().toString();
-                                                String getordermenuamount = ordermenuamount.getText().toString();
-                                                String getordermenuid = ordermenuid.getText().toString();
-                                                putOrder = new Order();
-                                                putOrder.setOrder_FK_menuId(getordermenuid);
-                                                putOrder.setOrder_amount(getordermenuamount);
-                                                putOrder.setOrder_number(String.valueOf(billnumberposition));
-                                                CurrentTimeCall = System.currentTimeMillis();
-                                                CurrentDateCall = new Date(CurrentTimeCall);
-                                                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                                                CurrentTime = new SimpleDateFormat("hh-mm-ss");
-                                                CurrentDates = CurrentDate.format(CurrentDateCall);
-                                                CurrentTimes = CurrentTime.format(CurrentDateCall);
 
-                                                String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
-                                                putOrder.setOrder_date(CurrentDates.toString());
-                                                putOrder.setOrder_time(CurrentTimes.toString());
-                                                putOrder.setOrder_Price_perMenu("2000");
-                                                newdbforAnalysis.addOrder(putOrder);
 
-                                                //없어져야하는 부분.
-
-                                                layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                                                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
-                                                billRecyclerView.setLayoutManager(layoutManager);
-                                                billRecyclerView.setAdapter(orderWrapAdapter);
-                                            }
-                                        }
-                                    });
-                    AlertDialog alertDialog = PayCancelAlert.create();
-                    alertDialog.show();
-                    break;
-                case R.id.OrderCancel:
-                    PayCancelAlert = new AlertDialog.Builder(context);
-                    PayCancelAlert.setTitle("취소");
-                    PayCancelAlert
-                            .setMessage("주문을 삭제 하시겠습니까?")
-                            .setCancelable(false)
-                            .setPositiveButton("취소",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                                            dialogInterface.cancel();
-                                        }
-                                    })
-                            .setNegativeButton("삭제",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            //결재시 진행될 행동.
-
-                                        }
-                                    });
-                    alertDialog = PayCancelAlert.create();
-                    alertDialog.show();
-
-                    break;
-            }
-        }
-    };
-*/
     @Override
     public void onPause(){
         super.onPause();
