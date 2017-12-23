@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumslap.bum.R;
@@ -45,17 +46,10 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
         holder.orderbilltitlenumber.setText(billtitlenumber);
 
         OrderMenuSelectAdapter orderMenuSelectAdapter = new OrderMenuSelectAdapter(billAllData, orderwrapcontext);
-        //try{
-            //int a= Integer.parseInt(orderarrayList.get(position).getBillTitleNumber());
 
-            //if (Integer.parseInt(orderarrayList.get(position).getBillTitleNumber()) == position){
-                holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
-                holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
-           // }
-           // }
-          //  catch (Exception ex){}
-        //holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
-        //holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
+        holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
+        holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
+
 
 
     }
@@ -73,11 +67,13 @@ class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder{
 
     public RecyclerView orderbilllistrecyclerView;
     public TextView orderbilltitlenumber;
-    //public CardView orderbillcardview;
+
+    public Button cancelBTN, payBTN;
     public OrderWrapAdapterViewHolder(View view){
 
         super(view);
-        //orderbillcardview = (CardView)view.findViewById(R.id.order_bill_cardview);
+        cancelBTN = (Button)view.findViewById(R.id.cancelBTN);
+        payBTN = (Button)view.findViewById(R.id.payBTN);
         orderbilltitlenumber = (TextView)view.findViewById(R.id.BillNumber);
         orderbilllistrecyclerView = (RecyclerView)view.findViewById(R.id.Bill_order_list);
 

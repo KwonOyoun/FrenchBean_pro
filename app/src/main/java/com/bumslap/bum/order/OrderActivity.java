@@ -114,12 +114,12 @@ public class OrderActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         floatingAddBtn = findViewById(R.id.floatingAddBtn);
 
-       /* OrderPayBTN = (Button)findViewById(R.id.OrderPay);
-        OrderCancelBTN = (Button)findViewById(R.id.OrderCancel);
+        OrderPayBTN = (Button)findViewById(R.id.payBTN);
+        OrderCancelBTN = (Button)findViewById(R.id.cancelBTN);
 
         OrderPayBTN.setOnClickListener(SelectPayCancel);
         OrderCancelBTN.setOnClickListener(SelectPayCancel);
-*/
+
         gridView = (GridView) findViewById(R.id.gridview);
 
         Menulist = new ArrayList<>();
@@ -373,11 +373,11 @@ public class OrderActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 Context context= this;
-   /* Button.OnClickListener SelectPayCancel = new View.OnClickListener() {
+    Button.OnClickListener SelectPayCancel = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.OrderPay:
+                case R.id.payBTN:
                     PayCancelAlert = new AlertDialog.Builder(context);
                     PayCancelAlert.setTitle("결재");
                     PayCancelAlert
@@ -437,7 +437,7 @@ Context context= this;
                     AlertDialog alertDialog = PayCancelAlert.create();
                     alertDialog.show();
                     break;
-                case R.id.OrderCancel:
+                case R.id.cancelBTN:
                     PayCancelAlert = new AlertDialog.Builder(context);
                     PayCancelAlert.setTitle("취소");
                     PayCancelAlert
@@ -466,7 +466,7 @@ Context context= this;
             }
         }
     };
-*/
+
     @Override
     public void onPause(){
         super.onPause();

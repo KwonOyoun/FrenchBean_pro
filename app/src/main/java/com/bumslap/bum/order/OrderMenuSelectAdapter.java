@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumslap.bum.DB.DBforAnalysis;
@@ -80,10 +81,13 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
 class OrderMenuViewHoler extends RecyclerView.ViewHolder{
 
     public TextView Menuname, MenuAmount, MenuId;
+    public ImageView removeBTN;
 
 
     public OrderMenuViewHoler(View OrderitemView){
         super(OrderitemView);
+
+        removeBTN = (ImageView)OrderitemView.findViewById(R.id.removeBTN);
         MenuId = (TextView)OrderitemView.findViewById(R.id.ordermenuID);
         Menuname = (TextView)OrderitemView.findViewById(R.id.ordermenuname);
         MenuAmount = (TextView)OrderitemView.findViewById(R.id.ordermenuamount);
