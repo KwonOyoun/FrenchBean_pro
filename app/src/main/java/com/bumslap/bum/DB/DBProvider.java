@@ -19,8 +19,9 @@ import android.widget.EditText;
 
 public class DBProvider {
     private Context context;
-    private SQLiteDatabase db ;
+    private SQLiteDatabase SQLdb ;
     private DBHelper dbHelper;
+    private DBforAnalysis dBforAnalysis;
 
 
     public DBProvider(Context ctx){
@@ -29,26 +30,56 @@ public class DBProvider {
 
 
     public DBProvider open() throws SQLException {
-        dbHelper = new DBHelper(context);
-        db = dbHelper.getWritableDatabase();
+        dBforAnalysis = new DBforAnalysis(context);
+        SQLdb = dBforAnalysis.getWritableDatabase();
         return this;
     }
 
+
     public Cursor getData(String sql){
-        return db.rawQuery(sql, null);
+        return SQLdb.rawQuery(sql, null);
     }
 
+//main 에서 한 번만 실행 시켜 주는 곳이다.
+    public void queryData(){
+        SQLdb  = dBforAnalysis.getWritableDatabase();
+        //String도 가능하지만, StringBuffer 가 Query 만들기 더 편하다.
+        StringBuffer sbMenu = new StringBuffer();
+        sbMenu.append(" CREATE TABLE MENU_TABLE ( ");
+        sbMenu.append(" MENU_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        sbMenu.append(" MENU_NAME TEXT, ");
+        sbMenu.append(" MENU_IMAGE BLOG, ");
+        sbMenu.append(" MENU_PRICE TEXT,");
+        sbMenu.append(" MENU_COST TEXT); ");
 
-    public void queryData(String sql){
-        db  = dbHelper.getWritableDatabase();
-        db.execSQL(sql);
+        // SQLite Database로 쿼리 실행
+        SQLdb.execSQL(sbMenu.toString());
+
+        StringBuffer sbOrder = new StringBuffer();
+        sbOrder.append(" CREATE TABLE ORDER_TABLE ( ");
+        sbOrder.append(" ORDER_AMOUNT TEXT, ");
+        sbOrder.append(" ORDER_DATE TEXT, ");
+        sbOrder.append(" ORDER_TIME TEXT, ");
+        sbOrder.append(" ORDER_NUMBER TEXT, ");
+        sbOrder.append(" ORDER_FK_MENUID INTEGER, ");
+        sbOrder.append(" ORDER_MENU_PRICE TEXT);");
+
+        SQLdb.execSQL(sbOrder.toString());
+
+        StringBuffer sbCost = new StringBuffer();
+        sbCost.append(" CREATE TABLE COST_TABLE (");
+        sbCost.append(" COST_ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        sbCost.append(" COST_NAME TEXT, ");
+        sbCost.append(" COST_PRICE TEXT,");
+        sbCost.append(" COST_FK_MENUID INTEGER );");
+        SQLdb.execSQL(sbCost.toString());
     }
 
     public void insertData(String name, String price, String cost, byte[] image){
-        db = dbHelper.getWritableDatabase();
+        SQLdb = dBforAnalysis.getWritableDatabase();
         String sql = "INSERT INTO MENU_TABLE VALUES (NULL, ?, ?, ?, ?)";
 
-        SQLiteStatement statement = db.compileStatement(sql);
+        SQLiteStatement statement = SQLdb.compileStatement(sql);
 
         statement.clearBindings();
 
@@ -60,10 +91,10 @@ public class DBProvider {
         statement.executeInsert();
     }
     public void updateData(String name, String price, String cost, byte[] image, String id){
-        db = dbHelper.getWritableDatabase();
+        SQLdb = dBforAnalysis.getWritableDatabase();
         String sql = "UPDATE MENU_TABLE SET NAME = ?, PRICE = ?, COST = ?, IMAGE = ? WHERE ID = ?;";
 
-        SQLiteStatement statement = db.compileStatement(sql);
+        SQLiteStatement statement = SQLdb.compileStatement(sql);
 
         statement.clearBindings();
 
@@ -79,12 +110,12 @@ public class DBProvider {
 
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("DELETE FROM MENU_TABLE WHERE ID = ? ");
-        db.execSQL(stringBuffer.toString(), new Object[]{id});
-        db.delete("MENU_TABLE", id   + " = ? ", new String[] { id });
+        SQLdb.execSQL(stringBuffer.toString(), new Object[]{id});
+        SQLdb.delete("MENU_TABLE", id   + " = ? ", new String[] { id });
     }
 
     public void close(){
-        dbHelper.close();
+        dBforAnalysis.close();
     }
 
     public Bitmap byteArrayToBitmap(byte[] byteArray ) {

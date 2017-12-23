@@ -62,7 +62,7 @@ public class OrderActivity extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     ArrayList<RealtimeOrder> Billordermenu;
     OrderMenuSelectAdapter orderMenuSelectAdapter;
-    DBProvider db;
+
 
     String str_device;
     public static DBHelper dbforAnalysis;
@@ -76,8 +76,9 @@ public class OrderActivity extends AppCompatActivity
     long CurrentTimeCall;
     Date CurrentDateCall;
     SimpleDateFormat CurrentDate;
-    SimpleDateFormat CurrentTimeS;
-    String CurrentTime;
+    SimpleDateFormat CurrentTime;
+    String CurrentDates;
+    String CurrentTimes;
     int Order_Amount;
 
     ArrayList<OrderWrapDataSet> orderwraplist;
@@ -98,6 +99,8 @@ public class OrderActivity extends AppCompatActivity
     AlertDialog.Builder PayCancelAlert;
     RecyclerView SelectRecyclerView;
     int SelectLength;
+
+    public static DBProvider db;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -126,7 +129,7 @@ public class OrderActivity extends AppCompatActivity
         db.open();
         dbforAnalysis = new DBHelper(this);
 
-        newdbforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
+        //newdbforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
         try {
             Cursor cursor = db.getData("SELECT * FROM MENU_TABLE");
             Menulist.clear();
@@ -284,8 +287,9 @@ public class OrderActivity extends AppCompatActivity
                 CurrentTimeCall = System.currentTimeMillis();
                 CurrentDateCall = new Date(CurrentTimeCall);
                 CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                CurrentTimeS = new SimpleDateFormat("hh-mm-ss");
-                CurrentTime = CurrentDate.format(CurrentDateCall);
+                CurrentTime = new SimpleDateFormat("hh-mm-ss");
+                CurrentDates = CurrentDate.format(CurrentDateCall);
+                CurrentTimes = CurrentTime.format(CurrentDateCall);
                 Order_Amount = hashmapInhashmap.get(bp).get(MenuID);
                     if (Order_Amount == 0){
                         Order_Amount = 1;
@@ -295,7 +299,7 @@ public class OrderActivity extends AppCompatActivity
                 if (toWrapmap.get(bp) != null) {
                     Order_menu_List = toWrapmap.get(bp);
                 }
-                Order_menu_List.add(new Order(String.valueOf(Order_Amount),CurrentDate.toString(),CurrentTimeS.toString(), MenuID,String.valueOf(billnumberposition), "0"));
+                Order_menu_List.add(new Order(String.valueOf(Order_Amount),CurrentDates.toString(),CurrentTimes.toString(), MenuID,String.valueOf(billnumberposition), "0"));
 
                     try {
                     int k = Order_menu_List.size();
@@ -406,15 +410,15 @@ Context context= this;
                                                 CurrentTimeCall = System.currentTimeMillis();
                                                 CurrentDateCall = new Date(CurrentTimeCall);
                                                 CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                                                CurrentTimeS = new SimpleDateFormat("hh-mm-ss");
-                                                CurrentTime = CurrentDate.format(CurrentDateCall);
+                                                CurrentTime = new SimpleDateFormat("hh-mm-ss");
+                                                CurrentDates = CurrentDate.format(CurrentDateCall);
+                                                CurrentTimes = CurrentTime.format(CurrentDateCall);
 
                                                 String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
-                                                putOrder.setOrder_date(CurrentTime.toString());
-                                                putOrder.setOrder_time(CurrentTimeS.toString());
+                                                putOrder.setOrder_date(CurrentDates.toString());
+                                                putOrder.setOrder_time(CurrentTimes.toString());
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
-
                                             }
                                         }
                                     });

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumslap.bum.DB.CardItem;
+import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.POSproject.SignFuntion.FontFuntion;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<String> numberList;
 
+    public static DBProvider db;
     //private ViewPagerIndicatorActivity viewPagerIndicatorActivity;
 
 
@@ -63,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         viewPager.setAdapter(mCardAdapter);
 
-
-
+        db = new DBProvider(this);
+        db.open();
+        db.queryData();
 
         dotsCount = mCardAdapter.getCount();
         dots = new ImageView[dotsCount];
@@ -113,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
         BtnSetting = (ImageButton)findViewById(R.id.button_Setting);
         BtnSetting.setOnClickListener(BtnClick);
 
-        dbHelper = new DBforAnalysis(this, "test.db", null,1);
-        mdb = dbHelper.getWritableDatabase();
+
 
 
     }
