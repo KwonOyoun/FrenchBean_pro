@@ -2,7 +2,9 @@ package com.bumslap.bum.order;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -90,6 +92,12 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         //결재시 진행될 행동.
+                                        String payfor = "pay";
+                                        Intent intent = new Intent("custom-message");
+                                        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                                        intent.putExtra("quantity",payfor);
+
+                                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
                                         }
 
@@ -166,8 +174,8 @@ class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder{
         super(view);
         //orderbillcardview = (CardView)view.findViewById(R.id.order_bill_cardview);
         orderbilltitlenumber = (TextView)view.findViewById(R.id.BillNumber);
-        orderCancelBtn = (Button) view.findViewById(R.id.OrderCancelBTN);
-        orderPayBtn = (Button) view.findViewById(R.id.OrderPayBTN);
+        orderCancelBtn = (Button) view.findViewById(R.id.cancelBTN);
+        orderPayBtn = (Button) view.findViewById(R.id.payBTN);
 
         orderbilllistrecyclerView = (RecyclerView)view.findViewById(R.id.Bill_order_list);
 

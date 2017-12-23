@@ -373,23 +373,45 @@ public class OrderActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
-            //LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup) R.id.billcon);
-            // selectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
-            // selectedItemLength = selectRecyclerView.getChildCount();
-
-            String ItemName = intent.getStringExtra("item");
             String qty = intent.getStringExtra("quantity");
-            Toast.makeText(OrderActivity.this,ItemName +" "+qty ,Toast.LENGTH_SHORT).show();
-            // Get extra data included in the Intent
-           /* String ItemName = intent.getStringExtra("item");
-            String qty = intent.getStringExtra("quantity");
-            Toast.makeText(OrderActivity.this,ItemName +" "+qty ,Toast.LENGTH_SHORT).show();*/
+            LayoutInflater inflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup)findViewById(R.id.billcon));
+            SelectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
+            SelectLength = SelectRecyclerView.getChildCount();
+            for(int Si = 0; Si < SelectLength ; Si++) {
+                View v = SelectRecyclerView.getChildAt(Si);
+                TextView ordermenuname = v.findViewById(R.id.ordermenuname);
+                TextView ordermenuamount = v.findViewById(R.id.ordermenuamount);
+                TextView ordermenuid = v.findViewById(R.id.ordermenuID);
+                String getordermenuname = ordermenuname.getText().toString();
+                String getordermenuamount = ordermenuamount.getText().toString();
+                String getordermenuid = ordermenuid.getText().toString();
+                putOrder = new Order();
+                putOrder.setOrder_FK_menuId(getordermenuid);
+                putOrder.setOrder_amount(getordermenuamount);
+                putOrder.setOrder_number(String.valueOf(billnumberposition));
+                CurrentTimeCall = System.currentTimeMillis();
+                CurrentDateCall = new Date(CurrentTimeCall);
+                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
+                CurrentTime = new SimpleDateFormat("hh-mm-ss");
+                CurrentDates = CurrentDate.format(CurrentDateCall);
+                CurrentTimes = CurrentTime.format(CurrentDateCall);
+                String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
+                putOrder.setOrder_date(CurrentDates.toString());
+                putOrder.setOrder_time(CurrentTimes.toString());
+                putOrder.setOrder_Price_perMenu(getordermenuprice);
+                newdbforAnalysis.addOrder(putOrder);
+
+                Toast.makeText(OrderActivity.this, "결재 완료", Toast.LENGTH_SHORT).show();
+                orderwraplist.remove(billnumberposition);
+                layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                billRecyclerView.setLayoutManager(layoutManager);
+                billRecyclerView.setAdapter(orderWrapAdapter);
+                billRecyclerView.scrollToPosition(billnumberposition);
+
             }
-
-
-
+            }
     };
 
 
