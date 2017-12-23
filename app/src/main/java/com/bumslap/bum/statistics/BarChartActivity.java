@@ -91,7 +91,8 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
             String amount = orderlist.get(p).getOrder_amount();
             String Date = orderlist.get(p).getOrder_date();
             String Time = orderlist.get(p).getOrder_time();
-            String Price = "5000";
+            String Price = orderlist.get(p).getOrder_Price_perMenu();
+            String menu = orderlist.get(p).getOrder_FK_menuId();
             if(Date.equals(s)){
                 Time = Time.substring(0,2);
 

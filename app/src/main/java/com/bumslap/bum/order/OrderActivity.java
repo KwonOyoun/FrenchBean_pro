@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -127,6 +128,7 @@ public class OrderActivity extends AppCompatActivity
         dbforAnalysis = new DBHelper(this);
 
         newdbforAnalysis = new DBforAnalysis(this, "POS1.db", null,1);
+
         try {
             Cursor cursor = db.getData("SELECT * FROM MENU_TABLE");
             Menulist.clear();
@@ -417,9 +419,6 @@ Context context= this;
                                                 putOrder.setOrder_time(CurrentTimes.toString());
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
-
-
-
 
                                             }
                                         }
