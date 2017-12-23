@@ -36,9 +36,9 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="49dp"
-        android:layout_height="wrap_content"
-        android:text="X"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/exit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

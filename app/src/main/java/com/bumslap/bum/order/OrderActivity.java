@@ -376,13 +376,13 @@ public class OrderActivity extends AppCompatActivity
 
             //LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup) R.id.billcon);
-           // selectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
-           // selectedItemLength = selectRecyclerView.getChildCount();
+            // selectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
+            // selectedItemLength = selectRecyclerView.getChildCount();
 
             String ItemName = intent.getStringExtra("item");
             String qty = intent.getStringExtra("quantity");
             Toast.makeText(OrderActivity.this,ItemName +" "+qty ,Toast.LENGTH_SHORT).show();
-                // Get extra data included in the Intent
+            // Get extra data included in the Intent
            /* String ItemName = intent.getStringExtra("item");
             String qty = intent.getStringExtra("quantity");
             Toast.makeText(OrderActivity.this,ItemName +" "+qty ,Toast.LENGTH_SHORT).show();*/
