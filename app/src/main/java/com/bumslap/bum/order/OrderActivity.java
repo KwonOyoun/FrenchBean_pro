@@ -100,8 +100,9 @@ public class OrderActivity extends AppCompatActivity
 
     AlertDialog.Builder PayCancelAlert;
     RecyclerView SelectRecyclerView;
-    int SelectLength;
-
+    int SelectLength, WrapLength;
+    Button cancelBTN;
+    Button payBTN;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,13 +114,13 @@ public class OrderActivity extends AppCompatActivity
         //setTitle("오늘도 달려 보세");
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         floatingAddBtn = findViewById(R.id.floatingAddBtn);
-
+/*
         OrderPayBTN = (Button)findViewById(R.id.payBTN);
         OrderCancelBTN = (Button)findViewById(R.id.cancelBTN);
 
         OrderPayBTN.setOnClickListener(SelectPayCancel);
         OrderCancelBTN.setOnClickListener(SelectPayCancel);
-
+*/
         gridView = (GridView) findViewById(R.id.gridview);
 
         Menulist = new ArrayList<>();
@@ -351,6 +352,22 @@ public class OrderActivity extends AppCompatActivity
 
 
 
+                //LayoutInflater wrapinflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                //View wraporderlayout = wrapinflater.inflate(R.layout.content_order, (ViewGroup)findViewById(R.id.orderbcon));
+                //billRecyclerView = (RecyclerView) wraporderlayout.findViewById(R.id.order_recycler);
+                /*
+                WrapLength = billRecyclerView.getChildCount();
+                View v = billRecyclerView.getChildAt(billnumberposition);
+                cancelBTN = v.findViewById(R.id.cancelBTN);
+                payBTN = v.findViewById(R.id.payBTN);
+                payBTN.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
+*/
+
                 layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
                 orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                 billRecyclerView.setLayoutManager(layoutManager);
@@ -372,7 +389,25 @@ public class OrderActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+    public void refreshrecyclerview(){
+        LayoutInflater wrapinflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View wraporderlayout = wrapinflater.inflate(R.layout.content_order, (ViewGroup)findViewById(R.id.orderbcon));
+        billRecyclerView = (RecyclerView) wraporderlayout.findViewById(R.id.order_recycler);
+        WrapLength = billRecyclerView.getChildCount();
+        for(int Si = 0; Si < WrapLength ; Si++) {
+            View v = billRecyclerView.getChildAt(Si);
+            Button cancelBTN = v.findViewById(R.id.cancelBTN);
+            Button payBTN = v.findViewById(R.id.payBTN);
+            payBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+    }
 Context context= this;
+    /*
     Button.OnClickListener SelectPayCancel = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -466,7 +501,7 @@ Context context= this;
             }
         }
     };
-
+*/
     @Override
     public void onPause(){
         super.onPause();
