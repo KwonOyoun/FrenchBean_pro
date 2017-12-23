@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bumslap.bum.menuedit.MenuUpdateActivity">
-
     <TextView
         android:id="@+id/menu_name"
         android:layout_width="70dp"
@@ -19,7 +18,6 @@
         android:textColor="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_name2" />
-
     <TextView
         android:id="@+id/menu_name3"
         android:layout_width="70dp"
@@ -33,7 +31,6 @@
         android:textColor="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_name" />
-
     <TextView
         android:id="@+id/margin"
         android:layout_width="70dp"
@@ -50,17 +47,28 @@
 
     <TextView
         android:id="@+id/margin2"
-        android:layout_width="0dp"
+        android:layout_width="209dp"
         android:layout_height="49dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="64dp"
         android:background="@drawable/stroke_lower"
         android:fontFamily="@fonts/Swagger"
         android:gravity="center"
-        android:text="4,000"
+        android:text="0"
         android:textColor="@color/textColor"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/margin"
+        app:layout_constraintTop_toBottomOf="@+id/UpdateMenuCost" />
+
+    <Button
+        android:id="@+id/MarginBtn"
+        android:layout_width="57dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:background="@android:color/background_light"
+        android:text="계산"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/margin2"
         app:layout_constraintTop_toBottomOf="@+id/UpdateMenuCost" />
 
     <TextView
@@ -76,7 +84,6 @@
         android:textColor="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UpdateMenuImage" />
-
     <EditText
         android:id="@+id/UpdateMenuName"
         android:layout_width="0dp"
@@ -93,7 +100,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_name2"
         app:layout_constraintTop_toBottomOf="@+id/UpdateMenuImage" />
-
     <EditText
         android:id="@+id/UpdateMenuPrice"
         android:layout_width="0dp"
@@ -104,14 +110,13 @@
         android:ems="10"
         android:fontFamily="@assets/fonts/Swagger"
         android:hint="가격"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:paddingLeft="50dp"
         android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/menu_name"
         app:layout_constraintTop_toBottomOf="@+id/menu_name2" />
-
     <EditText
         android:id="@+id/UpdateMenuCost"
         android:layout_width="0dp"
@@ -122,14 +127,13 @@
         android:ems="10"
         android:fontFamily="@assets/fonts/Swagger"
         android:hint="비용"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:paddingLeft="50dp"
         android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/menu_name3"
         app:layout_constraintTop_toBottomOf="@+id/menu_name" />
-
     <ImageView
         android:id="@+id/UpdateMenuImage"
         android:layout_width="200dp"
@@ -139,7 +143,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_trans" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/UpdateMenuImageBTN"
         android:layout_width="wrap_content"
@@ -151,7 +154,6 @@
         app:layout_constraintStart_toStartOf="@+id/UpdateMenuImage"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_menu_camera" />
-
     <android.support.design.widget.TextInputLayout
         android:id="@+id/Menu_update_name"
         android:layout_width="133dp"
@@ -163,9 +165,7 @@
         app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toEndOf="@+id/UpdateMenuImage"
         app:layout_constraintTop_toTopOf="parent">
-
     </android.support.design.widget.TextInputLayout>
-
     <Button
         android:id="@+id/UpdateBtn"
         android:layout_width="wrap_content"
@@ -181,5 +181,4 @@
         app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/margin2" />
-
 </android.support.constraint.ConstraintLayout>
