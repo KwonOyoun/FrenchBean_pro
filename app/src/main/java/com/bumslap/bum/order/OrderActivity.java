@@ -127,7 +127,6 @@ public class OrderActivity extends AppCompatActivity
         db = new DBProvider(this);
         db.open();
         dbforAnalysis = new DBHelper(this);
-
         newdbforAnalysis = new DBforAnalysis(this);
         try {
             Cursor cursor = db.getData("SELECT * FROM MENU_TABLE");
@@ -345,9 +344,6 @@ public class OrderActivity extends AppCompatActivity
                     ec.getCause();
 
                 }
-
-
-
                 layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
                 orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                 billRecyclerView.setLayoutManager(layoutManager);

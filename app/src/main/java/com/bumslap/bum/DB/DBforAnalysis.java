@@ -22,7 +22,7 @@ public class DBforAnalysis extends SQLiteOpenHelper{
     ArrayList<Cost> costlist;
     ArrayList<Order> orderlist;
     //private static final String MENU_TABLE = "Menu";
-    private static final String DB = "POS5.db";
+    private static final String DB = "POS6.db";
    // private static final Integer ID = 0;
     private static final int VERSION = 6;
 
@@ -289,25 +289,22 @@ public class DBforAnalysis extends SQLiteOpenHelper{
 
     public ArrayList<Menu> getMenuAllData() {
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT * FROM MENU_TABLE");
-
+        sb.append("SELECT MENU_ID, MENU_NAME, MENU_PRICE, MENU_COST FROM MENU_TABLE;");
+        ArrayList<Menu> menuList = new ArrayList<>();
         //읽기 전용 DB 객체를 생성
         SQLiteDatabase db = getReadableDatabase();
-
         Cursor cursor = db.rawQuery(sb.toString(), null);
-
-        ArrayList<Menu> menuList = new ArrayList<>();
         Menu menu;
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             menu = new Menu();
             menu.setMenu_id(cursor.getString(0));
             menu.setMenu_name(cursor.getString(1));
-            menu.setMenu_image(cursor.getBlob(2));
-            menu.setMenu_price(cursor.getString(3));
-            menu.setMenu_cost(cursor.getString(4));
+            menu.setMenu_price(cursor.getString(2));
+            menu.setMenu_cost(cursor.getString(3));
             menuList.add(menu);
         }
         cursor.close();
+
         return menuList;
     }
 
@@ -336,8 +333,6 @@ public class DBforAnalysis extends SQLiteOpenHelper{
         cursor.close();
         return costlist;
     }
-
-
 
 
     public String getMenuName(Integer id) {

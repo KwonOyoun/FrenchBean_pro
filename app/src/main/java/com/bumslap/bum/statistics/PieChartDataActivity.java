@@ -41,12 +41,9 @@ import java.util.Date;
 
 
 public class PieChartDataActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
-    static final String[] LIST_MENU = {"Steak x 8", "Juice x 1", "Cola x 2"};
-    Button AmountStaBtn, SalesStaBtn;
+
     ArrayList<String> list;
     PieChart mChart;
-    private int[] yValues = {8,1,1};
-    private String[] xValues = {"Steak","Juice","Cola"};
     ArrayList<Integer> y;
     ArrayList<String> x;
     ArrayList<Menu> menulist;
@@ -54,13 +51,13 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
     Intent mvStaIntent;
     Button AmountStastisticBtn, SalesStatisticBtn;
     String name, id, s;
-    MainActivity mainActivity;
     DBforAnalysis dBforAnalysis;
     ArrayList<Entry> yVals1;
     DBProvider db;
+
     // colors for different sections in pieChart
     public static final int[] MY_COLORS = {
-            Color.rgb(240,133,44),Color.rgb(27,204,133),Color.rgb(245,231,190)};
+            Color.rgb(201,206,179),Color.rgb(232,221,209),Color.rgb(227,227,231), Color.rgb(236,236,236)};
 
     @Override
 
@@ -72,7 +69,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
 
         db = new DBProvider(this);
         db.open();
-// creating data values
+        // creating data values
 
         mChart = (PieChart) findViewById(R.id.piechart);
 
@@ -92,8 +89,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
                 if (e == null)
                     return;
 
-                Toast.makeText(PieChartDataActivity.this,
-                        xValues[e.getXIndex()] + " is " + e.getVal() + "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PieChartDataActivity.this, xValues[e.getXIndex()] + " is " + e.getVal() + "", Toast.LENGTH_SHORT).show();
             }
 
             @Override

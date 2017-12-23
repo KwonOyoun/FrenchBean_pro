@@ -84,9 +84,10 @@ public class DBProvider {
         statement.clearBindings();
 
         statement.bindString(1, name);
-        statement.bindString(2, price);
-        statement.bindString(3, cost);
-        statement.bindBlob(4, image);
+        statement.bindBlob(2, image);
+        statement.bindString(3, price);
+        statement.bindString(4, cost);
+
 
         statement.executeInsert();
     }

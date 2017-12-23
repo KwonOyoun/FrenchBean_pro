@@ -89,6 +89,7 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
         SimpleDateFormat CurrentTime = new SimpleDateFormat("yyyy-MM-dd");
         String s = CurrentTime.format(now);
         ArrayList<Order> orderlist = new ArrayList<>();
+        dBforAnalysis = new DBforAnalysis(this);
         orderlist = dBforAnalysis.getAllOrderS();
 
 
