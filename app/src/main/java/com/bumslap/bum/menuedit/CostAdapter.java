@@ -29,7 +29,6 @@ public class CostAdapter extends RecyclerView.Adapter<ViewHolderCost> {
     public ViewHolderCost onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recyclerview_cost, parent, false);
-
         ViewHolderCost viewHolderCost = new ViewHolderCost(view);
         return viewHolderCost;
     }
@@ -47,10 +46,8 @@ public class CostAdapter extends RecyclerView.Adapter<ViewHolderCost> {
         return (null != arrayList ? arrayList.size() : 0);
     }
 
-    /*
-    public void removeItem(int position){
-        this.arrayList.remove(position);
-        notifyItemRemoved(position);
-        //notifyDataSetChanged();
-    }*/
+    public void changeItem(ArrayList<Cost> position){
+        this.arrayList = position;
+        notifyDataSetChanged();
+    }
 }
