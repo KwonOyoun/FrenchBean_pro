@@ -166,8 +166,8 @@ class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder{
         super(view);
         //orderbillcardview = (CardView)view.findViewById(R.id.order_bill_cardview);
         orderbilltitlenumber = (TextView)view.findViewById(R.id.BillNumber);
-        orderCancelBtn = (Button) view.findViewById(R.id.OrderCancelBTN);
-        orderPayBtn = (Button) view.findViewById(R.id.OrderPayBTN);
+        //orderCancelBtn = (Button) view.findViewById(R.id.OrderCancelBTN);
+       // orderPayBtn = (Button) view.findViewById(R.id.OrderPayBTN);
 
         orderbilllistrecyclerView = (RecyclerView)view.findViewById(R.id.Bill_order_list);
 
