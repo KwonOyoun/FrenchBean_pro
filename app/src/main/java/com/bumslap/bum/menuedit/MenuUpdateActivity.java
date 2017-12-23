@@ -77,7 +77,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
     Button.OnClickListener UpdateMenu = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-           /* try {
+           try {
                 db.insertData(
                         UpdateMenuName.getText().toString().trim(),
                         UpdateMenuPrice.getText().toString().trim(),
@@ -93,19 +93,8 @@ public class MenuUpdateActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            */
-            try {
-                newdbforanalysis.addMenu(
-                        UpdateMenuName.getText().toString().trim(),
-                        UpdateMenuPrice.getText().toString().trim(),
-                        UpdateMenuCost.getText().toString().trim(),
-                        imgaeViewToByte(UpdateMenuImage)
-                );
-                Intent intent = new Intent(getApplicationContext(), MenuSettingActivity.class);
-                startActivity(intent);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
+
+
         }
     };
     Button.OnClickListener changeimage = new View.OnClickListener() {
