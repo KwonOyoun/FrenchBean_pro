@@ -142,6 +142,7 @@ public class OrderActivity extends AppCompatActivity
                 Menulist.add(new com.bumslap.bum.DB.Menu(id, name, image, price, cost));
             }
         }catch (NullPointerException e){
+            e.getCause();
         }
         menuListAdapter.notifyDataSetChanged();
 
