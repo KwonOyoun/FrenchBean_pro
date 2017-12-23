@@ -17,7 +17,10 @@
         <activity android:name=".menuedit.MenuUpdateActivity" >
 
         </activity>
-        <activity android:name=".menuedit.MenuSettingActivity" />
+        <activity android:name=".menuedit.MenuSettingActivity" >
+
+
+        </activity>
         <activity android:name=".menuedit.CostSettingActivity">
 
         </activity>
@@ -25,7 +28,9 @@
         <activity android:name=".POSproject.SignInActivity">
 
         </activity>
-        <activity android:name=".statistics.BarChartActivity" />
+        <activity android:name=".statistics.BarChartActivity">
+
+        </activity>
         <activity android:name=".statistics.PieChartDataActivity">
 
         </activity>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -47,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class OrderActivity extends AppCompatActivity
@@ -62,7 +64,7 @@ public class OrderActivity extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     ArrayList<RealtimeOrder> Billordermenu;
     OrderMenuSelectAdapter orderMenuSelectAdapter;
-
+    DBProvider db;
 
     String str_device;
     public static DBHelper dbforAnalysis;
@@ -77,8 +79,7 @@ public class OrderActivity extends AppCompatActivity
     Date CurrentDateCall;
     SimpleDateFormat CurrentDate;
     SimpleDateFormat CurrentTime;
-    String CurrentDates;
-    String CurrentTimes;
+    String CurrentTimes, CurrentDates;
     int Order_Amount;
 
     ArrayList<OrderWrapDataSet> orderwraplist;
@@ -99,8 +100,6 @@ public class OrderActivity extends AppCompatActivity
     AlertDialog.Builder PayCancelAlert;
     RecyclerView SelectRecyclerView;
     int SelectLength;
-
-    public static DBProvider db;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -127,7 +126,7 @@ public class OrderActivity extends AppCompatActivity
         gridView.setAdapter(menuListAdapter);
         db = new DBProvider(this);
         db.open();
-        //dbforAnalysis = new DBHelper(this);
+        dbforAnalysis = new DBHelper(this);
 
         newdbforAnalysis = new DBforAnalysis(this);
         try {
@@ -282,16 +281,15 @@ public class OrderActivity extends AppCompatActivity
                         }
 
                 }
-                catch (Exception ex){}
+                catch (Exception ex){ex.getCause();}
 
 
                 OrderList.add(Ordermap);
                 CurrentTimeCall = System.currentTimeMillis();
                 CurrentDateCall = new Date(CurrentTimeCall);
-                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                CurrentTime = new SimpleDateFormat("hh-mm-ss");
-                CurrentDates = CurrentDate.format(CurrentDateCall);
-                CurrentTimes = CurrentTime.format(CurrentDateCall);
+                CurrentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                CurrentTime = new SimpleDateFormat("hh-mm-ss",Locale.KOREA);
+                CurrentTimes = CurrentDate.format(CurrentDateCall);
                 Order_Amount = hashmapInhashmap.get(bp).get(MenuID);
                     if (Order_Amount == 0){
                         Order_Amount = 1;
@@ -301,7 +299,7 @@ public class OrderActivity extends AppCompatActivity
                 if (toWrapmap.get(bp) != null) {
                     Order_menu_List = toWrapmap.get(bp);
                 }
-                Order_menu_List.add(new Order(String.valueOf(Order_Amount),CurrentDates.toString(),CurrentTimes.toString(), MenuID,String.valueOf(billnumberposition), "0"));
+                Order_menu_List.add(new Order(String.valueOf(Order_Amount),CurrentDate.toString(),CurrentTime.toString(), MenuID,String.valueOf(billnumberposition), "0"));
 
                     try {
                     int k = Order_menu_List.size();
@@ -318,6 +316,7 @@ public class OrderActivity extends AppCompatActivity
                         }
                     }
                 } catch (Exception ec) {
+                        ec.getCause();
 
                 }
 
@@ -343,6 +342,8 @@ public class OrderActivity extends AppCompatActivity
                         }
                     }
                 } catch (Exception ec) {
+
+                    ec.getCause();
 
                 }
 
@@ -421,7 +422,6 @@ Context context= this;
                                                 putOrder.setOrder_time(CurrentTimes.toString());
                                                 putOrder.setOrder_Price_perMenu("2000");
                                                 newdbforAnalysis.addOrder(putOrder);
-                                                putOrder.setOrder_Price_perMenu("2000");
 
                                                 //없어져야하는 부분.
 
@@ -504,7 +504,7 @@ Context context= this;
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull  MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

@@ -2,6 +2,7 @@ package com.bumslap.bum.statistics;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -17,7 +18,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
+import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.POSproject.MainActivity;
 import com.bumslap.bum.R;
@@ -32,24 +35,29 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class PieChartDataActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
     static final String[] LIST_MENU = {"Steak x 8", "Juice x 1", "Cola x 2"};
     Button AmountStaBtn, SalesStaBtn;
+    ArrayList<String> list;
     PieChart mChart;
     private int[] yValues = {8,1,1};
     private String[] xValues = {"Steak","Juice","Cola"};
     ArrayList<Integer> y;
     ArrayList<String> x;
-
+    ArrayList<Menu> menulist;
     private GestureDetector gestureDetector;
     Intent mvStaIntent;
     Button AmountStastisticBtn, SalesStatisticBtn;
-
+    String name, id, s;
     MainActivity mainActivity;
     DBforAnalysis dBforAnalysis;
+    ArrayList<Entry> yVals1;
+    DBProvider db;
     // colors for different sections in pieChart
     public static final int[] MY_COLORS = {
             Color.rgb(240,133,44),Color.rgb(27,204,133),Color.rgb(245,231,190)};
@@ -62,11 +70,8 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
 
         setContentView(R.layout.activity_salesstatus_goh);
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1 ,LIST_MENU) ;
-
-        ListView listview = (ListView) findViewById(R.id.graph_listview) ;
-        listview.setAdapter(adapter);
-
+        db = new DBProvider(this);
+        db.open();
 // creating data values
 
         mChart = (PieChart) findViewById(R.id.piechart);
@@ -101,35 +106,52 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         // setting sample Data for Pie Chart
         setDataForPieChart();
 
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1 ,list) ;
+
+        ListView listview = (ListView) findViewById(R.id.graph_listview) ;
+        listview.setAdapter(adapter);
+
         this.gestureDetector = new GestureDetector(this,this);
     }
 
     public void piecharddb(){
+        list = new ArrayList<>();
+        Date now = new Date();
+        SimpleDateFormat CurrentTime = new SimpleDateFormat("yyyy-MM-dd");
+        s = CurrentTime.format(now);
         y = new ArrayList<>();
         x = new ArrayList<>();
         dBforAnalysis = new DBforAnalysis(this);
-        //dBforAnalysis = new MainActivity().dBforAnalysis;
+
+        menulist = new ArrayList<>();
+
+        menulist = dBforAnalysis.getMenuAllData();
+        int yy = 0;
+        yVals1 = new ArrayList<Entry>();
         ArrayList<Order> order = new ArrayList<Order>();
         order = dBforAnalysis.getAllOrderS();
-        for(int p = 0; p < order.size(); p++) {
-            String amount = order.get(p).getOrder_amount();
-            String Date = order.get(p).getOrder_date();
-            String Time = order.get(p).getOrder_time();
-            //String menuname = order.get(p).getOrder_FK_menuId();
+        for (int i = 0; i < menulist.size(); i++) {
+            for(int p = 0; p < order.size(); p++) {
+                String amount = order.get(p).getOrder_amount();
+                String Date = order.get(p).getOrder_date();
+                String menu_id = order.get(p).getOrder_FK_menuId();
 
-            y.add(Integer.parseInt(amount));
-            x.add(amount);
+                if(Date.equals(s)) {
+                    if (x.get(i).equals(menu_id)) {
+                        //y.add(Integer.parseInt(amount));
+                        yy = yy + Integer.parseInt(amount);
+                    }
+                }
+            }
+            //for (int j = 0; j < y.size(); j++)
+            list.add(x.get(i) + " X " + yy);
+            yVals1.add(new Entry(yy, i));
+            yy = 0;
         }
     }
 
 
     public void setDataForPieChart() {
-
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-
-        for (int i = 0; i < y.size(); i++)
-            yVals1.add(new Entry(y.get(i), i));
-
         ArrayList<String> xVals = new ArrayList<String>();
 
         for (int i = 0; i < x.size(); i++)
@@ -176,17 +198,6 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         l.setXEntrySpace(7);
         l.setYEntrySpace(5);
-
-
-
-
-
-
-
-
-
-
-
 
 
         /*

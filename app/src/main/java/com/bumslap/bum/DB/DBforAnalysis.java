@@ -135,6 +135,9 @@ public class DBforAnalysis extends SQLiteOpenHelper{
             order.setOrder_amount(cursor.getString(0));
             order.setOrder_date(cursor.getString(1));
             order.setOrder_time(cursor.getString(2));
+            order.setOrder_number(cursor.getString(3));
+            order.setOrder_FK_menuId(cursor.getString(4));
+            order.setOrder_Price_perMenu(cursor.getString(5));
             Orderlist.add(order);
         }
         cursor.close();
@@ -285,7 +288,6 @@ public class DBforAnalysis extends SQLiteOpenHelper{
 
 
     public ArrayList<Menu> getMenuAllData() {
-
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT MENU_ID, MENU_NAME, MENU_PRICE, MENU_COST FROM MENU_TABLE");
 

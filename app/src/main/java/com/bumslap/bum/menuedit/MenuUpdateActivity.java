@@ -84,7 +84,8 @@ public class MenuUpdateActivity extends AppCompatActivity {
         try{
 
         Bundle bundle = getIntent().getExtras();
-        stringId = bundle.getString("id","NO DATA");
+
+        stringId = bundle.getString("id", "NO DATA");
 
         if(stringId == "NO DATA"){
             menulist.clear();
@@ -108,16 +109,10 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuCost = (EditText) findViewById(R.id.UpdateMenuCost);
 
         UpdateMenuImageBTN = (FloatingActionButton) findViewById(R.id.UpdateMenuImageBTN);
-
-
-
     }
-
-
 
     private void retrieve(String stringId)
     {
-
         //Intent intent = getIntent();
         //String idid = intent.getExtras().getString("id");
         //integerId = Integer.parseInt(id);

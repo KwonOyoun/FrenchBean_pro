@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.POSproject.MainActivity;
@@ -43,11 +44,15 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
             g_list, h_list, i_list, j_list, k_list, l_list = null;
     ArrayList<ArrayList<Integer>> K_List;
     DBforAnalysis dBforAnalysis;
-   // MainActivity mainActivity;
+    MainActivity mainActivity;
+    DBProvider db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_chart);
+
+        db = new DBProvider(this);
+        db.open();
 
         dBforAnalysis = new DBforAnalysis(this);
         chart = (BarChart) findViewById(R.id.chart1);
@@ -91,7 +96,8 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
             String amount = orderlist.get(p).getOrder_amount();
             String Date = orderlist.get(p).getOrder_date();
             String Time = orderlist.get(p).getOrder_time();
-            String Price = "5000";
+            String Price = orderlist.get(p).getOrder_Price_perMenu();
+            String menu = orderlist.get(p).getOrder_FK_menuId();
             if(Date.equals(s)){
                 Time = Time.substring(0,2);
 
