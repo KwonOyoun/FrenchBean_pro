@@ -3,6 +3,7 @@ package com.bumslap.bum.menuedit;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -184,13 +185,13 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         mWidthPixels = metrics.widthPixels;
         mHeightPixels = metrics.heightPixels;
 
-        if (Build.VERSION.SDK_INT >= 14 && Build.VERSION.SDK_INT < 17)
+        /*if (Build.VERSION.SDK_INT >= 14 && Build.VERSION.SDK_INT < 17)
             try {
                 mWidthPixels = (Integer) Display.class.getMethod("getRawWidth").invoke(d);
                 mHeightPixels = (Integer) Display.class.getMethod("getRawHeight").invoke(d);
             } catch (Exception ignored) {
             }
-        // 상태바와 메뉴바의 크기를 포함
+        // 상태바와 메뉴바의 크기를 포함*/
         if (Build.VERSION.SDK_INT >= 17)
             try {
                 Point realSize = new Point();
@@ -206,11 +207,11 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
         int CostTotal = 0;
         for(int i=0; i<costAllData.size(); i++){
-            if(isNumber(costAllData.get(i).getCost_price()) == true)
+            if(isNumber(costAllData.get(i).getCost_price()))
                 CostTotal = CostTotal + Integer.parseInt(costAllData.get(i).getCost_price());
         }
 
-        sumCost.setText(Integer.toString(CostTotal)+" 원");
+        sumCost.setText(String.valueOf(CostTotal)+" 원");
         int mar;
         try {
             mar = Integer.parseInt(menuprice) - CostTotal;
@@ -220,7 +221,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             mar = Integer.parseInt(menuprice) - CostTotal;
 
         }
-        margin.setText(Integer.toString(mar)+" 원");
+        margin.setText(String.valueOf(mar)+" 원");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(costAdapter);
@@ -259,6 +260,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             View view = findViewById(R.id.cost_setting_layout);
             ConstraintLayout.LayoutParams objLayoutParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             Snackbar snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(Color.WHITE);
             // Get the Snackbar's layout view
             Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
             layout.setPadding(0,0,0,0);
