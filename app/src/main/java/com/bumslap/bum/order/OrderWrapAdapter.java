@@ -33,6 +33,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
     private Context context = OrderActivity.context;
     AlertDialog.Builder PayCancelAlert;
 
+
     public OrderWrapAdapter(ArrayList<OrderWrapDataSet> orderarrayList, Context context){
         this.orderarrayList = orderarrayList;
         this.orderwrapcontext = context;
@@ -89,38 +90,9 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         //결재시 진행될 행동.
-                                        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup) holder.billcon);
-                                        holder.selectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
-                                        holder.selectLength = holder.selectRecyclerView.getChildCount();
-                                        for(int Si = 0; Si < holder.selectLength ; Si++){
-                                            View v = holder.selectRecyclerView.getChildAt(Si);
-                                            TextView ordermenuname = v.findViewById(R.id.ordermenuname);
-                                            TextView ordermenuamount = v.findViewById(R.id.ordermenuamount);
-                                            TextView ordermenuid = v.findViewById(R.id.ordermenuID);
-                                            String getordermenuname = ordermenuname.getText().toString();
-                                            String getordermenuamount = ordermenuamount.getText().toString();
-                                            String getordermenuid = ordermenuid.getText().toString();
-                                            Order putOrder = new Order();
-                                            putOrder.setOrder_FK_menuId(getordermenuid);
-                                            putOrder.setOrder_amount(getordermenuamount);
-                                            putOrder.setOrder_number(String.valueOf(holder.billnumberposition));
-                                            holder.CurrentTimeCall = System.currentTimeMillis();
-                                            holder.CurrentDateCall = new Date(holder.CurrentTimeCall);
-                                            holder.CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                                            holder.CurrentTime = new SimpleDateFormat("hh-mm-ss");
-                                            holder.CurrentDates = holder.CurrentDate.format(holder.CurrentDateCall);
-                                            holder.CurrentTimes = holder.CurrentTime.format(holder.CurrentDateCall);
-
-                                            String getordermenuprice = holder.newdbforAnalysis.getMenuprice(getordermenuid);
-                                            putOrder.setOrder_date(holder.CurrentDates.toString());
-                                            putOrder.setOrder_time(holder.CurrentTimes.toString());
-                                            putOrder.setOrder_Price_perMenu("2000");
-                                            holder.newdbforAnalysis.addOrder(putOrder);
-
 
                                         }
-                                    }
+
                                 });
                 AlertDialog alertDialog = PayCancelAlert.create();
                 alertDialog.show();
@@ -172,7 +144,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
 }
 
 class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder{
-    public RecyclerView selectRecyclerView;
+   // public RecyclerView selectRecyclerView;
     public RecyclerView orderbilllistrecyclerView;
     public TextView orderbilltitlenumber;
     //public CardView orderbillcardview;

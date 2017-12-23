@@ -1,6 +1,8 @@
 package com.bumslap.bum.order;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     DBforAnalysis dBforAnalysis;
     String MenunameDB;
     int i, j, k = 0;
+
+
 
     public OrderMenuSelectAdapter(ArrayList<Order> orderArrayList, Context context) {
         try {
@@ -67,6 +71,14 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
         holder.Menuname.setText(MenunameDB);
         holder.MenuId.setText(menuitem.getOrder_FK_menuId());
         holder.MenuAmount.setText(menuitem.getOrder_amount());
+
+        String ItemName = menuitem.getOrder_FK_menuId();
+        String qty = menuitem.getOrder_amount();
+        Intent intent = new Intent("custom-message");
+        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+        intent.putExtra("quantity",qty);
+        intent.putExtra("item",ItemName);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
     }
 
