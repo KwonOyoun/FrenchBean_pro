@@ -3,6 +3,7 @@ package com.bumslap.bum.menuedit;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -147,6 +148,7 @@ public class MenuSettingActivity extends AppCompatActivity implements GestureDet
             View view = findViewById(R.id.menu_setting_activity);
             ConstraintLayout.LayoutParams objLayoutParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             Snackbar snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(Color.WHITE);
             // Get the Snackbar's layout view
             Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
             layout.setPadding(0,0,0,0);
