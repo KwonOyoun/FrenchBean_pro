@@ -344,7 +344,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
                     catch (NullPointerException e){
                         menu = "";
                     }
-
                     firIngradient.setCost_name("");
                     firIngradient.setCost_price("");
 
@@ -458,14 +457,14 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     public String Menu_id(){
         try {
             menu_name = spinnerMenu.getSelectedItem().toString();
+            menu_id = dBforAnalysis.getMenuIdData(menu_name);
+            return menu_id;
         }
         catch (NullPointerException e){
-            menu_name="";
+            menu_id = "0";
+            return menu_id;
         }
-        menu_id = dBforAnalysis.getMenuIdData(menu_name);
-        return menu_id;
     }
-
 
     private void animateFab(){
 
