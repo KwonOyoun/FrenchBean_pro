@@ -109,7 +109,7 @@ public class DBProvider {
     }
     public void deleteData(String id) {
 
-        
+
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("DELETE FROM MENU_TABLE WHERE MENU_ID = ? ");
         SQLdb.execSQL(stringBuffer.toString(), new Object[]{id});
