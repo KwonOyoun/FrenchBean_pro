@@ -28,7 +28,6 @@ import android.widget.Toast;
 import com.bumslap.bum.DB.CustomTextWatcher;
 import com.bumslap.bum.DB.DBHelper;
 import com.bumslap.bum.DB.DBProvider;
-import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.R;
 import com.bumslap.bum.order.OrderActivity;
@@ -41,8 +40,9 @@ import java.util.ArrayList;
 import static com.kakao.usermgmt.StringSet.id;
 
 public class MenuUpdateActivity extends AppCompatActivity {
-    Button UpdateBTN;
+    Button UpdateBTN, MarginBTN;
     EditText UpdateMenuName, UpdateMenuPrice, UpdateMenuCost;
+    TextView UpdateMenuMargin;
     ImageView UpdateMenuImage;
     FloatingActionButton UpdateMenuImageBTN;
     int IMAGE_CAPTURE = 1;
@@ -78,14 +78,14 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
 
-        //UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
-        //UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
+        //천원단위 콤마 이용
+        UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
+        UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
 
         try{
 
         Bundle bundle = getIntent().getExtras();
-
-        stringId = bundle.getString("id", "NO DATA");
+        stringId = bundle.getString("id","NO DATA");
 
         if(stringId == "NO DATA"){
             menulist.clear();
@@ -109,10 +109,16 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuCost = (EditText) findViewById(R.id.UpdateMenuCost);
 
         UpdateMenuImageBTN = (FloatingActionButton) findViewById(R.id.UpdateMenuImageBTN);
+
+        UpdateMenuMargin = (TextView)findViewById(R.id.margin2);
+
     }
+
+
 
     private void retrieve(String stringId)
     {
+
         //Intent intent = getIntent();
         //String idid = intent.getExtras().getString("id");
         //integerId = Integer.parseInt(id);

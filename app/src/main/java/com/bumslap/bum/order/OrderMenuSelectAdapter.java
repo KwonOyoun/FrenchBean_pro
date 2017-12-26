@@ -1,10 +1,14 @@
 package com.bumslap.bum.order;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumslap.bum.DB.DBforAnalysis;
@@ -23,6 +27,8 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     DBforAnalysis dBforAnalysis;
     String MenunameDB;
     int i, j, k = 0;
+
+
 
     public OrderMenuSelectAdapter(ArrayList<Order> orderArrayList, Context context) {
         try {
@@ -58,15 +64,32 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     }
 
     @Override
-    public void onBindViewHolder(OrderMenuViewHoler holder, int position) {
+    public void onBindViewHolder(final OrderMenuViewHoler holder, final int position) {
         dBforAnalysis = new DBforAnalysis(context);
-        Order menuitem = Menuitems.get(position);
+        final Order menuitem = Menuitems.get(position);
 
         MenunameDB = dBforAnalysis.getMenuName(Integer.parseInt(menuitem.getOrder_FK_menuId()));
 
         holder.Menuname.setText(MenunameDB);
         holder.MenuId.setText(menuitem.getOrder_FK_menuId());
         holder.MenuAmount.setText(menuitem.getOrder_amount());
+
+        holder.removeBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Integer.parseInt(menuitem.getOrder_amount())==0){
+                    Menuitems.remove(position);
+                    notifyDataSetChanged();
+                }else{
+                    holder.MenuAmount.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
+                    menuitem.setOrder_amount(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
+                }
+
+            }
+        });
+
+
 
     }
 
@@ -80,12 +103,17 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
 class OrderMenuViewHoler extends RecyclerView.ViewHolder{
 
     public TextView Menuname, MenuAmount, MenuId;
+    public ImageView removeBTN;
+
 
     public OrderMenuViewHoler(View OrderitemView){
         super(OrderitemView);
+
+        removeBTN = (ImageView)OrderitemView.findViewById(R.id.removeBTN);
         MenuId = (TextView)OrderitemView.findViewById(R.id.ordermenuID);
         Menuname = (TextView)OrderitemView.findViewById(R.id.ordermenuname);
         MenuAmount = (TextView)OrderitemView.findViewById(R.id.ordermenuamount);
+
 
     }
 

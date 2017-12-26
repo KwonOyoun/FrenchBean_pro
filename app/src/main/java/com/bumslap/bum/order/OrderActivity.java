@@ -1,15 +1,19 @@
 package com.bumslap.bum.order;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -53,7 +57,11 @@ import java.util.Locale;
 
 public class OrderActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    RecyclerView selectRecyclerView;
+    int selectedItemLength;
 
+
+    FloatingActionButton floatingAddBtn;
     Intent intent;
     GridView gridView;
     ArrayList<com.bumslap.bum.DB.Menu> Menulist;
@@ -88,16 +96,16 @@ public class OrderActivity extends AppCompatActivity
 
     public DBforAnalysis newdbforAnalysis;
     Order putOrder;
+    static Context context;
+    int billnumberposition = 0;
 
-    int billnumberposition=0;
-
-    Button addpositionBTN;
+    //Button addpositionBTN;
 
     HashMap<String, HashMap<String, Integer>> hashmapInhashmap;
 
     Button OrderPayBTN, OrderCancelBTN;
 
-    AlertDialog.Builder PayCancelAlert;
+
     RecyclerView SelectRecyclerView;
     int SelectLength;
 
@@ -111,12 +119,11 @@ public class OrderActivity extends AppCompatActivity
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        floatingAddBtn = findViewById(R.id.floatingAddBtn);
+        context = this;
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("custom-message"));
 
-        OrderPayBTN = (Button)findViewById(R.id.OrderPay);
-        OrderCancelBTN = (Button)findViewById(R.id.OrderCancel);
-
-        OrderPayBTN.setOnClickListener(SelectPayCancel);
-        OrderCancelBTN.setOnClickListener(SelectPayCancel);
 
         gridView = (GridView) findViewById(R.id.gridview);
 
@@ -127,11 +134,12 @@ public class OrderActivity extends AppCompatActivity
         db = new DBProvider(this);
         db.open();
         dbforAnalysis = new DBHelper(this);
+
         newdbforAnalysis = new DBforAnalysis(this);
         try {
             Cursor cursor = db.getData("SELECT * FROM MENU_TABLE");
             Menulist.clear();
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 String id = cursor.getString(0);
                 String name = cursor.getString(1);
                 byte[] image = cursor.getBlob(2);
@@ -141,30 +149,26 @@ public class OrderActivity extends AppCompatActivity
 
                 Menulist.add(new com.bumslap.bum.DB.Menu(id, name, image, price, cost));
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.getCause();
         }
         menuListAdapter.notifyDataSetChanged();
 
         Billordermenu = new ArrayList<>();
 
-        addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
+        // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
 
-        addpositionBTN.setOnClickListener(new View.OnClickListener() {
+        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                billnumberposition = orderwraplist.size()-1;
+                billnumberposition = orderwraplist.size() - 1;
                 billnumberposition++;
             }
         });
 
 
-
-
         billRecyclerView = (RecyclerView) findViewById(R.id.order_recycler);
-
-
 
 
         OrderList = new ArrayList<HashMap<String, Integer>>();
@@ -185,25 +189,22 @@ public class OrderActivity extends AppCompatActivity
         orderwraplist = new ArrayList<OrderWrapDataSet>();
 
 
-
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
         orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
         billRecyclerView.setLayoutManager(layoutManager);
         billRecyclerView.setAdapter(orderWrapAdapter);
 
 
-
-
         billRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                if (e.getAction() == MotionEvent.ACTION_DOWN){
+                if (e.getAction() == MotionEvent.ACTION_DOWN) {
 
                     View reV = rv.findChildViewUnder(e.getX(), e.getY());
                     billnumberposition = rv.getChildAdapterPosition(reV);
 
                     billRecyclerView.scrollToPosition(billnumberposition);
-                    Toast.makeText(getApplicationContext(), String.valueOf(billnumberposition) , Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), String.valueOf(billnumberposition), Toast.LENGTH_LONG).show();
                 }
                 return false;
             }
@@ -220,9 +221,9 @@ public class OrderActivity extends AppCompatActivity
         });
 
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id){
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 //Order_menu_List.clear();
                 //orderwraplist.clear();
                 //orderwraplist = new ArrayList<OrderWrapDataSet>();
@@ -231,33 +232,33 @@ public class OrderActivity extends AppCompatActivity
                 String MenuID = Menulist.get(position).getMenu_id();
 
                 String Price = Menulist.get(position).getMenu_price();
-                int Amount=0;
+                int Amount = 0;
 
                 //billRecyclerView.setLayoutManager(layoutManager);
                 //billRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 String bp = String.valueOf(billnumberposition);
                 // billRecyclerView.setAdapter(Adapter);
                 //billRecyclerView.smoothScrollBy(200, 100);
-                Toast.makeText(getApplicationContext(),""+position+"  "+MenuID+" "+Price,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "" + position + "  " + MenuID + " " + Price, Toast.LENGTH_LONG).show();
 
 
                 //if(hashmapInhashmap.size() == (Integer.parseInt(bp)+1) || hashmapInhashmap.size() == 0) {
-                    if (hashmapInhashmap.get(bp) == null) {
-                        Ordermap = new HashMap<String, Integer>();
-                        hashmapInhashmap.put(bp, Ordermap);
-                        if(hashmapInhashmap.get(bp).get(MenuID) == null){
-                            Ordermap.put(MenuID, 0);
-                            hashmapInhashmap.put(bp, Ordermap);
-                        }
-
-
-                    }
-                    Ordermap = hashmapInhashmap.get(bp);
-                    if(Ordermap.get(MenuID) == null){
-                        Ordermap.put(MenuID, 0);
-                    }
+                if (hashmapInhashmap.get(bp) == null) {
+                    Ordermap = new HashMap<String, Integer>();
                     hashmapInhashmap.put(bp, Ordermap);
-                    //hashmapInhashmap.put(bp,Ordermap);
+                    if (hashmapInhashmap.get(bp).get(MenuID) == null) {
+                        Ordermap.put(MenuID, 0);
+                        hashmapInhashmap.put(bp, Ordermap);
+                    }
+
+
+                }
+                Ordermap = hashmapInhashmap.get(bp);
+                if (Ordermap.get(MenuID) == null) {
+                    Ordermap.put(MenuID, 0);
+                }
+                hashmapInhashmap.put(bp, Ordermap);
+                //hashmapInhashmap.put(bp,Ordermap);
                 //}
 
                 //Amount = Ordermap.get(MenuID);
@@ -265,42 +266,43 @@ public class OrderActivity extends AppCompatActivity
                 //null로 들어가는 것을 고려하여야 한다.
                 try {
 
-                        for (int j = 0; j <= toWrapmap.get(bp).size(); j++) {
-                            String menuId = toWrapmap.get(bp).get(j).getOrder_FK_menuId();
-                            int intmenuid = Integer.parseInt(menuId);
-                            if (intmenuid == Integer.parseInt(MenuID)) {
-                                Amount = Integer.parseInt(toWrapmap.get(bp).get(j).getOrder_amount());
+                    for (int j = 0; j <= toWrapmap.get(bp).size(); j++) {
+                        String menuId = toWrapmap.get(bp).get(j).getOrder_FK_menuId();
+                        int intmenuid = Integer.parseInt(menuId);
+                        if (intmenuid == Integer.parseInt(MenuID)) {
+                            Amount = Integer.parseInt(toWrapmap.get(bp).get(j).getOrder_amount());
 
-                                Ordermap = new HashMap<String, Integer>();
-                                Ordermap.put(MenuID, ++Amount);
-                                hashmapInhashmap.put(bp, Ordermap);
+                            Ordermap = new HashMap<String, Integer>();
+                            Ordermap.put(MenuID, ++Amount);
+                            hashmapInhashmap.put(bp, Ordermap);
 
 
-                            }
                         }
+                    }
 
+                } catch (Exception ex) {
+                    ex.getCause();
                 }
-                catch (Exception ex){ex.getCause();}
 
 
                 OrderList.add(Ordermap);
                 CurrentTimeCall = System.currentTimeMillis();
                 CurrentDateCall = new Date(CurrentTimeCall);
                 CurrentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                CurrentTime = new SimpleDateFormat("hh-mm-ss",Locale.KOREA);
+                CurrentTime = new SimpleDateFormat("hh-mm-ss", Locale.KOREA);
                 CurrentTimes = CurrentDate.format(CurrentDateCall);
                 Order_Amount = hashmapInhashmap.get(bp).get(MenuID);
-                    if (Order_Amount == 0){
-                        Order_Amount = 1;
-                    }
+                if (Order_Amount == 0) {
+                    Order_Amount = 1;
+                }
 
 
                 if (toWrapmap.get(bp) != null) {
                     Order_menu_List = toWrapmap.get(bp);
                 }
-                Order_menu_List.add(new Order(String.valueOf(Order_Amount),CurrentDate.toString(),CurrentTime.toString(), MenuID,String.valueOf(billnumberposition), "0"));
+                Order_menu_List.add(new Order(String.valueOf(Order_Amount), CurrentDate.toString(), CurrentTime.toString(), MenuID, String.valueOf(billnumberposition), "0"));
 
-                    try {
+                try {
                     int k = Order_menu_List.size();
                     for (int i = 0; i < k; i++) {
                         for (int j = 0; j <= i; j++) {
@@ -315,7 +317,7 @@ public class OrderActivity extends AppCompatActivity
                         }
                     }
                 } catch (Exception ec) {
-                        ec.getCause();
+                    ec.getCause();
 
                 }
 
@@ -345,13 +347,13 @@ public class OrderActivity extends AppCompatActivity
                     ec.getCause();
 
                 }
+
+
                 layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
                 orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                 billRecyclerView.setLayoutManager(layoutManager);
                 billRecyclerView.setAdapter(orderWrapAdapter);
                 billRecyclerView.scrollToPosition(billnumberposition);
-
-
 
 
             }
@@ -366,100 +368,52 @@ public class OrderActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-Context context= this;
-    Button.OnClickListener SelectPayCancel = new View.OnClickListener() {
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
-        public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.OrderPay:
-                    PayCancelAlert = new AlertDialog.Builder(context);
-                    PayCancelAlert.setTitle("결재");
-                    PayCancelAlert
-                            .setMessage("결재를 진행 하시겠습니까?")
-                            .setCancelable(false)
-                            .setPositiveButton("취소",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
+        public void onReceive(Context context, Intent intent) {
 
-                                            dialogInterface.cancel();
-                                        }
-                                    })
-                            .setNegativeButton("결재",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            //결재시 진행될 행동.
-                                            LayoutInflater inflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                            View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup)findViewById(R.id.billcon));
-                                            SelectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
-                                            SelectLength = SelectRecyclerView.getChildCount();
-                                            for(int Si = 0; Si < SelectLength ; Si++){
-                                                View v = SelectRecyclerView.getChildAt(Si);
-                                                TextView ordermenuname = v.findViewById(R.id.ordermenuname);
-                                                TextView ordermenuamount = v.findViewById(R.id.ordermenuamount);
-                                                TextView ordermenuid = v.findViewById(R.id.ordermenuID);
-                                                String getordermenuname = ordermenuname.getText().toString();
-                                                String getordermenuamount = ordermenuamount.getText().toString();
-                                                String getordermenuid = ordermenuid.getText().toString();
-                                                putOrder = new Order();
-                                                putOrder.setOrder_FK_menuId(getordermenuid);
-                                                putOrder.setOrder_amount(getordermenuamount);
-                                                putOrder.setOrder_number(String.valueOf(billnumberposition));
-                                                CurrentTimeCall = System.currentTimeMillis();
-                                                CurrentDateCall = new Date(CurrentTimeCall);
-                                                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                                                CurrentTime = new SimpleDateFormat("hh-mm-ss");
-                                                CurrentDates = CurrentDate.format(CurrentDateCall);
-                                                CurrentTimes = CurrentTime.format(CurrentDateCall);
+            String qty = intent.getStringExtra("quantity");
+            LayoutInflater inflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup)findViewById(R.id.billcon));
+            SelectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
+            SelectLength = SelectRecyclerView.getChildCount();
+            for(int Si = 0; Si < SelectLength ; Si++) {
+                View v = SelectRecyclerView.getChildAt(Si);
+                TextView ordermenuname = v.findViewById(R.id.ordermenuname);
+                TextView ordermenuamount = v.findViewById(R.id.ordermenuamount);
+                TextView ordermenuid = v.findViewById(R.id.ordermenuID);
+                String getordermenuname = ordermenuname.getText().toString();
+                String getordermenuamount = ordermenuamount.getText().toString();
+                String getordermenuid = ordermenuid.getText().toString();
+                putOrder = new Order();
+                putOrder.setOrder_FK_menuId(getordermenuid);
+                putOrder.setOrder_amount(getordermenuamount);
+                putOrder.setOrder_number(String.valueOf(billnumberposition));
+                CurrentTimeCall = System.currentTimeMillis();
+                CurrentDateCall = new Date(CurrentTimeCall);
+                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
+                CurrentTime = new SimpleDateFormat("hh-mm-ss");
+                CurrentDates = CurrentDate.format(CurrentDateCall);
+                CurrentTimes = CurrentTime.format(CurrentDateCall);
+                String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
+                putOrder.setOrder_date(CurrentDates.toString());
+                putOrder.setOrder_time(CurrentTimes.toString());
+                putOrder.setOrder_Price_perMenu(getordermenuprice);
+                newdbforAnalysis.addOrder(putOrder);
 
-                                                String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
-                                                putOrder.setOrder_date(CurrentDates.toString());
-                                                putOrder.setOrder_time(CurrentTimes.toString());
-                                                putOrder.setOrder_Price_perMenu("2000");
-                                                newdbforAnalysis.addOrder(putOrder);
+                Toast.makeText(OrderActivity.this, "결재 완료", Toast.LENGTH_SHORT).show();
+                orderwraplist.remove(billnumberposition);
+                layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                billRecyclerView.setLayoutManager(layoutManager);
+                billRecyclerView.setAdapter(orderWrapAdapter);
+                billRecyclerView.scrollToPosition(billnumberposition);
 
-                                                //없어져야하는 부분.
-
-                                                layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                                                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
-                                                billRecyclerView.setLayoutManager(layoutManager);
-                                                billRecyclerView.setAdapter(orderWrapAdapter);
-                                            }
-                                        }
-                                    });
-                    AlertDialog alertDialog = PayCancelAlert.create();
-                    alertDialog.show();
-                    break;
-                case R.id.OrderCancel:
-                    PayCancelAlert = new AlertDialog.Builder(context);
-                    PayCancelAlert.setTitle("취소");
-                    PayCancelAlert
-                            .setMessage("주문을 삭제 하시겠습니까?")
-                            .setCancelable(false)
-                            .setPositiveButton("취소",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                                            dialogInterface.cancel();
-                                        }
-                                    })
-                            .setNegativeButton("삭제",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            //결재시 진행될 행동.
-
-                                        }
-                                    });
-                    alertDialog = PayCancelAlert.create();
-                    alertDialog.show();
-
-                    break;
             }
-        }
+            }
     };
+
 
     @Override
     public void onPause(){
