@@ -23,11 +23,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumslap.bum.DB.CustomTextWatcher;
 import com.bumslap.bum.DB.DBHelper;
 import com.bumslap.bum.DB.DBProvider;
+import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.R;
 import com.bumslap.bum.order.OrderActivity;
@@ -53,9 +55,9 @@ public class MenuUpdateActivity extends AppCompatActivity {
     public static DBHelper dbforAnalysis;
     public static DBProvider db;
     public DBforAnalysis newdbforanalysis;
-
     Menu menu;
     String stringId;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
