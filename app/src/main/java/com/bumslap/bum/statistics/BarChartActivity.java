@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
@@ -44,8 +46,10 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
             g_list, h_list, i_list, j_list, k_list, l_list = null;
     ArrayList<ArrayList<Integer>> K_List;
     DBforAnalysis dBforAnalysis;
-    MainActivity mainActivity;
     DBProvider db;
+    TextView totalsales;
+    int Totalsales = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,9 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //xAxis.setLabelRotationAngle();
         this.gestureDetector = new GestureDetector(this,this);
+
+        totalsales = (TextView)findViewById(R.id.textView16);
+        totalsales.setText(String.valueOf(Totalsales) + " 원");
     }
 
     public void AddValuesToBARENTRY() {
@@ -89,8 +96,8 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
         SimpleDateFormat CurrentTime = new SimpleDateFormat("yyyy-MM-dd");
         String s = CurrentTime.format(now);
         ArrayList<Order> orderlist = new ArrayList<>();
+        dBforAnalysis = new DBforAnalysis(this);
         orderlist = dBforAnalysis.getAllOrderS();
-
 
         for(int p = 0; p < orderlist.size(); p++){
             String amount = orderlist.get(p).getOrder_amount();
@@ -100,7 +107,6 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
             String menu = orderlist.get(p).getOrder_FK_menuId();
             if(Date.equals(s)){
                 Time = Time.substring(0,2);
-
                 switch (Time) {
                     case "00":
                     case "01":
@@ -167,8 +173,10 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
                 }
             } catch (NullPointerException e){
             }
+            Totalsales = Totalsales + sum;
             arrayList.add(j, sum);
         }
+
         a = arrayList.get(0);
         b = arrayList.get(1);
         c = arrayList.get(2);
@@ -209,6 +217,11 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
         BarEntryLabels.add("18-20");
         BarEntryLabels.add("20-22");
         BarEntryLabels.add("22-24");
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev){
+        super.dispatchTouchEvent(ev);
+        return gestureDetector.onTouchEvent(ev);
     }
     @Override
     public boolean onDown(MotionEvent motionEvent) {

@@ -20,9 +20,8 @@
     <ListView
         android:id="@+id/graph_listview"
         android:layout_width="0dp"
-        android:layout_height="138dp"
-        android:layout_marginBottom="9dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtOne"
+        android:layout_height="293dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

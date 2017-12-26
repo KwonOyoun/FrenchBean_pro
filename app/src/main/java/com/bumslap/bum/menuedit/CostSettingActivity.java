@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.MenuPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -68,7 +69,8 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     String price, name, menu = "";
     TextView sumCost, margin;
     String menu_name, menu_id;
-
+    Integer position;
+    String menuprice;
 
     private DBProvider dbProvider;
 
@@ -123,9 +125,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         spinnerMenu.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Menu_id();
-                costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
-                costAdapter.changeItem(costAllData);
+               kk();
             }
 
             @Override
@@ -143,39 +143,10 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             }
         });
 
+        kk();
     }
     public void onResume() {
         super.onResume();
-
-
-        //costAllData = dBforAnalysis.getAllCostData();
-        /*
-        menu_name = spinnerMenu.getSelectedItem().toString();
-        menu_id = dBforAnalysis.getMenuIdData(menu_name);
-        costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);*/
-
-        Menu_id();
-        costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
-        costAdapter.changeItem(costAllData);
-        //Get Menu price
-        Integer position;
-        String menuprice;
-        position = spinnerMenu.getSelectedItemPosition();
-        try {
-            menuprice = MenuallData.get(position).getMenu_price();
-        }
-        catch (IndexOutOfBoundsException e){
-            menuprice ="";
-        }
-        //price = dBforAnalysis.getMenuprice(menuname);
-        try {
-            menuPrice.setText(menuprice);
-        }
-        catch (IndexOutOfBoundsException e){
-            menuPrice.setText("");
-        }
-
-
         //modal dialog
         WindowManager w = getWindowManager();
         Display d = w.getDefaultDisplay();
@@ -185,12 +156,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         mWidthPixels = metrics.widthPixels;
         mHeightPixels = metrics.heightPixels;
 
-        /*if (Build.VERSION.SDK_INT >= 14 && Build.VERSION.SDK_INT < 17)
-            try {
-                mWidthPixels = (Integer) Display.class.getMethod("getRawWidth").invoke(d);
-                mHeightPixels = (Integer) Display.class.getMethod("getRawHeight").invoke(d);
-            } catch (Exception ignored) {
-            }
         // 상태바와 메뉴바의 크기를 포함*/
         if (Build.VERSION.SDK_INT >= 17)
             try {
@@ -203,26 +168,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         //RecyclerView
         //Cost cost = new Cost();
         recyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
-
-
-        int CostTotal = 0;
-        for(int i=0; i<costAllData.size(); i++){
-            if(isNumber(costAllData.get(i).getCost_price()))
-                CostTotal = CostTotal + Integer.parseInt(costAllData.get(i).getCost_price());
-        }
-
-        sumCost.setText(String.valueOf(CostTotal)+" 원");
-        int mar;
-        try {
-            mar = Integer.parseInt(menuprice) - CostTotal;
-        }
-        catch (NumberFormatException e){
-            menuprice = "0";
-            mar = Integer.parseInt(menuprice) - CostTotal;
-
-        }
-        margin.setText(String.valueOf(mar)+" 원");
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(costAdapter);
 
@@ -312,10 +257,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             //recyclerview
             arrayList = dBforAnalysis.getAllCostData();
             recyclerView2 = (RecyclerView)layout.findViewById(R.id.rv);
-            /*
-            IngradientUpdatBtn = (Button)layout.findViewById(R.id.IngradientUpdatBtn);
-            IngradientAddBtn = (Button)layout.findViewById(R.id.IngradientAddBtn);
-            IngradientDeleteBtn = (Button)layout.findViewById(R.id.IngradientDeleteBtn);*/
             colseBtn = (Button)layout.findViewById(R.id.button2);
 
             costUpdateAdapter = new CostUpdateAdapter(costAllData, this);
@@ -370,9 +311,11 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
                 public void onClick(View view) {
                     animateFab();
                     Cost cost = new Cost();
+                    Integer totalcost = 0;
                     View v;
                     EditText Ingradient_name;
                     EditText Ingradient_price;
+                    Button button;
                     recyclerView2 = (RecyclerView)layout.findViewById(R.id.rv);
                     int lengthOfRec = recyclerView2.getChildCount();
                     for (int i=0;i< lengthOfRec; i++){
@@ -382,6 +325,13 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
                         try {
                             name = Ingradient_name.getText().toString();
                             price = Ingradient_price.getText().toString();
+                            Integer p;
+                            if(price.equals("")){
+                                p = 0;
+                            }else {
+                                p = Integer.parseInt(price);
+                            }
+                            totalcost = totalcost + p;
                         }
                         catch (NullPointerException e){
                             name = "";
@@ -392,6 +342,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
                         firIngradient.setCost_name(name);
                         firIngradient.setCost_price(price);
                         dBforAnalysis.updateCost(firIngradient);
+                        dBforAnalysis.updateMenucost(totalcost, menu_id);
                     }
                 }
             });
@@ -450,9 +401,37 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         @Override
         public void onClick(View view) {
             pwindo.dismiss();
-            onResume();
+            kk();
+            costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
+            costAdapter.changeItem(costAllData);
         }
     };
+
+    public void c(){
+        menuprice = changemoney();
+        Menu_id();
+
+        costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
+        int CostTotal = 0;
+        for(int k=0; k<costAllData.size(); k++){
+            if(isNumber(costAllData.get(k).getCost_price()))
+                CostTotal = CostTotal + Integer.parseInt(costAllData.get(k).getCost_price());
+        }
+
+        sumCost.setText(String.valueOf(CostTotal)+" 원");
+        int mar;
+        try {
+            mar = Integer.parseInt(menuprice) - CostTotal;
+        }
+        catch (NumberFormatException e){
+            menuprice = "0";
+            mar = Integer.parseInt(menuprice) - CostTotal;
+
+        }
+        margin.setText(String.valueOf(mar)+" 원");
+
+        costAdapter.changeItem(costAllData);
+    }
 
     public static boolean isNumber(String str){
         boolean result = false;
@@ -499,6 +478,49 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         }
 
 
+    }
+    private String changemoney() {
+        position = spinnerMenu.getSelectedItemPosition();
+        try {
+            menuprice = MenuallData.get(position).getMenu_price();
+        }
+        catch (IndexOutOfBoundsException e){
+            menuprice ="";
+        }
+
+        try {
+            menuPrice.setText(menuprice);
+        }
+        catch (IndexOutOfBoundsException e){
+            menuPrice.setText("");
+        }
+        return menuprice;
+    }
+
+    public void kk(){
+        menuprice = changemoney();
+        Menu_id();
+
+        costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
+        int CostTotal = 0;
+        for(int k=0; k<costAllData.size(); k++){
+            if(isNumber(costAllData.get(k).getCost_price()))
+                CostTotal = CostTotal + Integer.parseInt(costAllData.get(k).getCost_price());
+        }
+
+        sumCost.setText(String.valueOf(CostTotal)+" 원");
+        int mar;
+        try {
+            mar = Integer.parseInt(menuprice) - CostTotal;
+        }
+        catch (NumberFormatException e){
+            menuprice = "0";
+            mar = Integer.parseInt(menuprice) - CostTotal;
+
+        }
+        margin.setText(String.valueOf(mar)+" 원");
+
+        costAdapter.changeItem(costAllData);
     }
 
 }

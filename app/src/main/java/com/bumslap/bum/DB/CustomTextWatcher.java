@@ -17,7 +17,7 @@ public class CustomTextWatcher implements TextWatcher {
     private EditText mEditText;
     String strAmount = ""; // 임시 저장값 (콤마)
 
-    public CustomTextWatcher(EditText e) {
+    public CustomTextWatcher (EditText e) {
         mEditText = e;
     }
 

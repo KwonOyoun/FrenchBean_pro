@@ -41,26 +41,28 @@ import java.util.Date;
 
 
 public class PieChartDataActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
-    static final String[] LIST_MENU = {"Steak x 8", "Juice x 1", "Cola x 2"};
-    Button AmountStaBtn, SalesStaBtn;
+
     ArrayList<String> list;
     PieChart mChart;
-    private int[] yValues = {8,1,1};
-    private String[] xValues = {"Steak","Juice","Cola"};
     ArrayList<Integer> y;
-    ArrayList<String> x;
+    ArrayList<String> x, xx;
     ArrayList<Menu> menulist;
     private GestureDetector gestureDetector;
     Intent mvStaIntent;
     Button AmountStastisticBtn, SalesStatisticBtn;
     String name, id, s;
-    MainActivity mainActivity;
     DBforAnalysis dBforAnalysis;
     ArrayList<Entry> yVals1;
     DBProvider db;
+
     // colors for different sections in pieChart
     public static final int[] MY_COLORS = {
-            Color.rgb(240,133,44),Color.rgb(27,204,133),Color.rgb(245,231,190)};
+            Color.rgb(185,193,143),Color.rgb(211,219,167),Color.rgb(223,233,174),
+            Color.rgb(229,241,165),Color.rgb(222,240,141),Color.rgb(234,255,121),
+            Color.rgb(242,246,116),Color.rgb(240,255,174),Color.rgb(242,249,202)};
+            /*
+            Color.rgb(201,206,179), Color.rgb(232,227,209), Color.rgb(227,227,237),
+            Color.rgb(236,236,236), Color.rgb(164,167,209)};*/
 
     @Override
 
@@ -72,7 +74,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
 
         db = new DBProvider(this);
         db.open();
-// creating data values
+        // creating data values
 
         mChart = (PieChart) findViewById(R.id.piechart);
 
@@ -92,8 +94,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
                 if (e == null)
                     return;
 
-                Toast.makeText(PieChartDataActivity.this,
-                        xValues[e.getXIndex()] + " is " + e.getVal() + "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PieChartDataActivity.this, xValues[e.getXIndex()] + " is " + e.getVal() + "", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -121,11 +122,17 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         s = CurrentTime.format(now);
         y = new ArrayList<>();
         x = new ArrayList<>();
+        xx = new ArrayList<>();
+        ArrayList<Integer> rm = new ArrayList<>();
         dBforAnalysis = new DBforAnalysis(this);
 
         menulist = new ArrayList<>();
 
         menulist = dBforAnalysis.getMenuAllData();
+        for(int i = 0 ; i < menulist.size(); i++){
+            x.add(menulist.get(i).getMenu_id());
+            xx.add(menulist.get(i).getMenu_name());
+        };
         int yy = 0;
         yVals1 = new ArrayList<Entry>();
         ArrayList<Order> order = new ArrayList<Order>();
@@ -144,9 +151,20 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
                 }
             }
             //for (int j = 0; j < y.size(); j++)
-            list.add(x.get(i) + " X " + yy);
+
             yVals1.add(new Entry(yy, i));
+            list.add(xx.get(i) + " X " + yy);
+
+            if(yy == 0) {
+                list.remove(i);
+                yVals1.remove(i);
+                rm.add(i);
+            }
+
             yy = 0;
+        }
+        for(int i=0; i<rm.size();i++){
+            xx.remove(i);
         }
     }
 
@@ -154,8 +172,8 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
     public void setDataForPieChart() {
         ArrayList<String> xVals = new ArrayList<String>();
 
-        for (int i = 0; i < x.size(); i++)
-            xVals.add(x.get(i));
+        for (int i = 0; i < xx.size(); i++)
+            xVals.add(xx.get(i));
 
         // create pieDataSet
         PieDataSet dataSet = new PieDataSet(yVals1, "");
@@ -192,66 +210,18 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         // animate piechart
         mChart.animateY( 1400);
 
-
         // Legends to show on bottom of the graph
         Legend l = mChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         l.setXEntrySpace(7);
         l.setYEntrySpace(5);
 
+    }
 
-        /*
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-
-        for (int i = 0; i < yValues.length; i++)
-            yVals1.add(new Entry(yValues[i], i));
-
-        ArrayList<String> xVals = new ArrayList<String>();
-
-        for (int i = 0; i < xValues.length; i++)
-            xVals.add(xValues[i]);
-
-        // create pieDataSet
-        PieDataSet dataSet = new PieDataSet(yVals1, "");
-        dataSet.setSliceSpace(3);
-        dataSet.setSelectionShift(5);
-
-        // adding colors
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        // Added My Own colors
-        for (int c : MY_COLORS)
-            colors.add(c);
-
-
-        dataSet.setColors(colors);
-
-        //  create pie data object and set xValues and yValues and set it to the pieChart
-        PieData data = new PieData(xVals, dataSet);
-        //   data.setValueFormatter(new DefaultValueFormatter());
-        //   data.setValueFormatter(new PercentFormatter());
-
-        data.setValueFormatter(new MyValueFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
-
-        mChart.setData(data);
-
-        // undo all highlights
-       // mChart.highlightValues(null);
-
-        // refresh/update pie chart
-        mChart.invalidate();
-
-        // animate piechart
-        mChart.animateY( 1400);
-
-
-        // Legends to show on bottom of the graph
-        Legend l = mChart.getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-        l.setXEntrySpace(7);
-        l.setYEntrySpace(5);*/
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev){
+        super.dispatchTouchEvent(ev);
+        return gestureDetector.onTouchEvent(ev);
     }
 
     @Override
