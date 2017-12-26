@@ -389,6 +389,14 @@ public class DBforAnalysis extends SQLiteOpenHelper{
                     cost.getCost_id()
                 });
     }
+     public void updateMenucost(Integer totalprice, String menu_id){
+
+         SQLiteDatabase db = getWritableDatabase();
+         StringBuffer sb = new StringBuffer();
+         sb.append("UPDATE MENU_TABLE SET MENU_COST= '"+ totalprice + "' WHERE MENU_ID = '" + menu_id +"';");
+
+         db.execSQL(sb.toString());
+     }
 
     public String getMenuprice(String nameid) {
         String price = "";

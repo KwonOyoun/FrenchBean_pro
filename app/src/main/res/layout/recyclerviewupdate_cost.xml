@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_height="wrap_content">
+    android:focusableInTouchMode="true">
 
     <EditText
         android:id="@+id/editText"
@@ -43,7 +43,7 @@
 
     <CheckBox
         android:id="@+id/checkBox"
-        android:layout_width="33dp"
+        android:layout_width="30dp"
         android:layout_height="26dp"
         android:layout_marginBottom="11dp"
         android:layout_marginTop="23dp"
@@ -51,4 +51,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

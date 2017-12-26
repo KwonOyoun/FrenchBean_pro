@@ -17,6 +17,8 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -38,13 +40,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import static com.kakao.usermgmt.StringSet.id;
 
 public class MenuUpdateActivity extends AppCompatActivity {
-    Button UpdateBTN, MarginBTN;
-    EditText UpdateMenuName, UpdateMenuPrice, UpdateMenuCost;
-    TextView UpdateMenuMargin;
+    Button UpdateBTN;
+    EditText UpdateMenuName, UpdateMenuPrice;
+    TextView UpdateMenuCost, margin;
     ImageView UpdateMenuImage;
     FloatingActionButton UpdateMenuImageBTN;
     int IMAGE_CAPTURE = 1;
@@ -75,19 +78,17 @@ public class MenuUpdateActivity extends AppCompatActivity {
         //나중에 Main 으로 보낼 부분.(Table 생성 하는 부분.)
         //db.queryData();
 
-
-
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
 
-        //천원단위 콤마 이용
-        UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
-        UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
+        //UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
+        //UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
 
         try{
 
         Bundle bundle = getIntent().getExtras();
-        stringId = bundle.getString("id","NO DATA");
+
+        stringId = bundle.getString("id", "NO DATA");
 
         if(stringId == "NO DATA"){
             menulist.clear();
@@ -100,6 +101,50 @@ public class MenuUpdateActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Integer mar =0;
+        String s = UpdateMenuCost.getText().toString();
+        if(UpdateMenuCost.getText().toString().equals("")){
+            mar = Integer.parseInt(UpdateMenuPrice.getText().toString()) - 0;
+            UpdateMenuCost.setText("0");
+        }else {
+            mar = Integer.parseInt(UpdateMenuPrice.getText().toString()) - Integer.parseInt(UpdateMenuCost.getText().toString());
+        }
+        margin.setText(String.valueOf(mar));
+
+        UpdateMenuPrice.addTextChangedListener(new TextWatcher() {
+
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String price = UpdateMenuPrice.getText().toString();
+                String cost = UpdateMenuCost.getText().toString();
+                Integer mar = 0;
+                if(cost.equals("")) {
+                    mar = Integer.parseInt(price) - 0;
+                }
+                else if(price.equals("")){
+                    mar = 0- Integer.parseInt(cost);
+                }
+                else {
+                    mar = Integer.parseInt(price) - Integer.parseInt(cost);
+                }
+                margin.setText(String.valueOf(mar));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+
     }
 
     private void init() {
@@ -108,19 +153,14 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuImage = (ImageView) findViewById(R.id.UpdateMenuImage);
         UpdateMenuName = (EditText) findViewById(R.id.UpdateMenuName);
         UpdateMenuPrice = (EditText) findViewById(R.id.UpdateMenuPrice);
-        UpdateMenuCost = (EditText) findViewById(R.id.UpdateMenuCost);
+        UpdateMenuCost = (TextView) findViewById(R.id.UpdateMenuCost);
+        margin = (TextView)findViewById(R.id.margin2);
 
         UpdateMenuImageBTN = (FloatingActionButton) findViewById(R.id.UpdateMenuImageBTN);
-
-        UpdateMenuMargin = (TextView)findViewById(R.id.margin2);
-
     }
-
-
 
     private void retrieve(String stringId)
     {
-
         //Intent intent = getIntent();
         //String idid = intent.getExtras().getString("id");
         //integerId = Integer.parseInt(id);
@@ -135,7 +175,6 @@ public class MenuUpdateActivity extends AppCompatActivity {
             String price = cursor.getString(3);
             String cost = cursor.getString(4);
 
-
             menulist.add(new com.bumslap.bum.DB.Menu(id, name, image, price, cost));
 
             //byte[] to bitmap in DBProvider.class
@@ -145,7 +184,6 @@ public class MenuUpdateActivity extends AppCompatActivity {
             UpdateMenuName.setText(name);
             UpdateMenuPrice.setText(price);
             UpdateMenuCost.setText(cost);
-
         }
 
     }
@@ -286,6 +324,16 @@ public class MenuUpdateActivity extends AppCompatActivity {
         return byteArray;
 
     }
+    protected InputFilter filterNum = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            Pattern ps = Pattern.compile("^[0-9]+$");
+            if(ps.matcher(charSequence).matches()){
+                return "";
+            }
+            return null;
+        }
+    };
 
 }
 
