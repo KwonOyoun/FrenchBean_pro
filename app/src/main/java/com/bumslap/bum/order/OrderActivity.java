@@ -333,6 +333,7 @@ public class OrderActivity extends AppCompatActivity
                     int k = orderwraplist.size();
                     for (int i = 0; i < k; i++) {
                         for (int j = 0; j <= i; j++) {
+
                             if (Integer.parseInt(orderwraplist.get(i).getBillTitleNumber()) == Integer.parseInt(orderwraplist.get(j).getBillTitleNumber())) {
                                 orderwraplist.set(j, orderwraplist.get(i));
 
@@ -407,17 +408,44 @@ public class OrderActivity extends AppCompatActivity
                         newdbforAnalysis.addOrder(putOrder);
 
                         Toast.makeText(OrderActivity.this, "결재 완료", Toast.LENGTH_SHORT).show();
-                        toWrapmap.remove(String.valueOf(billnumberposition));
-                        hashmapInhashmap.remove(String.valueOf(billnumberposition));
+
                         //hashmapInhashmap.get(billnumberposition).remove(getordermenuid);
-                        orderwraplist.remove(billnumberposition);
-                        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                        orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
-                        billRecyclerView.setLayoutManager(layoutManager);
-                        billRecyclerView.setAdapter(orderWrapAdapter);
-                        billRecyclerView.scrollToPosition(billnumberposition);
+
+
 
                     }
+                    orderwraplist.remove(billnumberposition);
+                    toWrapmap.remove(String.valueOf(billnumberposition));
+                    hashmapInhashmap.remove(String.valueOf(billnumberposition));
+                    //for문을 돌려서 뒤의 값들을 앞으로 가져온다.
+                    for(int moveposition = billnumberposition; moveposition < toWrapmap.size() ; moveposition++){
+                        toWrapmap.put(String.valueOf(moveposition), toWrapmap.get(String.valueOf(moveposition+1)));
+                        try{
+                            orderwraplist.get(moveposition).setBillTitleNumber(String.valueOf(moveposition));
+                            //orderwraplist.get(moveposition+1).setBillAllData();
+                            //toWrapmap.put(String.valueOf(moveposition), toWrapmap.get(moveposition+1));
+                            toWrapmap.remove(moveposition);
+                            hashmapInhashmap.put(String.valueOf(moveposition), hashmapInhashmap.get(String.valueOf(moveposition+1)));
+                            hashmapInhashmap.remove(String.valueOf(moveposition+1));
+                        }catch (Exception ex){
+                            toWrapmap.remove(moveposition);
+                            hashmapInhashmap.remove(String.valueOf(moveposition));
+                        }
+
+                        if (moveposition == toWrapmap.size()-1){
+                            //toWrapmap.remove(moveposition);
+                            //orderwraplist.remove(moveposition-1);
+                        }
+                    }
+
+                    layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                    orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                    billRecyclerView.setLayoutManager(layoutManager);
+                    billRecyclerView.setAdapter(orderWrapAdapter);
+                    billRecyclerView.scrollToPosition(billnumberposition);
+
+
+                    break;
                 case "delete":
                     String po = intent.getStringExtra("detailposition");
                     ArrayList<Order> orderArrayList = toWrapmap.get(String.valueOf(billnumberposition));
