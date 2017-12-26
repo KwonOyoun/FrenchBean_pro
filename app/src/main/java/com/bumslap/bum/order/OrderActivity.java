@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,7 +78,7 @@ public class OrderActivity extends AppCompatActivity
     String str_device;
     public static DBHelper dbforAnalysis;
 
-    ArrayList<HashMap<String, Integer>> OrderList;
+    //ArrayList<HashMap<String, Integer>> OrderList;
     HashMap<String, Integer> Ordermap;
 
     HashMap<String, ArrayList<Order>> toWrapmap;
@@ -171,7 +172,7 @@ public class OrderActivity extends AppCompatActivity
         billRecyclerView = (RecyclerView) findViewById(R.id.order_recycler);
 
 
-        OrderList = new ArrayList<HashMap<String, Integer>>();
+        //OrderList = new ArrayList<HashMap<String, Integer>>();
 
 
         Order_menu_List = new ArrayList<Order>();
@@ -272,7 +273,7 @@ public class OrderActivity extends AppCompatActivity
                         if (intmenuid == Integer.parseInt(MenuID)) {
                             Amount = Integer.parseInt(toWrapmap.get(bp).get(j).getOrder_amount());
 
-                            Ordermap = new HashMap<String, Integer>();
+                            //Ordermap = new HashMap<String, Integer>();
                             Ordermap.put(MenuID, ++Amount);
                             hashmapInhashmap.put(bp, Ordermap);
 
@@ -285,7 +286,7 @@ public class OrderActivity extends AppCompatActivity
                 }
 
 
-                OrderList.add(Ordermap);
+                //OrderList.add(Ordermap);
                 CurrentTimeCall = System.currentTimeMillis();
                 CurrentDateCall = new Date(CurrentTimeCall);
                 CurrentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
@@ -374,42 +375,60 @@ public class OrderActivity extends AppCompatActivity
         public void onReceive(Context context, Intent intent) {
 
             String qty = intent.getStringExtra("quantity");
-            LayoutInflater inflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup)findViewById(R.id.billcon));
-            SelectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
-            SelectLength = SelectRecyclerView.getChildCount();
-            for(int Si = 0; Si < SelectLength ; Si++) {
-                View v = SelectRecyclerView.getChildAt(Si);
-                TextView ordermenuname = v.findViewById(R.id.ordermenuname);
-                TextView ordermenuamount = v.findViewById(R.id.ordermenuamount);
-                TextView ordermenuid = v.findViewById(R.id.ordermenuID);
-                String getordermenuname = ordermenuname.getText().toString();
-                String getordermenuamount = ordermenuamount.getText().toString();
-                String getordermenuid = ordermenuid.getText().toString();
-                putOrder = new Order();
-                putOrder.setOrder_FK_menuId(getordermenuid);
-                putOrder.setOrder_amount(getordermenuamount);
-                putOrder.setOrder_number(String.valueOf(billnumberposition));
-                CurrentTimeCall = System.currentTimeMillis();
-                CurrentDateCall = new Date(CurrentTimeCall);
-                CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-                CurrentTime = new SimpleDateFormat("hh-mm-ss");
-                CurrentDates = CurrentDate.format(CurrentDateCall);
-                CurrentTimes = CurrentTime.format(CurrentDateCall);
-                String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
-                putOrder.setOrder_date(CurrentDates.toString());
-                putOrder.setOrder_time(CurrentTimes.toString());
-                putOrder.setOrder_Price_perMenu(getordermenuprice);
-                newdbforAnalysis.addOrder(putOrder);
 
-                Toast.makeText(OrderActivity.this, "결재 완료", Toast.LENGTH_SHORT).show();
-                orderwraplist.remove(billnumberposition);
-                layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
-                billRecyclerView.setLayoutManager(layoutManager);
-                billRecyclerView.setAdapter(orderWrapAdapter);
-                billRecyclerView.scrollToPosition(billnumberposition);
+            switch (qty){
+                case "pay":
+                    LayoutInflater inflater = (LayoutInflater)OrderActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View orderlayout = inflater.inflate(R.layout.order_bills_layout, (ViewGroup)findViewById(R.id.billcon));
+                    SelectRecyclerView = (RecyclerView) orderlayout.findViewById(R.id.Bill_order_list);
+                    SelectLength = SelectRecyclerView.getChildCount();
+                    for(int Si = 0; Si < SelectLength ; Si++) {
+                        View v = SelectRecyclerView.getChildAt(Si);
+                        TextView ordermenuname = v.findViewById(R.id.ordermenuname);
+                        TextView ordermenuamount = v.findViewById(R.id.ordermenuamount);
+                        TextView ordermenuid = v.findViewById(R.id.ordermenuID);
+                        String getordermenuname = ordermenuname.getText().toString();
+                        String getordermenuamount = ordermenuamount.getText().toString();
+                        String getordermenuid = ordermenuid.getText().toString();
+                        putOrder = new Order();
+                        putOrder.setOrder_FK_menuId(getordermenuid);
+                        putOrder.setOrder_amount(getordermenuamount);
+                        putOrder.setOrder_number(String.valueOf(billnumberposition));
+                        CurrentTimeCall = System.currentTimeMillis();
+                        CurrentDateCall = new Date(CurrentTimeCall);
+                        CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
+                        CurrentTime = new SimpleDateFormat("hh-mm-ss");
+                        CurrentDates = CurrentDate.format(CurrentDateCall);
+                        CurrentTimes = CurrentTime.format(CurrentDateCall);
+                        String getordermenuprice = newdbforAnalysis.getMenuprice(getordermenuid);
+                        putOrder.setOrder_date(CurrentDates.toString());
+                        putOrder.setOrder_time(CurrentTimes.toString());
+                        putOrder.setOrder_Price_perMenu(getordermenuprice);
+                        newdbforAnalysis.addOrder(putOrder);
 
+                        Toast.makeText(OrderActivity.this, "결재 완료", Toast.LENGTH_SHORT).show();
+                        toWrapmap.remove(String.valueOf(billnumberposition));
+                        hashmapInhashmap.remove(String.valueOf(billnumberposition));
+                        //hashmapInhashmap.get(billnumberposition).remove(getordermenuid);
+                        orderwraplist.remove(billnumberposition);
+                        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                        orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                        billRecyclerView.setLayoutManager(layoutManager);
+                        billRecyclerView.setAdapter(orderWrapAdapter);
+                        billRecyclerView.scrollToPosition(billnumberposition);
+
+                    }
+                case "delete":
+                    String po = intent.getStringExtra("detailposition");
+                    ArrayList<Order> orderArrayList = toWrapmap.get(String.valueOf(billnumberposition));
+                    //for 문을 돌려서 일치하는 메뉴ID 찾은 후 해당하는 번째 리스트 삭제.
+                    for (int i = 0 ; i < orderArrayList.size(); i++){
+                        if(orderArrayList.get(i).getOrder_FK_menuId() == po){
+                            orderArrayList.remove(i);
+                        }
+                    }
+
+                    hashmapInhashmap.get(String.valueOf(billnumberposition)).remove(po);
             }
             }
     };
