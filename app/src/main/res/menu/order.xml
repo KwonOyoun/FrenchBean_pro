@@ -6,4 +6,13 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/add"
+        android:title="Item"
+        android:icon="@drawable/plus_btn"
+        app:showAsAction="always"
+
+        />
 </menu>

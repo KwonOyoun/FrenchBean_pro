@@ -7,20 +7,25 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.MenuPopupWindow;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,20 +37,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumslap.bum.DB.Cost;
 import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.DB.DBforAnalysis;
+import com.bumslap.bum.POSproject.MainActivity;
 import com.bumslap.bum.R;
+import com.bumslap.bum.order.OrderActivity;
+import com.bumslap.bum.settings.UserSettingActivity;
+import com.bumslap.bum.statistics.BarChartActivity;
+import com.bumslap.bum.statistics.SalesStatus2Activity;
 
 import java.util.ArrayList;
 
-public class CostSettingActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+public class CostSettingActivity extends AppCompatActivity implements GestureDetector.OnGestureListener,NavigationView.OnNavigationItemSelectedListener {
     Button MenuSetBtn, CostSetBtn;
     Intent mvSetIntent;
     private GestureDetector gestureDetector;
@@ -72,9 +82,12 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     Integer position;
     String menuprice;
 
+    Intent intent;
+
     private DBProvider dbProvider;
 
     FloatingActionButton fab1, fab2, fab3, fab4;
+    ImageButton exitBtn;
     Animation fabOpen, fabClose, rotateForward, rotateBackward, costanim;
     boolean isOpen = true;
 
@@ -82,7 +95,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cost_setting);
+        setContentView(R.layout.activity_cost_navi);
 
         //snackbar
         this.gestureDetector = new GestureDetector(this,this);
@@ -135,15 +148,22 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         });
 
 
-        Button button = (Button)findViewById(R.id.button_edit);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initiatePopupWindow();
-            }
-        });
 
         kk();
+
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar_cost);
+        setSupportActionBar(toolbar);//0xFFB9C18F
+        getSupportActionBar().setTitle("주문");
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
     public void onResume() {
         super.onResume();
@@ -170,6 +190,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         recyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(costAdapter);
+
 
 
     }
@@ -240,6 +261,60 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         return true;
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_start) {
+            intent = new Intent(getApplicationContext(), OrderActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_prepare) {
+            intent = new Intent(getApplicationContext(), MenuSettingActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_analysis) {
+            intent = new Intent(getApplicationContext(), BarChartActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_usersetting) {
+            intent = new Intent(getApplicationContext(), UserSettingActivity.class);
+            startActivity(intent);
+        } else if(id == R.id.nav_finish){
+            intent = new Intent(getApplicationContext(), SalesStatus2Activity.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu){
+        getMenuInflater().inflate(R.menu.cost_set_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id == R.id.edit){
+            initiatePopupWindow();
+
+        }
+
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         this.gestureDetector.onTouchEvent(motionEvent);
@@ -267,6 +342,14 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             fab2 = (FloatingActionButton) layout.findViewById(R.id.fab2);
             fab3 = (FloatingActionButton) layout.findViewById(R.id.fab3);
             fab4 = (FloatingActionButton) layout.findViewById(R.id.fab4);
+            exitBtn = (ImageButton) layout.findViewById(R.id.exitBtn);
+            exitBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
 
 
             fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
@@ -521,6 +604,8 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         margin.setText(String.valueOf(mar)+" 원");
 
         costAdapter.changeItem(costAllData);
+
+
     }
 
 }

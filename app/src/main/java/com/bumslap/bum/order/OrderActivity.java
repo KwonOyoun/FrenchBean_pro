@@ -3,7 +3,6 @@ package com.bumslap.bum.order;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
@@ -11,13 +10,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +25,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -46,8 +44,6 @@ import com.bumslap.bum.settings.UserSettingActivity;
 import com.bumslap.bum.statistics.BarChartActivity;
 import com.bumslap.bum.statistics.SalesStatus2Activity;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,7 +57,7 @@ public class OrderActivity extends AppCompatActivity
     int selectedItemLength;
 
 
-    FloatingActionButton floatingAddBtn;
+
     Intent intent;
     GridView gridView;
     ArrayList<com.bumslap.bum.DB.Menu> Menulist;
@@ -115,11 +111,15 @@ public class OrderActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         // 화면을 landscape(가로) 화면으로 고정하고 싶은 경우
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_order);
+
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        floatingAddBtn = findViewById(R.id.floatingAddBtn);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_cost);
+
         context = this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
@@ -157,15 +157,6 @@ public class OrderActivity extends AppCompatActivity
         Billordermenu = new ArrayList<>();
 
         // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
-
-        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                billnumberposition = orderwraplist.size() - 1;
-                billnumberposition++;
-            }
-        });
 
 
         billRecyclerView = (RecyclerView) findViewById(R.id.order_recycler);
@@ -219,7 +210,6 @@ public class OrderActivity extends AppCompatActivity
 
             }
         });
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -359,6 +349,9 @@ public class OrderActivity extends AppCompatActivity
             }
         });
 
+        //getSupportActionBar().setTitle("목록");
+        setSupportActionBar(toolbar);//0xFFB9C18F
+        getSupportActionBar().setTitle("주문");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -367,7 +360,7 @@ public class OrderActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
+    }//end of onCreate
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -446,7 +439,10 @@ public class OrderActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.add) {
+            billnumberposition = orderwraplist.size() - 1;
+            billnumberposition++;
+
             return true;
         }
         return super.onOptionsItemSelected(item);
