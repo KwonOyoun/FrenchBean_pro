@@ -71,6 +71,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     String menu_name, menu_id;
     Integer position;
     String menuprice;
+    int CostTotal = 0;
 
     private DBProvider dbProvider;
 
@@ -433,6 +434,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         costAdapter.changeItem(costAllData);
     }
 
+
     public static boolean isNumber(String str){
         boolean result = false;
         try{
@@ -502,13 +504,14 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         Menu_id();
 
         costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
-        int CostTotal = 0;
         for(int k=0; k<costAllData.size(); k++){
             if(isNumber(costAllData.get(k).getCost_price()))
                 CostTotal = CostTotal + Integer.parseInt(costAllData.get(k).getCost_price());
         }
 
         sumCost.setText(String.valueOf(CostTotal)+" 원");
+
+
         int mar;
         try {
             mar = Integer.parseInt(menuprice) - CostTotal;
