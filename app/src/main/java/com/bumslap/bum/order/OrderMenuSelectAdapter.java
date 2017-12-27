@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHoler> {
     private ArrayList<Order> Menuitems = new ArrayList<>();
     private Context context;
+    private Context contextbro = OrderActivity.context;
     DBforAnalysis dBforAnalysis;
     String MenunameDB;
     int i, j, k = 0;
@@ -79,11 +80,20 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
             public void onClick(View view) {
 
                 if (Integer.parseInt(menuitem.getOrder_amount())==0){
+
+                    menuitem.setOrder_amount("0");
                     Menuitems.remove(position);
+                    String payfor = "delete";
+                    String po = String.valueOf(menuitem.getOrder_FK_menuId());
+                    Intent intent = new Intent("custom-message");
+                    //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                    intent.putExtra("quantity",payfor);
+                    intent.putExtra("detailposition", po);
+                    LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
                     notifyDataSetChanged();
                 }else{
                     holder.MenuAmount.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
-                    menuitem.setOrder_amount(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
+                    menuitem.setOrder_amount(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))));
                 }
 
             }
