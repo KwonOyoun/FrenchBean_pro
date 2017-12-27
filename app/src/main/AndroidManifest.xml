@@ -20,11 +20,7 @@
 
         </activity>
         <activity android:name=".menuedit.MenuSettingActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity android:name=".menuedit.CostSettingActivity">
@@ -42,8 +38,15 @@
         </activity>
         <activity android:name=".POSproject.EmailVerifyActivity" />
         <activity android:name=".statistics.PieChartActivity" />
-        <activity android:name=".statistics.SalesStatus2Activity" />
-        <activity android:name=".POSproject.MainActivity">
+        <activity android:name=".statistics.SalesStatus2Activity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+    </activity>
+
+    <activity android:name=".POSproject.MainActivity">
 
         </activity>
 
