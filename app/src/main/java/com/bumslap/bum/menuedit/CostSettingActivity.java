@@ -20,6 +20,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
+
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -54,6 +57,7 @@ import com.bumslap.bum.statistics.BarChartActivity;
 import com.bumslap.bum.statistics.SalesStatus2Activity;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class CostSettingActivity extends AppCompatActivity implements GestureDetector.OnGestureListener,NavigationView.OnNavigationItemSelectedListener {
     Button MenuSetBtn, CostSetBtn;
@@ -71,7 +75,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     private PopupWindow pwindo;
     private int mWidthPixels, mHeightPixels;
     CostUpdateAdapter costUpdateAdapter;
-    Button IngradientUpdatBtn, IngradientAddBtn , IngradientDeleteBtn, colseBtn;
     View layout;
     ArrayList<String> MenuName, MenuPrice, MenuId;
     ArrayList<Menu> MenuallData;
@@ -86,8 +89,10 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
     private DBProvider dbProvider;
 
-    FloatingActionButton fab1, fab2, fab3, fab4;
     ImageButton exitBtn;
+
+    FloatingActionButton fab1, fab2, fab4;
+
     Animation fabOpen, fabClose, rotateForward, rotateBackward, costanim;
     boolean isOpen = true;
 
@@ -147,10 +152,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             }
         });
 
-
-
         kk();
-
 
 
         Toolbar toolbar = findViewById(R.id.toolbar_cost);
@@ -332,7 +334,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             //recyclerview
             arrayList = dBforAnalysis.getAllCostData();
             recyclerView2 = (RecyclerView)layout.findViewById(R.id.rv);
-            colseBtn = (Button)layout.findViewById(R.id.button2);
 
             costUpdateAdapter = new CostUpdateAdapter(costAllData, this);
             recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -340,16 +341,10 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
             fab1 = (FloatingActionButton)layout.findViewById(R.id.fab1);
             fab2 = (FloatingActionButton) layout.findViewById(R.id.fab2);
-            fab3 = (FloatingActionButton) layout.findViewById(R.id.fab3);
             fab4 = (FloatingActionButton) layout.findViewById(R.id.fab4);
             exitBtn = (ImageButton) layout.findViewById(R.id.exitBtn);
-            exitBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
 
+            exitBtn.setOnClickListener(closeclick);
 
 
             fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
@@ -357,6 +352,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
             rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
             rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
+
 
             fab1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -386,47 +382,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
                     costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
                     costUpdateAdapter.changeItem(costAllData);
-                }
-            });
-            fab3.setOnClickListener(new View.OnClickListener() {
-                Cost firIngradient;
-                @Override
-                public void onClick(View view) {
-                    animateFab();
-                    Cost cost = new Cost();
-                    Integer totalcost = 0;
-                    View v;
-                    EditText Ingradient_name;
-                    EditText Ingradient_price;
-                    Button button;
-                    recyclerView2 = (RecyclerView)layout.findViewById(R.id.rv);
-                    int lengthOfRec = recyclerView2.getChildCount();
-                    for (int i=0;i< lengthOfRec; i++){
-                        v = recyclerView2.getChildAt(i);
-                        Ingradient_name = v.findViewById(R.id.editText);
-                        Ingradient_price = v.findViewById(R.id.editText3);
-                        try {
-                            name = Ingradient_name.getText().toString();
-                            price = Ingradient_price.getText().toString();
-                            Integer p;
-                            if(price.equals("")){
-                                p = 0;
-                            }else {
-                                p = Integer.parseInt(price);
-                            }
-                            totalcost = totalcost + p;
-                        }
-                        catch (NullPointerException e){
-                            name = "";
-                            price = "";
-                        }
-                        firIngradient = new Cost();
-                        firIngradient.setCost_id(costAllData.get(i).getCost_id());
-                        firIngradient.setCost_name(name);
-                        firIngradient.setCost_price(price);
-                        dBforAnalysis.updateCost(firIngradient);
-                        dBforAnalysis.updateMenucost(totalcost, menu_id);
-                    }
                 }
             });
 
@@ -473,7 +428,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
                     }
                 }
             });
-            colseBtn.setOnClickListener(closeclick);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -483,10 +437,49 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     View.OnClickListener closeclick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            pwindo.dismiss();
+
             kk();
+            Cost firIngradient;
+            Cost cost = new Cost();
+            Integer totalcost = 0;
+            View v;
+            EditText Ingradient_name;
+            EditText Ingradient_price;
+            Button button;
+            recyclerView2 = (RecyclerView)layout.findViewById(R.id.rv);
+            int lengthOfRec = recyclerView2.getChildCount();
+            for (int i=0;i< lengthOfRec; i++){
+                v = recyclerView2.getChildAt(i);
+                Ingradient_name = v.findViewById(R.id.editText);
+                Ingradient_price = v.findViewById(R.id.editText3);
+                try {
+                    name = Ingradient_name.getText().toString();
+                    price = Ingradient_price.getText().toString();
+                    Integer p = 0;
+                    if(price.equals("")){
+                        p = 0;
+                    }
+                    else {
+                        p = Integer.parseInt(price);
+                    }
+                    totalcost = totalcost + p;
+                }
+                catch (NullPointerException e){
+                    name = "";
+                    price = "";
+                }
+                firIngradient = new Cost();
+                firIngradient.setCost_id(costAllData.get(i).getCost_id());
+                firIngradient.setCost_name(name);
+                firIngradient.setCost_price(price);
+                dBforAnalysis.updateCost(firIngradient);
+                dBforAnalysis.updateMenucost(totalcost, menu_id);
+            }
+            dBforAnalysis.deletenullcost();
             costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
             costAdapter.changeItem(costAllData);
+            pwindo.dismiss();
+            c();
         }
     };
 
@@ -542,20 +535,16 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         if(isOpen){
             fab1.startAnimation(rotateBackward);
             fab2.startAnimation(fabOpen);
-            fab3.startAnimation(fabOpen);
             fab4.startAnimation(fabOpen);
             fab2.setClickable(true);
-            fab3.setClickable(true);
             fab4.setClickable(true);
             isOpen = false;
         }
         else{
             fab1.startAnimation(rotateForward);
             fab2.startAnimation(fabClose);
-            fab3.startAnimation(fabClose);
             fab4.startAnimation(fabClose);
             fab2.setClickable(false);
-            fab3.setClickable(false);
             fab4.setClickable(false);
             isOpen = true;
         }
@@ -579,6 +568,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         }
         return menuprice;
     }
+
 
     public void kk(){
         menuprice = changemoney();
@@ -607,5 +597,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
 
     }
+
 
 }

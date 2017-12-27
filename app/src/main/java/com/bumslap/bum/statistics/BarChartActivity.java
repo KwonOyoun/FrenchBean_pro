@@ -38,7 +38,7 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
     BarData BARDATA;
     XAxis xAxis;
     long a, b, c, d, e, f, g, h, i, j, k, l;
-    int[] color = {Color.rgb(185, 193, 144)};
+    int[] color = {Color.rgb(229,241,165)};
     private GestureDetector gestureDetector;
     Intent mvStaIntent;
     Button AmountStastisticBtn, SalesStatisticBtn;

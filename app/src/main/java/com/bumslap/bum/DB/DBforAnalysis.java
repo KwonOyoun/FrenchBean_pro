@@ -411,5 +411,12 @@ public class DBforAnalysis extends SQLiteOpenHelper{
         price = menu.getMenu_price();
         return price;
     }
+    public  void deletenullcost(){
+        SQLiteDatabase db = getReadableDatabase();
+        StringBuffer sb = new StringBuffer();
+        sb.append("DELETE FROM COST_TABLE WHERE COST_NAME = '' OR COST_PRICE = '';");
+
+        db.execSQL(sb.toString());
+    }
 
 }

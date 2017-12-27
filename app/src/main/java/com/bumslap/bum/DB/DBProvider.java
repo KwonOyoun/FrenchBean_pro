@@ -116,6 +116,13 @@ public class DBProvider {
         SQLdb.delete("MENU_TABLE", id   + " = ? ", new String[] { id });
     }
 
+    public void deleteCostData(String id) {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("DELETE FROM COST_TABLE WHERE COST_FK_MENUID = ? ");
+        SQLdb.execSQL(stringBuffer.toString(), new Object[]{id});
+        //SQLdb.delete("COST_TABLE", id   + " = ? ", new String[] { id });
+    }
+
     public void close(){
         dBforAnalysis.close();
     }

@@ -31,8 +31,9 @@ import android.widget.LinearLayout;
 import com.bumslap.bum.BuildConfig;
 
 import com.bumslap.bum.DB.DBProvider;
-import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.POSproject.MainActivity;
+
+
 import com.bumslap.bum.R;
 import com.bumslap.bum.order.OrderActivity;
 import com.bumslap.bum.settings.UserSettingActivity;
@@ -189,6 +190,12 @@ public class MenuSettingActivity extends AppCompatActivity implements GestureDet
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev){
+        super.dispatchTouchEvent(ev);
+        return gestureDetector.onTouchEvent(ev);
+    }
+
+    @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         float diffY = motionEvent1.getY() - motionEvent.getY();
         if (diffY < 0) {
@@ -321,10 +328,5 @@ public class MenuSettingActivity extends AppCompatActivity implements GestureDet
 
         }
 
-    }
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev){
-        super.dispatchTouchEvent(ev);
-        return gestureDetector.onTouchEvent(ev);
     }
 }
