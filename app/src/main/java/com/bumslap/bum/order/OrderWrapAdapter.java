@@ -3,6 +3,7 @@ package com.bumslap.bum.order;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -12,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Order;
@@ -27,16 +30,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by oyoun on 17. 12. 19.
  */
 
-public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewHolder>{
+public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.OrderWrapAdapterViewHolder> {
 
     private ArrayList<OrderWrapDataSet> orderarrayList;
     private Context orderwrapcontext;
-    private int Billnumberposition;
+
     private Context context = OrderActivity.context;
     AlertDialog.Builder PayCancelAlert;
+    private int selectedPos = 0;
 
 
-    public OrderWrapAdapter(ArrayList<OrderWrapDataSet> orderarrayList, Context context){
+    public OrderWrapAdapter(ArrayList<OrderWrapDataSet> orderarrayList, Context context) {
         this.orderarrayList = orderarrayList;
         this.orderwrapcontext = context;
     }
@@ -53,6 +57,10 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
     @Override
     public void onBindViewHolder(final OrderWrapAdapterViewHolder holder, int position) {
 
+        holder.selectedCheck.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
+
+
+
         final String billtitlenumber = orderarrayList.get(position).getBillTitleNumber();
         ArrayList billAllData = orderarrayList.get(position).getBillAllData();
 
@@ -60,14 +68,15 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
 
         OrderMenuSelectAdapter orderMenuSelectAdapter = new OrderMenuSelectAdapter(billAllData, orderwrapcontext);
         //try{
-            //int a= Integer.parseInt(orderarrayList.get(position).getBillTitleNumber());
+        //int a= Integer.parseInt(orderarrayList.get(position).getBillTitleNumber());
 
-            //if (Integer.parseInt(orderarrayList.get(position).getBillTitleNumber()) == position){
-                holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
-                holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
-           // }
-           // }
-          //  catch (Exception ex){}
+
+        //if (Integer.parseInt(orderarrayList.get(position).getBillTitleNumber()) == position){
+        holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
+        holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
+        // }
+        // }
+        //  catch (Exception ex){}
         //holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
         //holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
         holder.orderPayBtn.setOnClickListener(new View.OnClickListener() {
@@ -95,11 +104,11 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
                                         String payfor = "pay";
                                         Intent intent = new Intent("custom-message");
                                         //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                                        intent.putExtra("quantity",payfor);
+                                        intent.putExtra("quantity", payfor);
 
                                         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
-                                        }
+                                    }
 
                                 });
                 AlertDialog alertDialog = PayCancelAlert.create();
@@ -149,36 +158,43 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
 
         return (null != orderarrayList ? orderarrayList.size() : 0);
     }
-}
-
-class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder{
-   // public RecyclerView selectRecyclerView;
-    public RecyclerView orderbilllistrecyclerView;
-    public TextView orderbilltitlenumber;
-    //public CardView orderbillcardview;
-    public Button orderCancelBtn;
-    public Button orderPayBtn;
-    public ConstraintLayout billcon;
-    int billnumberposition=0;
-    Order order;
-    int selectLength;
-    long CurrentTimeCall;
-    Date CurrentDateCall;
-    SimpleDateFormat CurrentDate;
-    SimpleDateFormat CurrentTime;
-    String CurrentTimes, CurrentDates;
-    DBforAnalysis newdbforAnalysis;
-
-    public OrderWrapAdapterViewHolder(View view){
-
-        super(view);
-        //orderbillcardview = (CardView)view.findViewById(R.id.order_bill_cardview);
-        orderbilltitlenumber = (TextView)view.findViewById(R.id.BillNumber);
-        orderCancelBtn = (Button) view.findViewById(R.id.cancelBTN);
-        orderPayBtn = (Button) view.findViewById(R.id.payBTN);
-
-        orderbilllistrecyclerView = (RecyclerView)view.findViewById(R.id.Bill_order_list);
 
 
+    class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        // public RecyclerView selectRecyclerView;
+        public RecyclerView orderbilllistrecyclerView;
+        public TextView orderbilltitlenumber;
+        //public CardView orderbillcardview;
+        public Button orderCancelBtn;
+        public Button orderPayBtn;
+        ImageView selectedCheck;
+
+
+
+        public OrderWrapAdapterViewHolder(View view) {
+            super(view);
+            view.setOnClickListener(this);
+            selectedCheck = view.findViewById(R.id.selectedCheck);
+            orderbilltitlenumber = (TextView) view.findViewById(R.id.BillNumber);
+            orderCancelBtn = (Button) view.findViewById(R.id.cancelBTN);
+            orderPayBtn = (Button) view.findViewById(R.id.payBTN);
+            orderbilllistrecyclerView = (RecyclerView) view.findViewById(R.id.Bill_order_list);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            // Below line is just like a safety check, because sometimes holder could be null,
+            // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
+            if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+            // Updating old as well as new positions
+            notifyItemChanged(selectedPos);
+            selectedPos = getLayoutPosition();
+            notifyItemChanged(selectedPos);
+            // Do your another stuff for your onClick
+
+        }
     }
+
 }

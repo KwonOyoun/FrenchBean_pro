@@ -192,6 +192,7 @@ public class OrderActivity extends AppCompatActivity
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
                 if (e.getAction() == MotionEvent.ACTION_DOWN) {
 
+
                     View reV = rv.findChildViewUnder(e.getX(), e.getY());
                     billnumberposition = rv.getChildAdapterPosition(reV);
 
