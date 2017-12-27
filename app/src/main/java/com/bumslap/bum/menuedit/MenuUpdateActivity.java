@@ -58,9 +58,9 @@ public class MenuUpdateActivity extends AppCompatActivity {
     public static DBHelper dbforAnalysis;
     public static DBProvider db;
     public DBforAnalysis newdbforanalysis;
-
     Menu menu;
     String stringId;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
 
-        //UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
+        UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
         //UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
 
         try{
@@ -101,7 +101,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+/*
         Integer mar =0;
         String s = UpdateMenuCost.getText().toString();
         if(UpdateMenuCost.getText().toString().equals("")){
@@ -143,7 +143,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
             }
         });
 
-
+*/
 
     }
 
