@@ -124,7 +124,7 @@ public class OrderActivity extends AppCompatActivity
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        floatingAddBtn = findViewById(R.id.floatingAddBtn);
+        //floatingAddBtn = findViewById(R.id.floatingAddBtn);
         context = this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
@@ -163,7 +163,7 @@ public class OrderActivity extends AppCompatActivity
 
         // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
 
-        currentgainView = (TextView)findViewById(R.id.currentgainview);
+        //currentgainView = (TextView)findViewById(R.id.currentgainview);
 
         floatingAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -488,6 +488,37 @@ public class OrderActivity extends AppCompatActivity
                     billRecyclerView.setLayoutManager(layoutManager);
                     billRecyclerView.setAdapter(orderWrapAdapter);
                     billRecyclerView.scrollToPosition(billnumberposition);
+                    break;
+
+                case "cancel":
+
+                    orderwraplist.remove(billnumberposition);
+                    toWrapmap.remove(String.valueOf(billnumberposition));
+                    hashmapInhashmap.remove(String.valueOf(billnumberposition));
+
+                    //for문을 돌려서 뒤의 값들을 앞으로 가져온다.
+                    for(int moveposition = billnumberposition; moveposition < toWrapmap.size() ; moveposition++){
+                        toWrapmap.put(String.valueOf(moveposition), toWrapmap.get(String.valueOf(moveposition+1)));
+                        try{
+                            orderwraplist.get(moveposition).setBillTitleNumber(String.valueOf(moveposition));
+                            toWrapmap.remove(moveposition);
+                            hashmapInhashmap.put(String.valueOf(moveposition), hashmapInhashmap.get(String.valueOf(moveposition+1)));
+                            hashmapInhashmap.remove(String.valueOf(moveposition+1));
+                        }catch (Exception ex){
+                            toWrapmap.remove(moveposition);
+                            hashmapInhashmap.remove(String.valueOf(moveposition));
+                        }
+
+                    }
+
+                    layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                    orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                    billRecyclerView.setLayoutManager(layoutManager);
+                    billRecyclerView.setAdapter(orderWrapAdapter);
+                    billRecyclerView.scrollToPosition(billnumberposition);
+
+
+                    break;
                     }
             }
     };

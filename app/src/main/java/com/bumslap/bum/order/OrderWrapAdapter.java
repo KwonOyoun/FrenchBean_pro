@@ -134,7 +134,13 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        //결재시 진행될 행동.
+                                        //삭제시 진행될 행동.
+                                        String cancelfor = "cancel";
+                                        Intent intent = new Intent("custom-message");
+                                        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                                        intent.putExtra("quantity",cancelfor);
+
+                                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
                                     }
                                 });
