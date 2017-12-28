@@ -58,6 +58,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
     public static DBHelper dbforAnalysis;
     public static DBProvider db;
     public DBforAnalysis newdbforanalysis;
+
     Menu menu;
     String stringId;
 
@@ -101,11 +102,11 @@ public class MenuUpdateActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-/*
+
         Integer mar =0;
         String s = UpdateMenuCost.getText().toString();
         if(UpdateMenuCost.getText().toString().equals("")){
-            mar = Integer.parseInt(UpdateMenuPrice.getText().toString()) - 0;
+            //mar = Integer.parseInt(UpdateMenuPrice.getText().toString()) - 0;
             UpdateMenuCost.setText("0");
         }else {
             mar = Integer.parseInt(UpdateMenuPrice.getText().toString()) - Integer.parseInt(UpdateMenuCost.getText().toString());
@@ -143,7 +144,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
             }
         });
 
-*/
+
 
     }
 

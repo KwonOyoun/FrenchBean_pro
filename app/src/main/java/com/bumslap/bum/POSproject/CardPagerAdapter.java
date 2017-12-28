@@ -63,7 +63,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                     .inflate(R.layout.activity_fragment_main, container, false);
             container.addView(view);
             bind(mData.get(position), view);
-            CardView cardView = (CardView) view.findViewById(R.id.cardView);
+            //CardView cardView = (CardView) view.findViewById(R.id.cardView);
 
           /*  if (mBaseElevation == 0) {
                 mBaseElevation = cardView.getCardElevation();
@@ -94,7 +94,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
             });
 
           //  cardView.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
-            mViews.set(position, cardView);
+            //mViews.set(position, cardView);
             return view;
         }
 

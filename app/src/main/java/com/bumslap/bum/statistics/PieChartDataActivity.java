@@ -258,6 +258,7 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
             View view = findViewById(R.id.pie_statistics_layout);
             ConstraintLayout.LayoutParams objLayoutParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             Snackbar snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(Color.WHITE);
             // Get the Snackbar's layout view
             Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
             layout.setPadding(0,0,0,0);

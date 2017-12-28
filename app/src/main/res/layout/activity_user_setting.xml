@@ -10,153 +10,191 @@
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="202dp"
         android:background="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/userimageBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginTop="83dp"
-            android:clickable="true"
-            app:backgroundTint="@color/cardview_shadow_end_color"
-            app:fabSize="mini"
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="306dp"
+            android:layout_height="115dp"
+            android:layout_marginBottom="43dp"
+            android:layout_marginTop="44dp"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_menu_camera" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="137dp"
-            android:layout_height="118dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="87dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="15dp"
-            android:clipToPadding="false"
-            android:foregroundGravity="center_horizontal"
-            app:cardCornerRadius="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/userimageBtn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
-
-            <ImageView
-                android:id="@+id/userimage"
-                android:layout_width="204dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginBottom="24dp"
-                android:layout_marginEnd="115dp"
-                android:layout_marginStart="127dp"
-                android:layout_marginTop="19dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.128"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/cat" />
-
-        </android.support.v7.widget.CardView>
-
-        <TextView
-            android:id="@+id/text_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="100dp"
-            android:text="고상범 님 환영합니다."
-            android:fontFamily="@font/nanum_square_round_l"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/edit_button"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="90dp"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="정보수정"
-            android:fontFamily="@font/nanum_square_round_l"
-            app:layout_constraintStart_toEndOf="@+id/edit_button"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/update_button"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+            app:srcCompat="@drawable/logojj" />
+
     </android.support.constraint.ConstraintLayout>
 
 
-    <Button
-        android:id="@+id/txtOne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginBottom="7dp"
-        android:text="Reset Data"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:layout_marginTop="156dp"
+        android:layout_height="326dp"
+        android:layout_marginTop="32dp"
         android:background="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="60dp"
-            android:text="TextView"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/email"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/gender"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/PhoneNumber"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="70dp"
+            android:layout_height="49dp"
+            android:background="@android:color/background_light"
+            android:fontFamily="@fonts/Swagger"
+            android:gravity="center"
+            android:text="이메일"
+            android:textColor="@color/textColor"
+            app:layout_constraintEnd_toStartOf="@+id/textView17"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+
+
+        <TextView
+            android:id="@+id/PhoneNumber"
+            android:layout_width="70dp"
+            android:layout_height="49dp"
+            android:background="@android:color/background_light"
+            android:fontFamily="@fonts/Swagger"
+            android:gravity="center"
+            android:text="성별"
+            app:layout_constraintEnd_toStartOf="@+id/textView18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gender" />
+
+        <TextView
+            android:id="@+id/Birth"
+            android:layout_width="70dp"
+            android:layout_height="49dp"
+            android:background="@android:color/background_light"
+            android:fontFamily="@fonts/Swagger"
+            android:gravity="center"
+            android:text="전화 번호"
+            app:layout_constraintEnd_toStartOf="@+id/textView19"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PhoneNumber" />
+
+        <TextView
+            android:id="@+id/StoreName"
+            android:layout_width="70dp"
+            android:layout_height="49dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/background_light"
+            android:fontFamily="@fonts/Swagger"
+            android:gravity="center"
+            android:text="상점 이름"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView21"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/storeName" />
+
+        <TextView
+            android:id="@+id/storeName"
+            android:layout_width="70dp"
+            android:layout_height="49dp"
+            android:background="@android:color/background_light"
+            android:fontFamily="@fonts/Swagger"
+            android:gravity="center"
+            android:text="생일"
+            app:layout_constraintEnd_toStartOf="@+id/textView20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Birth" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/Birth"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/storeName"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/StoreName"
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="70dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/background_light"
+            android:fontFamily="@fonts/Swagger"
+            android:gravity="center"
+            android:text="이름"
+            android:textColor="@color/textColor"
+            app:layout_constraintEnd_toStartOf="@+id/textView12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:layout_marginTop="312dp"
-        android:background="@android:color/background_light"
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="168dp"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="164dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
