@@ -126,7 +126,7 @@ public class OrderActivity extends AppCompatActivity
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        floatingAddBtn = findViewById(R.id.floatingAddBtn);
+
         context = this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));

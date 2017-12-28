@@ -38,6 +38,10 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
     private Context context = OrderActivity.context;
     AlertDialog.Builder PayCancelAlert;
     private int selectedPos = 0;
+    String menuAmount, menuprice;
+    int menutotalprice=0;
+    String menutablenumber;
+
 
 
     public OrderWrapAdapter(ArrayList<OrderWrapDataSet> orderarrayList, Context context) {
@@ -56,7 +60,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
 
     @Override
     public void onBindViewHolder(final OrderWrapAdapterViewHolder holder, int position) {
-        menutotalprice=0;
+       menutotalprice=0;
 
         holder.selectedCheck.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
 
@@ -168,6 +172,8 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
         //public CardView orderbillcardview;
         public Button orderCancelBtn;
         public Button orderPayBtn;
+        public TextView totalpayprice;
+        public TextView ordertablenumber;
         ImageView selectedCheck;
 
 
@@ -180,6 +186,8 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
             orderCancelBtn = (Button) view.findViewById(R.id.cancelBTN);
             orderPayBtn = (Button) view.findViewById(R.id.payBTN);
             orderbilllistrecyclerView = (RecyclerView) view.findViewById(R.id.Bill_order_list);
+            totalpayprice = (TextView)view.findViewById(R.id.totalpayprice);
+
         }
 
         @Override
