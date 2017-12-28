@@ -41,11 +41,13 @@ import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.MenuListAdapter;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.POSproject.MainActivity;
+import com.bumslap.bum.POSproject.SignInActivity;
 import com.bumslap.bum.R;
 import com.bumslap.bum.menuedit.MenuSettingActivity;
 import com.bumslap.bum.settings.UserSettingActivity;
 import com.bumslap.bum.statistics.BarChartActivity;
 import com.bumslap.bum.statistics.SalesStatus2Activity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
@@ -124,8 +126,7 @@ public class OrderActivity extends AppCompatActivity
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //floatingAddBtn = findViewById(R.id.floatingAddBtn);
-        context = this;
+
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
 
@@ -165,21 +166,6 @@ public class OrderActivity extends AppCompatActivity
 
         //currentgainView = (TextView)findViewById(R.id.currentgainview);
 
-        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //if (putOrder.getOrder_Table_number() == )
-
-                billnumberposition = orderwraplist.size() - 1;
-                if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
-                    ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
-                    OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
-                }
-                OrderTableNumber++;
-
-                billnumberposition++;
-            }
-        });
 
 
         billRecyclerView = (RecyclerView) findViewById(R.id.order_recycler);
@@ -206,13 +192,15 @@ public class OrderActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
         orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
         billRecyclerView.setLayoutManager(layoutManager);
+        orderWrapAdapter.notifyDataSetChanged();
         billRecyclerView.setAdapter(orderWrapAdapter);
-
+        orderWrapAdapter.notifyDataSetChanged();
 
         billRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
                 if (e.getAction() == MotionEvent.ACTION_DOWN) {
+
 
                     View reV = rv.findChildViewUnder(e.getX(), e.getY());
                     billnumberposition = rv.getChildAdapterPosition(reV);
@@ -369,10 +357,12 @@ public class OrderActivity extends AppCompatActivity
 
 
                 layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+             //   orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                 billRecyclerView.setLayoutManager(layoutManager);
                 billRecyclerView.setAdapter(orderWrapAdapter);
+
                 billRecyclerView.scrollToPosition(billnumberposition);
+
 
 
             }
@@ -453,12 +443,11 @@ public class OrderActivity extends AppCompatActivity
                     }
 
                     layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                    orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                    //orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                     billRecyclerView.setLayoutManager(layoutManager);
+                    orderWrapAdapter.notifyDataSetChanged();
                     billRecyclerView.setAdapter(orderWrapAdapter);
                     billRecyclerView.scrollToPosition(billnumberposition);
-
-
                     break;
                 case "delete":
                     String po = intent.getStringExtra("detailposition");
@@ -555,11 +544,26 @@ public class OrderActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
+        if(id == R.id.add){
+
+                billnumberposition = orderwraplist.size() - 1;
+                if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
+                    ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                    OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
+                }
+                OrderTableNumber++;
+
+                billnumberposition++;
+
+            }
+
         if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -588,7 +592,13 @@ public class OrderActivity extends AppCompatActivity
             intent = new Intent(getApplicationContext(), SalesStatus2Activity.class);
             startActivity(intent);
         }
+        else if(id == R.id.nav_share){
 
+            FirebaseAuth.getInstance().signOut();
+            intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
