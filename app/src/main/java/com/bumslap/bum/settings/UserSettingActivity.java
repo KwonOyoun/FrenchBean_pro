@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserSettingActivity extends AppCompatActivity {
-    Typeface mTypeface;
     FirebaseAuth mAuth;
     TextView user_name;
     FirebaseAuth.AuthStateListener listener;

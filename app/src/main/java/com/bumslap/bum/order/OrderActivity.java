@@ -39,11 +39,13 @@ import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.MenuListAdapter;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.POSproject.MainActivity;
+import com.bumslap.bum.POSproject.SignInActivity;
 import com.bumslap.bum.R;
 import com.bumslap.bum.menuedit.MenuSettingActivity;
 import com.bumslap.bum.settings.UserSettingActivity;
 import com.bumslap.bum.statistics.BarChartActivity;
 import com.bumslap.bum.statistics.SalesStatus2Activity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -176,7 +178,7 @@ public class OrderActivity extends AppCompatActivity
         toWrapmap = new HashMap<String, ArrayList<Order>>();
 
         orderWrapDataSet = new OrderWrapDataSet();
-        OrderWrapDataSet orderWrapDataSet1 = new OrderWrapDataSet();
+        final OrderWrapDataSet orderWrapDataSet1 = new OrderWrapDataSet();
         orderWrapDataSet1.setBillTitleNumber("asdas");
         orderwraplist = new ArrayList<OrderWrapDataSet>();
 
@@ -184,8 +186,9 @@ public class OrderActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
         orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
         billRecyclerView.setLayoutManager(layoutManager);
+        orderWrapAdapter.notifyDataSetChanged();
         billRecyclerView.setAdapter(orderWrapAdapter);
-
+        orderWrapAdapter.notifyDataSetChanged();
 
         billRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -343,10 +346,12 @@ public class OrderActivity extends AppCompatActivity
 
 
                 layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+             //   orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                 billRecyclerView.setLayoutManager(layoutManager);
                 billRecyclerView.setAdapter(orderWrapAdapter);
+
                 billRecyclerView.scrollToPosition(billnumberposition);
+
 
 
             }
@@ -433,10 +438,12 @@ public class OrderActivity extends AppCompatActivity
                     }
 
                     layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
-                    orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                    //orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
                     billRecyclerView.setLayoutManager(layoutManager);
+                    orderWrapAdapter.notifyDataSetChanged();
                     billRecyclerView.setAdapter(orderWrapAdapter);
                     billRecyclerView.scrollToPosition(billnumberposition);
+
 
 
                     break;
@@ -523,7 +530,13 @@ public class OrderActivity extends AppCompatActivity
             intent = new Intent(getApplicationContext(), SalesStatus2Activity.class);
             startActivity(intent);
         }
+        else if(id == R.id.nav_share){
 
+            FirebaseAuth.getInstance().signOut();
+            intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

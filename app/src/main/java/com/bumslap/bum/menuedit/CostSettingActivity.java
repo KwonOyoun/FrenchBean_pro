@@ -47,11 +47,13 @@ import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.POSproject.MainActivity;
+import com.bumslap.bum.POSproject.SignInActivity;
 import com.bumslap.bum.R;
 import com.bumslap.bum.order.OrderActivity;
 import com.bumslap.bum.settings.UserSettingActivity;
 import com.bumslap.bum.statistics.BarChartActivity;
 import com.bumslap.bum.statistics.SalesStatus2Activity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -288,6 +290,13 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         } else if(id == R.id.nav_finish){
             intent = new Intent(getApplicationContext(), SalesStatus2Activity.class);
             startActivity(intent);
+        }
+        else if(id == R.id.nav_share){
+
+            FirebaseAuth.getInstance().signOut();
+            intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

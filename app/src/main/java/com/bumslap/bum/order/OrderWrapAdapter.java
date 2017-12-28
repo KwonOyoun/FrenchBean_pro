@@ -186,12 +186,13 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
 
             // Below line is just like a safety check, because sometimes holder could be null,
             // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
-            if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+           // if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 
             // Updating old as well as new positions
             notifyItemChanged(selectedPos);
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
+            notifyDataSetChanged();
             // Do your another stuff for your onClick
 
         }
