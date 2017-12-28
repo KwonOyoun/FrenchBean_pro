@@ -9,78 +9,54 @@
     tools:showIn="@layout/app_bar_order">
 
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_cost"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorBean"
+        android:elevation="4dp"
+        android:theme="@style/Theme.Design.Light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-
-        <GridView
-            android:id="@+id/gridview"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:columnWidth="100dp"
-            android:gravity="center"
-            android:numColumns="2" />
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:columnWidth="100dp"
+        android:gravity="center"
+        android:horizontalSpacing="1dp"
+        android:listSelector="@drawable/grid_view_selector"
+        android:numColumns="2"
+        android:verticalSpacing="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_cost" />
 
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/orderbcon"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/gridview"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_cost">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/order_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="330dp"
-            android:background="@drawable/mainback2">
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </android.support.v7.widget.RecyclerView>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_recycler">
 
-            <TextView
-                android:id="@+id/currentgainview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="23dp"
-                android:fontFamily="serif"
-                android:text="현 재  매  출 : "
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/currentgainview"
-                android:layout_alignBottom="@+id/currentgainview"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="23dp"
-                android:fontFamily="serif"
-                android:text="목  표  매  출 :"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toTopOf="parent" />
-        </RelativeLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingAddBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/order_recycler"
-            app:layout_constraintEnd_toEndOf="@+id/order_recycler"
-            app:srcCompat="@drawable/add" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
-
