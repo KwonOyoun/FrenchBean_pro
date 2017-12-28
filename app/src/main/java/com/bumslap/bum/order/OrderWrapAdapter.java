@@ -210,7 +210,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
             notifyItemChanged(selectedPos);
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
-            notifyDataSetChanged();
+
             // Do your another stuff for your onClick
 
         }

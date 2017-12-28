@@ -125,8 +125,9 @@ public class OrderActivity extends AppCompatActivity
         setContentView(R.layout.activity_order);
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_order);
 
+        context = this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
 
@@ -164,7 +165,7 @@ public class OrderActivity extends AppCompatActivity
 
         // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
 
-        //currentgainView = (TextView)findViewById(R.id.currentgainview);
+        currentgainView = (TextView)findViewById(R.id.currentgainview);
 
 
 
@@ -184,7 +185,7 @@ public class OrderActivity extends AppCompatActivity
         toWrapmap = new HashMap<String, ArrayList<Order>>();
 
         orderWrapDataSet = new OrderWrapDataSet();
-        OrderWrapDataSet orderWrapDataSet1 = new OrderWrapDataSet();
+        final OrderWrapDataSet orderWrapDataSet1 = new OrderWrapDataSet();
         orderWrapDataSet1.setBillTitleNumber("asdas");
         orderwraplist = new ArrayList<OrderWrapDataSet>();
 
@@ -367,6 +368,8 @@ public class OrderActivity extends AppCompatActivity
 
             }
         });
+        setSupportActionBar(toolbar);//0xFFB9C18F
+        getSupportActionBar().setTitle("주문");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -448,6 +451,9 @@ public class OrderActivity extends AppCompatActivity
                     orderWrapAdapter.notifyDataSetChanged();
                     billRecyclerView.setAdapter(orderWrapAdapter);
                     billRecyclerView.scrollToPosition(billnumberposition);
+
+
+
                     break;
                 case "delete":
                     String po = intent.getStringExtra("detailposition");
@@ -546,24 +552,20 @@ public class OrderActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
 
         if(id == R.id.add){
-
-                billnumberposition = orderwraplist.size() - 1;
-                if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
-                    ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
-                    OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
-                }
-                OrderTableNumber++;
-
-                billnumberposition++;
-
+            billnumberposition = orderwraplist.size() - 1;
+            if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
+                ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
             }
+            OrderTableNumber++;
 
+            billnumberposition++;
+        }
         if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

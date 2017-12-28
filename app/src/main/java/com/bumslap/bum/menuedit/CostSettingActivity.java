@@ -158,7 +158,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
         Toolbar toolbar = findViewById(R.id.toolbar_cost);
         setSupportActionBar(toolbar);//0xFFB9C18F
-        getSupportActionBar().setTitle("주문");
+        getSupportActionBar().setTitle("목록 세팅");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
