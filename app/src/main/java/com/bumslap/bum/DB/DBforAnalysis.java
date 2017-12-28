@@ -330,9 +330,8 @@ public class DBforAnalysis extends SQLiteOpenHelper{
             menu = new Menu();
             menu.setMenu_id(cursor.getString(0));
             menu.setMenu_name(cursor.getString(1));
-            menu.setMenu_image(cursor.getBlob(2));
-            menu.setMenu_price(cursor.getString(3));
-            menu.setMenu_cost(cursor.getString(4));
+            menu.setMenu_price(cursor.getString(2));
+            menu.setMenu_cost(cursor.getString(3));
             menuList.add(menu);
         }
         cursor.close();

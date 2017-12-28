@@ -220,27 +220,7 @@ public class SignInActivity extends AppCompatActivity {
 
 
 
-    protected void CreateUser(final String email, final String password){
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(),"Signup success",Toast.LENGTH_LONG).show();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-
-                        }
-
-                        // ...
-                    }
-                });
-    }//create Users
 
     private void signInWithEmail(String email,String password) {
         progressBar.setVisibility(View.VISIBLE);
@@ -299,7 +279,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    private class SessionCallback implements ISessionCallback {
+    class SessionCallback implements ISessionCallback {
 
 
         @Override
@@ -383,6 +363,8 @@ public class SignInActivity extends AppCompatActivity {
                 public void onSuccess(UserProfile userProfile) {
 
                     progressBar.setVisibility(View.GONE);
+
+
 
                    /* Log.d("myLog", "userProfile" + userProfile.getId());
 
