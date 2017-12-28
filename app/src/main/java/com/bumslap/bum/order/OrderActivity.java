@@ -3,6 +3,7 @@ package com.bumslap.bum.order;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
@@ -10,11 +11,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +28,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -47,6 +49,8 @@ import com.bumslap.bum.statistics.BarChartActivity;
 import com.bumslap.bum.statistics.SalesStatus2Activity;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +64,7 @@ public class OrderActivity extends AppCompatActivity
     int selectedItemLength;
 
 
-
+    FloatingActionButton floatingAddBtn;
     Intent intent;
     GridView gridView;
     ArrayList<com.bumslap.bum.DB.Menu> Menulist;
@@ -108,21 +112,21 @@ public class OrderActivity extends AppCompatActivity
     RecyclerView SelectRecyclerView;
     int SelectLength;
 
+    int currentTotalgain = 0;
+    TextView currentgainView;
+    int OrderTableNumber=1, saveOrderTableNum=1;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         // 화면을 landscape(가로) 화면으로 고정하고 싶은 경우
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_order);
-
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_cost);
-
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        floatingAddBtn = findViewById(R.id.floatingAddBtn);
         context = this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
@@ -160,6 +164,24 @@ public class OrderActivity extends AppCompatActivity
         Billordermenu = new ArrayList<>();
 
         // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
+
+        currentgainView = (TextView)findViewById(R.id.currentgainview);
+
+        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if (putOrder.getOrder_Table_number() == )
+
+                billnumberposition = orderwraplist.size() - 1;
+                if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
+                    ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                    OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
+                }
+                OrderTableNumber++;
+
+                billnumberposition++;
+            }
+        });
 
 
         billRecyclerView = (RecyclerView) findViewById(R.id.order_recycler);
@@ -201,6 +223,10 @@ public class OrderActivity extends AppCompatActivity
 
                     billRecyclerView.scrollToPosition(billnumberposition);
                     Toast.makeText(getApplicationContext(), String.valueOf(billnumberposition), Toast.LENGTH_LONG).show();
+                    if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
+                        ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                        OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
+                    }
                 }
                 return false;
             }
@@ -215,6 +241,7 @@ public class OrderActivity extends AppCompatActivity
 
             }
         });
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -295,7 +322,7 @@ public class OrderActivity extends AppCompatActivity
                 if (toWrapmap.get(bp) != null) {
                     Order_menu_List = toWrapmap.get(bp);
                 }
-                Order_menu_List.add(new Order(String.valueOf(Order_Amount), CurrentDate.toString(), CurrentTime.toString(), MenuID, String.valueOf(billnumberposition), "0"));
+                Order_menu_List.add(new Order(String.valueOf(Order_Amount), CurrentDate.toString(), CurrentTime.toString(), MenuID, String.valueOf(billnumberposition), Price,String.valueOf(OrderTableNumber)));
 
                 try {
                     int k = Order_menu_List.size();
@@ -357,9 +384,6 @@ public class OrderActivity extends AppCompatActivity
             }
         });
 
-        //getSupportActionBar().setTitle("목록");
-        setSupportActionBar(toolbar);//0xFFB9C18F
-        getSupportActionBar().setTitle("주문");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -368,7 +392,7 @@ public class OrderActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }//end of onCreate
+    }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -410,19 +434,20 @@ public class OrderActivity extends AppCompatActivity
 
                         //hashmapInhashmap.get(billnumberposition).remove(getordermenuid);
 
+                        currentTotalgain = currentTotalgain + Integer.parseInt(getordermenuamount) * Integer.parseInt(getordermenuprice);
 
 
                     }
+                    currentgainView.setText("현재 매출 : " + String.valueOf(currentTotalgain));
                     orderwraplist.remove(billnumberposition);
                     toWrapmap.remove(String.valueOf(billnumberposition));
                     hashmapInhashmap.remove(String.valueOf(billnumberposition));
+
                     //for문을 돌려서 뒤의 값들을 앞으로 가져온다.
                     for(int moveposition = billnumberposition; moveposition < toWrapmap.size() ; moveposition++){
                         toWrapmap.put(String.valueOf(moveposition), toWrapmap.get(String.valueOf(moveposition+1)));
                         try{
                             orderwraplist.get(moveposition).setBillTitleNumber(String.valueOf(moveposition));
-                            //orderwraplist.get(moveposition+1).setBillAllData();
-                            //toWrapmap.put(String.valueOf(moveposition), toWrapmap.get(moveposition+1));
                             toWrapmap.remove(moveposition);
                             hashmapInhashmap.put(String.valueOf(moveposition), hashmapInhashmap.get(String.valueOf(moveposition+1)));
                             hashmapInhashmap.remove(String.valueOf(moveposition+1));
@@ -431,10 +456,6 @@ public class OrderActivity extends AppCompatActivity
                             hashmapInhashmap.remove(String.valueOf(moveposition));
                         }
 
-                        if (moveposition == toWrapmap.size()-1){
-                            //toWrapmap.remove(moveposition);
-                            //orderwraplist.remove(moveposition-1);
-                        }
                     }
 
                     layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
@@ -453,12 +474,29 @@ public class OrderActivity extends AppCompatActivity
                     //for 문을 돌려서 일치하는 메뉴ID 찾은 후 해당하는 번째 리스트 삭제.
                     for (int i = 0 ; i < orderArrayList.size(); i++){
                         if(orderArrayList.get(i).getOrder_FK_menuId() == po){
+                            String order_save_number = orderArrayList.get(i).getOrder_Table_number();
                             orderArrayList.remove(i);
+                            //if(orderArrayList.size()==0){
+                             //   orderArrayList.add(new Order(null, null, null, null, null, null,order_save_number));
+                            //}
                         }
                     }
 
                     hashmapInhashmap.get(String.valueOf(billnumberposition)).remove(po);
-            }
+
+
+                    po = intent.getStringExtra("detailposition");
+
+                        //ArrayList<Order> findGoastnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                        //saveOrderTableNum = Integer.parseInt(findGoastnumber.get(0).getOrder_Table_number());
+                    break;
+                case "decreaseAmount":
+                    layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                    orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                    billRecyclerView.setLayoutManager(layoutManager);
+                    billRecyclerView.setAdapter(orderWrapAdapter);
+                    billRecyclerView.scrollToPosition(billnumberposition);
+                    }
             }
     };
 
@@ -494,10 +532,7 @@ public class OrderActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.add) {
-            billnumberposition = orderwraplist.size() - 1;
-            billnumberposition++;
-
+        if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);

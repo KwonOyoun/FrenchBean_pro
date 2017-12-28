@@ -56,6 +56,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
 
     @Override
     public void onBindViewHolder(final OrderWrapAdapterViewHolder holder, int position) {
+        menutotalprice=0;
 
         holder.selectedCheck.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
 
@@ -63,22 +64,22 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
 
         final String billtitlenumber = orderarrayList.get(position).getBillTitleNumber();
         ArrayList billAllData = orderarrayList.get(position).getBillAllData();
-
+        ArrayList<Order> aa = billAllData;
+        for(int i = 0 ; i < billAllData.size(); i++){
+            menuAmount = aa.get(i).getOrder_amount();
+            menuprice = aa.get(i).getOrder_Price_perMenu();
+            menutablenumber = aa.get(i).getOrder_Table_number();
+            menutotalprice = menutotalprice+Integer.parseInt(menuAmount) * Integer.parseInt(menuprice);
+        }
+        holder.totalpayprice.setText(String.valueOf(menutotalprice));
         holder.orderbilltitlenumber.setText(billtitlenumber);
+        holder.ordertablenumber.setText(menutablenumber);
 
         OrderMenuSelectAdapter orderMenuSelectAdapter = new OrderMenuSelectAdapter(billAllData, orderwrapcontext);
-        //try{
-        //int a= Integer.parseInt(orderarrayList.get(position).getBillTitleNumber());
 
-
-        //if (Integer.parseInt(orderarrayList.get(position).getBillTitleNumber()) == position){
         holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
         holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
-        // }
-        // }
-        //  catch (Exception ex){}
-        //holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
-        //holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
+
         holder.orderPayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,11 +105,11 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
                                         String payfor = "pay";
                                         Intent intent = new Intent("custom-message");
                                         //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                                        intent.putExtra("quantity", payfor);
+                                        intent.putExtra("quantity",payfor);
 
                                         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
-                                    }
+                                        }
 
                                 });
                 AlertDialog alertDialog = PayCancelAlert.create();

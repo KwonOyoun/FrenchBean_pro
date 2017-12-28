@@ -440,7 +440,7 @@ public class DBforAnalysis extends SQLiteOpenHelper{
 
 
 
-    public ArrayList<Menu> getMenuCost() {
+    public ArrayList<Menu> getMenuIdCost() {
 
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT MENU_ID, MENU_COST FROM MENU_TABLE ;");
