@@ -10,7 +10,7 @@
 
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_cost"
+        android:id="@+id/toolbar_order"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="@color/colorBean"
@@ -20,6 +20,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+
 
     <GridView
         android:id="@+id/gridview"
@@ -32,7 +34,7 @@
         android:numColumns="2"
         android:verticalSpacing="1dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_cost" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_order" />
 
 
     <android.support.constraint.ConstraintLayout
@@ -43,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/gridview"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_cost">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_order">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/order_recycler"
@@ -59,4 +61,14 @@
 
 
     </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/toolbar_order"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

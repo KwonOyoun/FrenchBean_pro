@@ -125,7 +125,7 @@ public class OrderActivity extends AppCompatActivity
         setContentView(R.layout.activity_order);
         // setContentView()가 호출되기 전에 setRequestedOrientation()이 호출되어야 함
         //setTitle("오늘도 달려 보세");
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_order);
 
         context = this;
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
@@ -165,23 +165,8 @@ public class OrderActivity extends AppCompatActivity
 
         // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
 
-        currentgainView = (TextView)findViewById(R.id.currentgainview);
+        //currentgainView = (TextView)findViewById(R.id.currentgainview);
 
-        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //if (putOrder.getOrder_Table_number() == )
-
-                billnumberposition = orderwraplist.size() - 1;
-                if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
-                    ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
-                    OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
-                }
-                OrderTableNumber++;
-
-                billnumberposition++;
-            }
-        });
 
 
         billRecyclerView = (RecyclerView) findViewById(R.id.order_recycler);
@@ -383,6 +368,8 @@ public class OrderActivity extends AppCompatActivity
 
             }
         });
+        setSupportActionBar(toolbar);//0xFFB9C18F
+        getSupportActionBar().setTitle("주문");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -532,6 +519,17 @@ public class OrderActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
+        if(id == R.id.add){
+            billnumberposition = orderwraplist.size() - 1;
+            if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
+                ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
+            }
+            OrderTableNumber++;
+
+            billnumberposition++;
+        }
         if (id == R.id.action_settings) {
             return true;
         }
