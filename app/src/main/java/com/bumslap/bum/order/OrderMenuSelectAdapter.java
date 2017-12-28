@@ -94,6 +94,11 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
                 }else{
                     holder.MenuAmount.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
                     menuitem.setOrder_amount(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))));
+                    Intent intent = new Intent("custom-message");
+                    //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                    intent.putExtra("quantity","decreaseAmount");
+                    LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
+                    notifyDataSetChanged();
                 }
 
             }

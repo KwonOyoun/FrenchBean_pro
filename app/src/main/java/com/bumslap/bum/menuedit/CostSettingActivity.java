@@ -50,11 +50,13 @@ import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.Menu;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.POSproject.MainActivity;
+import com.bumslap.bum.POSproject.SignInActivity;
 import com.bumslap.bum.R;
 import com.bumslap.bum.order.OrderActivity;
 import com.bumslap.bum.settings.UserSettingActivity;
 import com.bumslap.bum.statistics.BarChartActivity;
 import com.bumslap.bum.statistics.SalesStatus2Activity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -84,6 +86,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     String menu_name, menu_id;
     Integer position;
     String menuprice;
+    int CostTotal = 0;
 
     Intent intent;
 
@@ -157,7 +160,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
 
         Toolbar toolbar = findViewById(R.id.toolbar_cost);
         setSupportActionBar(toolbar);//0xFFB9C18F
-        getSupportActionBar().setTitle("주문");
+        getSupportActionBar().setTitle("목록 세팅");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -289,6 +292,13 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         } else if(id == R.id.nav_finish){
             intent = new Intent(getApplicationContext(), SalesStatus2Activity.class);
             startActivity(intent);
+        }
+        else if(id == R.id.nav_share){
+
+            FirebaseAuth.getInstance().signOut();
+            intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -509,6 +519,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         costAdapter.changeItem(costAllData);
     }
 
+
     public static boolean isNumber(String str){
         boolean result = false;
         try{
@@ -575,13 +586,14 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         Menu_id();
 
         costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
-        int CostTotal = 0;
         for(int k=0; k<costAllData.size(); k++){
             if(isNumber(costAllData.get(k).getCost_price()))
                 CostTotal = CostTotal + Integer.parseInt(costAllData.get(k).getCost_price());
         }
 
         sumCost.setText(String.valueOf(CostTotal)+" 원");
+
+
         int mar;
         try {
             mar = Integer.parseInt(menuprice) - CostTotal;

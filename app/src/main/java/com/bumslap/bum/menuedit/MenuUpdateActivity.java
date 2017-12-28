@@ -61,6 +61,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
 
     Menu menu;
     String stringId;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
         UpdateMenuImageBTN.setOnClickListener(changeimage);
         UpdateBTN.setOnClickListener(UpdateMenu);
 
-        //UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
+        UpdateMenuPrice.addTextChangedListener(new CustomTextWatcher(UpdateMenuPrice));
         //UpdateMenuCost.addTextChangedListener(new CustomTextWatcher(UpdateMenuCost));
 
         try{
@@ -114,30 +115,36 @@ public class MenuUpdateActivity extends AppCompatActivity {
 
         UpdateMenuPrice.addTextChangedListener(new TextWatcher() {
 
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String price = UpdateMenuPrice.getText().toString();
                 String cost = UpdateMenuCost.getText().toString();
-             Integer mar = 0;
+                Integer mar = 0;
                 if(cost.equals("")) {
                     mar = Integer.parseInt(price) - 0;
                 }
                 else if(price.equals("")){
-                    mar = 0 - Integer.parseInt(cost);
+                    mar = 0- Integer.parseInt(cost);
                 }
                 else {
                     mar = Integer.parseInt(price) - Integer.parseInt(cost);
                 }
                 margin.setText(String.valueOf(mar));
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
+
             }
         });
+
+
 
     }
 
@@ -307,6 +314,9 @@ public class MenuUpdateActivity extends AppCompatActivity {
         }
     }
 
+
+
+
     private byte[] imgaeViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -315,7 +325,16 @@ public class MenuUpdateActivity extends AppCompatActivity {
         return byteArray;
 
     }
-
+    protected InputFilter filterNum = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            Pattern ps = Pattern.compile("^[0-9]+$");
+            if(ps.matcher(charSequence).matches()){
+                return "";
+            }
+            return null;
+        }
+    };
 
 }
 

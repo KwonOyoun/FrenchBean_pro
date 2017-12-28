@@ -19,7 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class UserSettingActivity extends AppCompatActivity {
-    Typeface mTypeface;
     FirebaseAuth mAuth;
     TextView user_name;
     FirebaseAuth.AuthStateListener listener;

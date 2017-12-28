@@ -104,7 +104,7 @@
         android:ems="10"
         android:fontFamily="@assets/fonts/Swagger"
         android:hint="가격"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:paddingLeft="50dp"
         android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
