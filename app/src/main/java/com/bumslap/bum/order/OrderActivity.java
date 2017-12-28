@@ -553,6 +553,7 @@ public class OrderActivity extends AppCompatActivity
 
         if(id == R.id.add){
             billnumberposition = orderwraplist.size() - 1;
+            try{
             if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
                 ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
                 OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
@@ -560,7 +561,7 @@ public class OrderActivity extends AppCompatActivity
             OrderTableNumber++;
 
             billnumberposition++;
-        }
+        }catch (Exception ee){}}
         if (id == R.id.action_settings) {
             return true;
         }
