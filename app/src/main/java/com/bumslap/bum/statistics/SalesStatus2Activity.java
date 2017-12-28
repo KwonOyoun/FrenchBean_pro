@@ -52,7 +52,7 @@ public class SalesStatus2Activity extends AppCompatActivity {
         CurrentDates = CurrentDate.format(CurrentDateCall);
 
         // DBforAnalysis 주문 테이블 가져오기
-        Order_date_List = newdbforAnalysis.getOrdersMatchDateData(date);
+        Order_date_List = newdbforAnalysis.getOrdersMatchDateData(CurrentDates);
         menu_id_cost = newdbforAnalysis.getMenuIdCost();
 
         //메뉴id와 오더id 비교 후 총비용 계산.

@@ -6,7 +6,7 @@
     <color name="textColor">#013143</color>
     <color name="colorBack">#525252</color>
     <color name="colorBackground">#e4e4e4</color>
-    <color name="colorBackJ">#f7f7fd</color>
+    <color name="colorBackJ">#72f7f7fd</color>
     <color name="colorBean">#b9c18f</color>
     <color name="canclebtn">#b12318</color>
 </resources>
