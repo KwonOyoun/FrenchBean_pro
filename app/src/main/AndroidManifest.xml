@@ -38,15 +38,15 @@
         <activity android:name=".POSproject.EmailVerifyActivity" />
         <activity android:name=".statistics.PieChartActivity" />
         <activity android:name=".statistics.SalesStatus2Activity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
     </activity>
 
     <activity android:name=".POSproject.MainActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
         </activity>
 
         <meta-data

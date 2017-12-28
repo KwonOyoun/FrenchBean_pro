@@ -1,12 +1,16 @@
 package com.bumslap.bum.statistics;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.DB.Menu;
+import com.bumslap.bum.POSproject.MainActivity;
 import com.bumslap.bum.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ public class SalesStatus2Activity extends AppCompatActivity {
     DBforAnalysis newdbforAnalysis;
     String date = "2017-12-26";
     TextView sumDate,sumCost,profit;
+    ImageButton mainback;
     int CostTotal = 0;
     Integer SalesTotal = 0;
     int marginTotal=0;
@@ -44,6 +49,7 @@ public class SalesStatus2Activity extends AppCompatActivity {
         sumDate = (TextView)findViewById(R.id.sumdate);
         sumCost = (TextView)findViewById(R.id.sumcost);
         profit = (TextView)findViewById(R.id.profit);
+        mainback= (ImageButton)findViewById(R.id.mainback);
 
         //현재 날짜 가져오기
         CurrentTimeCall = System.currentTimeMillis();
@@ -92,6 +98,15 @@ public class SalesStatus2Activity extends AppCompatActivity {
         marginTotal = SalesTotal- CostTotal;
         profit.setText(String.valueOf(marginTotal)+"원");
 
+        //메인으로 가지
+        mainback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -105,3 +120,4 @@ public class SalesStatus2Activity extends AppCompatActivity {
         return result ;
     }
 }
+
