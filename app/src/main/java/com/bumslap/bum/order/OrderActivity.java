@@ -110,6 +110,10 @@ public class OrderActivity extends AppCompatActivity
     RecyclerView SelectRecyclerView;
     int SelectLength;
 
+    int currentTotalgain = 0;
+    TextView currentgainView;
+    int OrderTableNumber=1, saveOrderTableNum=1;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,11 +163,20 @@ public class OrderActivity extends AppCompatActivity
 
         // addpositionBTN = (Button)findViewById(R.id.addpositionBTN);
 
+        currentgainView = (TextView)findViewById(R.id.currentgainview);
+
         floatingAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //if (putOrder.getOrder_Table_number() == )
 
                 billnumberposition = orderwraplist.size() - 1;
+                if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
+                    ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                    OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
+                }
+                OrderTableNumber++;
+
                 billnumberposition++;
             }
         });
@@ -206,6 +219,10 @@ public class OrderActivity extends AppCompatActivity
 
                     billRecyclerView.scrollToPosition(billnumberposition);
                     Toast.makeText(getApplicationContext(), String.valueOf(billnumberposition), Toast.LENGTH_LONG).show();
+                    if(orderwraplist.get(billnumberposition).getBillAllData().size() != 0) {
+                        ArrayList<Order> findnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                        OrderTableNumber = Integer.parseInt(findnumber.get(0).getOrder_Table_number());
+                    }
                 }
                 return false;
             }
@@ -301,7 +318,7 @@ public class OrderActivity extends AppCompatActivity
                 if (toWrapmap.get(bp) != null) {
                     Order_menu_List = toWrapmap.get(bp);
                 }
-                Order_menu_List.add(new Order(String.valueOf(Order_Amount), CurrentDate.toString(), CurrentTime.toString(), MenuID, String.valueOf(billnumberposition), "0"));
+                Order_menu_List.add(new Order(String.valueOf(Order_Amount), CurrentDate.toString(), CurrentTime.toString(), MenuID, String.valueOf(billnumberposition), Price,String.valueOf(OrderTableNumber)));
 
                 try {
                     int k = Order_menu_List.size();
@@ -411,19 +428,20 @@ public class OrderActivity extends AppCompatActivity
 
                         //hashmapInhashmap.get(billnumberposition).remove(getordermenuid);
 
+                        currentTotalgain = currentTotalgain + Integer.parseInt(getordermenuamount) * Integer.parseInt(getordermenuprice);
 
 
                     }
+                    currentgainView.setText("현재 매출 : " + String.valueOf(currentTotalgain));
                     orderwraplist.remove(billnumberposition);
                     toWrapmap.remove(String.valueOf(billnumberposition));
                     hashmapInhashmap.remove(String.valueOf(billnumberposition));
+
                     //for문을 돌려서 뒤의 값들을 앞으로 가져온다.
                     for(int moveposition = billnumberposition; moveposition < toWrapmap.size() ; moveposition++){
                         toWrapmap.put(String.valueOf(moveposition), toWrapmap.get(String.valueOf(moveposition+1)));
                         try{
                             orderwraplist.get(moveposition).setBillTitleNumber(String.valueOf(moveposition));
-                            //orderwraplist.get(moveposition+1).setBillAllData();
-                            //toWrapmap.put(String.valueOf(moveposition), toWrapmap.get(moveposition+1));
                             toWrapmap.remove(moveposition);
                             hashmapInhashmap.put(String.valueOf(moveposition), hashmapInhashmap.get(String.valueOf(moveposition+1)));
                             hashmapInhashmap.remove(String.valueOf(moveposition+1));
@@ -432,10 +450,6 @@ public class OrderActivity extends AppCompatActivity
                             hashmapInhashmap.remove(String.valueOf(moveposition));
                         }
 
-                        if (moveposition == toWrapmap.size()-1){
-                            //toWrapmap.remove(moveposition);
-                            //orderwraplist.remove(moveposition-1);
-                        }
                     }
 
                     layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
@@ -452,12 +466,29 @@ public class OrderActivity extends AppCompatActivity
                     //for 문을 돌려서 일치하는 메뉴ID 찾은 후 해당하는 번째 리스트 삭제.
                     for (int i = 0 ; i < orderArrayList.size(); i++){
                         if(orderArrayList.get(i).getOrder_FK_menuId() == po){
+                            String order_save_number = orderArrayList.get(i).getOrder_Table_number();
                             orderArrayList.remove(i);
+                            //if(orderArrayList.size()==0){
+                             //   orderArrayList.add(new Order(null, null, null, null, null, null,order_save_number));
+                            //}
                         }
                     }
 
                     hashmapInhashmap.get(String.valueOf(billnumberposition)).remove(po);
-            }
+
+
+                    po = intent.getStringExtra("detailposition");
+
+                        //ArrayList<Order> findGoastnumber = orderwraplist.get(billnumberposition).getBillAllData();
+                        //saveOrderTableNum = Integer.parseInt(findGoastnumber.get(0).getOrder_Table_number());
+                    break;
+                case "decreaseAmount":
+                    layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false); //, LinearLayoutManager.HORIZONTAL, false
+                    orderWrapAdapter = new OrderWrapAdapter(orderwraplist, getApplicationContext());
+                    billRecyclerView.setLayoutManager(layoutManager);
+                    billRecyclerView.setAdapter(orderWrapAdapter);
+                    billRecyclerView.scrollToPosition(billnumberposition);
+                    }
             }
     };
 

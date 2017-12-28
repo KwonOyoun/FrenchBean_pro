@@ -9,9 +9,18 @@ import java.util.ArrayList;
 public class OrderWrapDataSet {
     private String BillTitleNumber;
     private ArrayList BillAllData;
+    private String Auto_increasment;
 
     public OrderWrapDataSet(){
 
+    }
+
+    public String getAuto_increasment(){
+        return Auto_increasment;
+    }
+
+    public void setAuto_increasment(String auto_increasment){
+        this.Auto_increasment = auto_increasment;
     }
 
     public ArrayList getBillAllData(){

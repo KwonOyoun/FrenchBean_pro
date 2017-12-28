@@ -13,12 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Order;
-import com.bumslap.bum.POSproject.MainActivity;
 import com.bumslap.bum.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -81,7 +79,7 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
         //xAxis.setLabelRotationAngle();
         this.gestureDetector = new GestureDetector(this,this);
 
-        totalsales = (TextView)findViewById(R.id.textView16);
+        totalsales = (TextView)findViewById(R.id.totalpayprice);
         totalsales.setText(String.valueOf(Totalsales) + " 원");
     }
 

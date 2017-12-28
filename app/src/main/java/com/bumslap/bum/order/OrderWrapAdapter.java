@@ -18,6 +18,8 @@ import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.R;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +36,9 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
     private int Billnumberposition;
     private Context context = OrderActivity.context;
     AlertDialog.Builder PayCancelAlert;
-
+    String menuAmount, menuprice;
+    int menutotalprice=0;
+    String menutablenumber;
 
     public OrderWrapAdapter(ArrayList<OrderWrapDataSet> orderarrayList, Context context){
         this.orderarrayList = orderarrayList;
@@ -52,24 +56,25 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapterViewH
 
     @Override
     public void onBindViewHolder(final OrderWrapAdapterViewHolder holder, int position) {
-
+        menutotalprice=0;
         final String billtitlenumber = orderarrayList.get(position).getBillTitleNumber();
         ArrayList billAllData = orderarrayList.get(position).getBillAllData();
-
+        ArrayList<Order> aa = billAllData;
+        for(int i = 0 ; i < billAllData.size(); i++){
+            menuAmount = aa.get(i).getOrder_amount();
+            menuprice = aa.get(i).getOrder_Price_perMenu();
+            menutablenumber = aa.get(i).getOrder_Table_number();
+            menutotalprice = menutotalprice+Integer.parseInt(menuAmount) * Integer.parseInt(menuprice);
+        }
+        holder.totalpayprice.setText(String.valueOf(menutotalprice));
         holder.orderbilltitlenumber.setText(billtitlenumber);
+        holder.ordertablenumber.setText(menutablenumber);
 
         OrderMenuSelectAdapter orderMenuSelectAdapter = new OrderMenuSelectAdapter(billAllData, orderwrapcontext);
-        //try{
-            //int a= Integer.parseInt(orderarrayList.get(position).getBillTitleNumber());
 
-            //if (Integer.parseInt(orderarrayList.get(position).getBillTitleNumber()) == position){
-                holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
-                holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
-           // }
-           // }
-          //  catch (Exception ex){}
-        //holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
-        //holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
+        holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
+        holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
+
         holder.orderPayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,6 +163,9 @@ class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder{
     //public CardView orderbillcardview;
     public Button orderCancelBtn;
     public Button orderPayBtn;
+    public TextView totalpayprice;
+    public TextView ordertablenumber;
+
     public ConstraintLayout billcon;
     int billnumberposition=0;
     Order order;
@@ -169,13 +177,17 @@ class OrderWrapAdapterViewHolder extends RecyclerView.ViewHolder{
     String CurrentTimes, CurrentDates;
     DBforAnalysis newdbforAnalysis;
 
+
     public OrderWrapAdapterViewHolder(View view){
 
         super(view);
         //orderbillcardview = (CardView)view.findViewById(R.id.order_bill_cardview);
+        ordertablenumber = (TextView)view.findViewById(R.id.Tablenumber);
         orderbilltitlenumber = (TextView)view.findViewById(R.id.BillNumber);
         orderCancelBtn = (Button) view.findViewById(R.id.cancelBTN);
         orderPayBtn = (Button) view.findViewById(R.id.payBTN);
+        totalpayprice = (TextView)view.findViewById(R.id.totalpayprice);
+
 
         orderbilllistrecyclerView = (RecyclerView)view.findViewById(R.id.Bill_order_list);
 

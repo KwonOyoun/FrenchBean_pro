@@ -101,7 +101,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+/*
         Integer mar =0;
         String s = UpdateMenuCost.getText().toString();
         if(UpdateMenuCost.getText().toString().equals("")){
@@ -143,7 +143,7 @@ public class MenuUpdateActivity extends AppCompatActivity {
             }
         });
 
-
+*/
 
     }
 
