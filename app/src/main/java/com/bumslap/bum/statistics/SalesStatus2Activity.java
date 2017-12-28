@@ -11,20 +11,25 @@ import com.bumslap.bum.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Locale;
 
 
 public class SalesStatus2Activity extends AppCompatActivity {
     DBProvider db;
     ArrayList<Order> Order_date_List;
     ArrayList<Menu> menu_id_cost;
-    Date CurrentDateCall;
-    SimpleDateFormat CurrentDate;
-    String CurrentTimes, CurrentDates;
     DBforAnalysis newdbforAnalysis;
     String date = "2017-12-26";
-    TextView sumDate;
-    TextView sumCost;
+    TextView sumDate,sumCost,profit;
+    int CostTotal = 0;
+    Integer SalesTotal = 0;
+    int marginTotal=0;
+
+    long CurrentTimeCall;
+    Date CurrentDateCall;
+    SimpleDateFormat CurrentDate;
+    String CurrentDates;
+    String price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,53 +43,63 @@ public class SalesStatus2Activity extends AppCompatActivity {
         //하루 총판매금액과 원가 표시창
         sumDate = (TextView)findViewById(R.id.sumdate);
         sumCost = (TextView)findViewById(R.id.sumcost);
+        profit = (TextView)findViewById(R.id.profit);
+
+        //현재 날짜 가져오기
+        CurrentTimeCall = System.currentTimeMillis();
+        CurrentDateCall = new Date(CurrentTimeCall);
+        CurrentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        CurrentDates = CurrentDate.format(CurrentDateCall);
 
         // DBforAnalysis 주문 테이블 가져오기
         Order_date_List = newdbforAnalysis.getOrdersMatchDateData(date);
         menu_id_cost = newdbforAnalysis.getMenuIdCost();
 
+        //메뉴id와 오더id 비교 후 총비용 계산.
+        for(int k=0; k < menu_id_cost.size(); k++){
 
-for(int k=0; k < menu_id_cost.size(); k++){
+            for (int i=0; i < Order_date_List.size(); i++) {
 
-    for (int i = 0; i < Order_date_List.size(); i++) {
+            String menuid = menu_id_cost.get(k).getMenu_id();
+            String orderid = Order_date_List.get(i).getOrder_FK_menuId();
+                if (menuid.equals(orderid)){
 
-        String menuid = menu_id_cost.get(k).getMenu_id();
-        String orderid = Order_date_List.get(i).getOrder_FK_menuId();
-        if (menuid == orderid){
-         int a = Integer.parseInt(Order_date_List.get(i).getOrder_amount());
-         int b =Integer.parseInt(menu_id_cost.get(k).getMenu_cost());
+                 int amount = Integer.parseInt(Order_date_List.get(i).getOrder_amount());
+                 int cost =Integer.parseInt(menu_id_cost.get(k).getMenu_cost());
 
-         int sum = a*b;
+                 int originprice = amount * cost;
+                 CostTotal = originprice ++;
 
-         sumCost.setText(String.valueOf(sum)+"원");
+                    }
+                }
+            }
 
-            int CostTotal = 0;
-        }
-    }
-}
+        sumCost.setText(String.valueOf(CostTotal)+"원");
 
+        //날짜로 불러온 주문 총매출액 가져오기
 
-        //Menu_id로 oredr 원가 가져오기
-
-
-        int SalesTotal = 0;
         for(int k=0; k<Order_date_List.size(); k++){
             if(isNumber(Order_date_List.get(k).getOrder_Price_perMenu()))
-                SalesTotal = SalesTotal + Integer.parseInt(Order_date_List.get(k).getOrder_Price_perMenu());
-        }
+               price = Order_date_List.get(k).getOrder_Price_perMenu();
+               String noneprice = price.replaceAll(",","");
+                SalesTotal = SalesTotal + Integer.parseInt(noneprice);
+            }
+
         sumDate.setText(String.valueOf(SalesTotal)+"원");
 
 
-
-
+        //순이익 구하기
+        marginTotal = SalesTotal- CostTotal;
+        profit.setText(String.valueOf(marginTotal)+"원");
 
     }
 
 
     public static boolean isNumber(String str){
+       String nonestr = str.replaceAll(",","");
         boolean result = false;
         try{
-            Double.parseDouble(str) ;
+            Double.parseDouble(nonestr) ;
             result = true ;
         }catch(Exception e){}
         return result ;

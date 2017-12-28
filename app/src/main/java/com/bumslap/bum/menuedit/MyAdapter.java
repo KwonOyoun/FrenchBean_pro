@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,10 +68,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         byte[] Menubyteimage = menu.getMenu_image();
         Bitmap bitmap = BitmapFactory.decodeByteArray(Menubyteimage, 0, Menubyteimage.length);
-
         holder.mImageView.setImageBitmap(bitmap);
 
-        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final CharSequence[] items = {"수정", "삭제"};
@@ -96,6 +96,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                     case 1:
                                         //menuSettingActivity = new MenuSettingActivity();
                                         db.deleteData(menulist.get(position).getMenu_id());
+                                        db.deleteCostData(menulist.get(position).getMenu_id());
                                         Toast.makeText(context, "Data deleted", Toast.LENGTH_LONG).show();
                                         menulist.remove(position);
                                         notifyItemRemoved(position);
@@ -136,7 +137,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView mTextUniqueId;
         public TextView mTextViewTitle;
         public TextView mTextViewPrice;
-
+        public CardView card_view;
         public com.bumslap.bum.DB.DBHelper mDBHelper;
         public RecyclerView.Adapter mAdapter;
 
@@ -146,6 +147,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mImageView = (ImageView) view.findViewById(R.id.item_image);
             mTextViewTitle = (TextView) view.findViewById(R.id.item_title);
             mTextViewPrice = (TextView) view.findViewById(R.id.item_price);
+            card_view = (CardView) view.findViewById(R.id.card_view);
 
 
 
