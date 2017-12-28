@@ -381,7 +381,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
                     dBforAnalysis.addCost(firIngradient);
 
                     costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
-                    costUpdateAdapter.changeItem(costAllData);
+                    costUpdateAdapter.changdAddItem(costAllData);
                 }
             });
 

@@ -24,7 +24,7 @@ public class UserSettingActivity extends AppCompatActivity {
     TextView user_name;
     FirebaseAuth.AuthStateListener listener;
     FirebaseDatabase firebaseDatabase;
-    TextView uid, gender, PNum, birth, SName;
+    TextView user_email, user_gender, user_PNum, user_birth, user_SName;
     ArrayList<info> infos;
     String email;
     ProgressBar progressBar;
@@ -42,13 +42,14 @@ public class UserSettingActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        user_name = findViewById(R.id.text_username);
-        uid = findViewById(R.id.textView12);
+        user_name = findViewById(R.id.textView12);
 
-        gender = (TextView)findViewById(R.id.textView17);
-        PNum = (TextView)findViewById(R.id.textView18);
-        birth = (TextView)findViewById(R.id.textView19);
-        SName = (TextView)findViewById(R.id.textView20);
+        user_email = (TextView)findViewById(R.id.textView17);
+        user_gender = (TextView)findViewById(R.id.textView18);
+        user_PNum = (TextView)findViewById(R.id.textView19);
+        user_birth = (TextView)findViewById(R.id.textView20);
+        user_SName = (TextView)findViewById(R.id.textView21);
+
         String name = user.getDisplayName();
         email = user.getEmail();
         final String user_id = user.getUid();
@@ -66,11 +67,11 @@ public class UserSettingActivity extends AppCompatActivity {
                     if(Info.user_Email.equals(email)) {
                         infos.add(Info);
                         user_name.setText(infos.get(0).user_Name);
-                        uid.setText(infos.get(0).user_Email);
-                        gender.setText(infos.get(0).user_Gender);
-                        PNum.setText(infos.get(0).user_PhoneNumber);
-                        birth.setText(infos.get(0).user_Birthday);
-                        SName.setText(infos.get(0).user_StoreName);
+                        user_email.setText(infos.get(0).user_Email);
+                        user_gender.setText(infos.get(0).user_Gender);
+                        user_PNum.setText(infos.get(0).user_PhoneNumber);
+                        user_birth.setText(infos.get(0).user_Birthday);
+                        user_SName.setText(infos.get(0).user_StoreName);
 
                     }
                 }

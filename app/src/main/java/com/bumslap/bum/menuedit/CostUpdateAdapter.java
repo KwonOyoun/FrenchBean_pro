@@ -57,4 +57,9 @@ public class CostUpdateAdapter extends RecyclerView.Adapter<ViewHolderCostUpdate
         this.arrayList = position;
         notifyDataSetChanged();
     }
+
+    public void changdAddItem(ArrayList<Cost> list){
+        this.arrayList =list;
+        notifyItemChanged(list.size()-1);
+    }
 }
