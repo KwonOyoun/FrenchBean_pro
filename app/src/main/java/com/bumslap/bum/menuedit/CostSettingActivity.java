@@ -146,7 +146,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         spinnerMenu.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               kk();
+                SetCostTotal();
             }
 
             @Override
@@ -155,7 +155,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             }
         });
 
-        kk();
+        //SetCostTotal();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar_cost);
@@ -448,7 +448,7 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         @Override
         public void onClick(View view) {
 
-            kk();
+
             Cost firIngradient;
             Cost cost = new Cost();
             Integer totalcost = 0;
@@ -489,35 +489,11 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
             costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
             costAdapter.changeItem(costAllData);
             pwindo.dismiss();
-            c();
+            SetCostTotal();
         }
     };
 
-    public void c(){
-        menuprice = changemoney();
-        Menu_id();
 
-        costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
-        int CostTotal = 0;
-        for(int k=0; k<costAllData.size(); k++){
-            if(isNumber(costAllData.get(k).getCost_price()))
-                CostTotal = CostTotal + Integer.parseInt(costAllData.get(k).getCost_price());
-        }
-
-        sumCost.setText(String.valueOf(CostTotal)+" 원");
-        int mar;
-        try {
-            mar = Integer.parseInt(menuprice) - CostTotal;
-        }
-        catch (NumberFormatException e){
-            menuprice = "0";
-            mar = Integer.parseInt(menuprice) - CostTotal;
-
-        }
-        margin.setText(String.valueOf(mar)+" 원");
-
-        costAdapter.changeItem(costAllData);
-    }
 
 
     public static boolean isNumber(String str){
@@ -581,10 +557,10 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
     }
 
 
-    public void kk(){
+    public void SetCostTotal(){
         menuprice = changemoney();
         Menu_id();
-
+        CostTotal = 0;
         costAllData = dBforAnalysis.getMenuMatchCostData(menu_id);
         for(int k=0; k<costAllData.size(); k++){
             if(isNumber(costAllData.get(k).getCost_price()))
@@ -592,7 +568,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         }
 
         sumCost.setText(String.valueOf(CostTotal)+" 원");
-
 
         int mar;
         try {
@@ -606,8 +581,6 @@ public class CostSettingActivity extends AppCompatActivity implements GestureDet
         margin.setText(String.valueOf(mar)+" 원");
 
         costAdapter.changeItem(costAllData);
-
-
     }
 
 

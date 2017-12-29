@@ -108,7 +108,6 @@ public class PieChartDataActivity extends AppCompatActivity implements GestureDe
         setDataForPieChart();
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1 ,list) ;
-
         ListView listview = (ListView) findViewById(R.id.graph_listview) ;
         listview.setAdapter(adapter);
 
