@@ -52,6 +52,7 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     int currentTotalgain;
     String payfor;
     Intent intent;
+    String detailfor;
     public OrderMenuSelectAdapter(ArrayList<Order> orderArrayList, Context context) {
         try {
             k = orderArrayList.size();
@@ -84,7 +85,19 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
 
         return new OrderMenuViewHoler(v);
     }
+    public void cancelItem(){
+        notifyDataSetChanged();
+        payfor = "cancel";
+        //String detailfor = "detail";
+        //String po = String.valueOf(menuitem.getOrder_FK_menuId());
 
+        Intent intent = new Intent("custom-message");
+        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+        intent.putExtra("quantity",payfor);
+        //intent.putExtra("detailvalue",detailfor);
+        //intent.putExtra("detailposition", po);
+        LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
+    }
 
     public void saveItem(){
         Menuitems.size();
@@ -118,8 +131,8 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
         //Menuitems.clear();
         Toast.makeText(OrderActivity.context, "결재 완료", Toast.LENGTH_SHORT).show();
         notifyDataSetChanged();
-        String payfor = "pay";
-        String detailfor = "detail";
+        payfor = "pay";
+        detailfor = "detail";
         //String po = String.valueOf(menuitem.getOrder_FK_menuId());
 
         Intent intent = new Intent("custom-message");
