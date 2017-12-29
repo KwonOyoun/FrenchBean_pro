@@ -145,13 +145,9 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        //삭제시 진행될 행동.
-                                        String cancelfor = "cancel";
-                                        Intent intent = new Intent("custom-message");
-                                        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                                        intent.putExtra("quantity",cancelfor);
-
-                                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                                        orderMenuSelectAdapter.cancelItem();
+                                        orderarrayList.remove(position);
+                                        notifyDataSetChanged();
 
                                     }
                                 });
@@ -202,16 +198,13 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
         @Override
         public void onClick(View view) {
 
-            // Below line is just like a safety check, because sometimes holder could be null,
-            // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
-           // if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 
-            // Updating old as well as new positions
+
             notifyItemChanged(selectedPos);
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
             notifyDataSetChanged();
-            // Do your another stuff for your onClick
+
 
         }
     }
