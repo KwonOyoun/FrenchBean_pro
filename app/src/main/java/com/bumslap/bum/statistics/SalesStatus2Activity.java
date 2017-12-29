@@ -35,7 +35,7 @@ public class SalesStatus2Activity extends AppCompatActivity {
     SimpleDateFormat CurrentDate;
     String CurrentDates;
     String price;
-
+    int amount, cost, originprice, intprice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,30 +66,33 @@ public class SalesStatus2Activity extends AppCompatActivity {
 
             for (int i=0; i < Order_date_List.size(); i++) {
 
-            String menuid = menu_id_cost.get(k).getMenu_id();
-            String orderid = Order_date_List.get(i).getOrder_FK_menuId();
+                String menuid = menu_id_cost.get(k).getMenu_id();
+                String orderid = Order_date_List.get(i).getOrder_FK_menuId();
                 if (menuid.equals(orderid)){
 
-                 int amount = Integer.parseInt(Order_date_List.get(i).getOrder_amount());
-                 int cost =Integer.parseInt(menu_id_cost.get(k).getMenu_cost());
+                 amount  = Integer.parseInt(Order_date_List.get(i).getOrder_amount());
+                 cost =Integer.parseInt(menu_id_cost.get(k).getMenu_cost());
 
-                 int originprice = amount * cost;
-                 CostTotal = originprice ++;
+                 originprice = amount * cost;
+                 CostTotal = CostTotal + originprice;
 
-                    }
                 }
             }
+        }
 
         sumCost.setText(String.valueOf(CostTotal)+"원");
 
         //날짜로 불러온 주문 총매출액 가져오기
 
         for(int k=0; k<Order_date_List.size(); k++){
-            if(isNumber(Order_date_List.get(k).getOrder_Price_perMenu()))
-               price = Order_date_List.get(k).getOrder_Price_perMenu();
-               String noneprice = price.replaceAll(",","");
+            if(isNumber(Order_date_List.get(k).getOrder_Price_perMenu())){
+                amount = Integer.parseInt(Order_date_List.get(k).getOrder_amount());
+                intprice = Integer.parseInt(Order_date_List.get(k).getOrder_Price_perMenu());
+                price =  String.valueOf(intprice * amount);
+                String noneprice = price.replaceAll(",","");
                 SalesTotal = SalesTotal + Integer.parseInt(noneprice);
             }
+        }
 
         sumDate.setText(String.valueOf(SalesTotal)+"원");
 
