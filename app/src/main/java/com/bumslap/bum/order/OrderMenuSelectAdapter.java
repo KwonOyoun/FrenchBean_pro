@@ -1,5 +1,6 @@
 package com.bumslap.bum.order;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
@@ -10,12 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumslap.bum.DB.DBHelper;
+import com.bumslap.bum.DB.DBProvider;
 import com.bumslap.bum.DB.DBforAnalysis;
 import com.bumslap.bum.DB.Order;
 import com.bumslap.bum.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by oyoun on 17. 12. 18.
@@ -29,8 +35,23 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     String MenunameDB;
     int i, j, k = 0;
 
+    long CurrentTimeCall;
+    Date CurrentDateCall;
+    SimpleDateFormat CurrentDate;
+    SimpleDateFormat CurrentTime;
+    String CurrentTimes, CurrentDates;
+    int Order_Amount;
+    Order putOrder;
+    public DBforAnalysis newdbforAnalysis;
+    DBProvider db;
 
+    String getordermenuamount;
+    String getordermenuid;
+    String getordermenuprice;
 
+    int currentTotalgain;
+    String payfor;
+    Intent intent;
     public OrderMenuSelectAdapter(ArrayList<Order> orderArrayList, Context context) {
         try {
             k = orderArrayList.size();
@@ -64,6 +85,55 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
         return new OrderMenuViewHoler(v);
     }
 
+
+    public void saveItem(){
+        Menuitems.size();
+        db = new DBProvider(context);
+        db.open();
+
+        newdbforAnalysis = new DBforAnalysis(context);
+
+        for (int i = 0 ; i < Menuitems.size() ; i++){
+            getordermenuprice = Menuitems.get(i).getOrder_Price_perMenu();
+            getordermenuamount = Menuitems.get(i).getOrder_amount();
+            getordermenuid = Menuitems.get(i).getOrder_FK_menuId();
+
+            CurrentTimeCall = System.currentTimeMillis();
+            CurrentDateCall = new Date(CurrentTimeCall);
+            CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
+            CurrentTime = new SimpleDateFormat("hh-mm-ss");
+            CurrentDates = CurrentDate.format(CurrentDateCall);
+            CurrentTimes = CurrentTime.format(CurrentDateCall);
+
+            putOrder = new Order();
+            putOrder.setOrder_FK_menuId(getordermenuid);
+            putOrder.setOrder_amount(getordermenuamount);
+            putOrder.setOrder_Price_perMenu(getordermenuprice);
+            putOrder.setOrder_time(CurrentTimes);
+            putOrder.setOrder_date(CurrentDates);
+
+            newdbforAnalysis.addOrder(putOrder);
+            currentTotalgain = currentTotalgain + Integer.parseInt(getordermenuamount) * Integer.parseInt(getordermenuprice);
+        }
+        //Menuitems.clear();
+        Toast.makeText(OrderActivity.context, "결재 완료", Toast.LENGTH_SHORT).show();
+        notifyDataSetChanged();
+        String payfor = "pay";
+        String detailfor = "detail";
+        //String po = String.valueOf(menuitem.getOrder_FK_menuId());
+
+        Intent intent = new Intent("custom-message");
+        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+        intent.putExtra("quantity",payfor);
+        intent.putExtra("detailvalue",detailfor);
+        //intent.putExtra("detailposition", po);
+        LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
+
+    }
+
+
+
+
     @Override
     public void onBindViewHolder(final OrderMenuViewHoler holder, final int position) {
         dBforAnalysis = new DBforAnalysis(context);
@@ -80,24 +150,23 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
             public void onClick(View view) {
 
                 if (Integer.parseInt(menuitem.getOrder_amount())==0){
-
+                    /*
                     menuitem.setOrder_amount("0");
                     Menuitems.remove(position);
-                    String payfor = "delete";
-                    String po = String.valueOf(menuitem.getOrder_FK_menuId());
-                    Intent intent = new Intent("custom-message");
-                    //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                    intent.putExtra("quantity",payfor);
-                    intent.putExtra("detailposition", po);
-                    LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
+
+
                     notifyDataSetChanged();
+                   */
                 }else{
                     holder.MenuAmount.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
                     menuitem.setOrder_amount(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))));
+                    BroadcastingTotalValue();
+                    /*
                     Intent intent = new Intent("custom-message");
                     //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
                     intent.putExtra("quantity","decreaseAmount");
                     LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
+                    */
                     notifyDataSetChanged();
                 }
 
@@ -106,6 +175,21 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
 
 
 
+    }
+
+    private void BroadcastingTotalValue() {
+        for (int i = 0 ; i < Menuitems.size() ; i++){
+            getordermenuamount = Menuitems.get(i).getOrder_amount();
+            getordermenuprice = Menuitems.get(i).getOrder_Price_perMenu();
+            currentTotalgain = currentTotalgain + Integer.parseInt(getordermenuamount) * Integer.parseInt(getordermenuprice);
+        }
+        payfor = "pay";
+        intent = new Intent("custom-message");
+        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+        intent.putExtra("quantity",payfor);
+        intent.putExtra("currentTotalgain",String.valueOf(currentTotalgain));
+
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
     int menutotalprice=0;
     String menutablenumber;
 
-
+    OrderMenuSelectAdapter orderMenuSelectAdapter ;
 
     public OrderWrapAdapter(ArrayList<OrderWrapDataSet> orderarrayList, Context context) {
         this.orderarrayList = orderarrayList;
@@ -59,7 +59,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
     }
 
     @Override
-    public void onBindViewHolder(final OrderWrapAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(final OrderWrapAdapterViewHolder holder, final int position) {
        menutotalprice=0;
 
         holder.selectedCheck.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
@@ -81,7 +81,7 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
         holder.orderbilltitlenumber.setText(billtitlenumber);
         holder.ordertablenumber.setText(menutablenumber);
 
-        OrderMenuSelectAdapter orderMenuSelectAdapter = new OrderMenuSelectAdapter(billAllData, orderwrapcontext);
+        orderMenuSelectAdapter = new OrderMenuSelectAdapter(billAllData, orderwrapcontext);
 
         holder.orderbilllistrecyclerView.setLayoutManager(new LinearLayoutManager(orderwrapcontext, LinearLayoutManager.VERTICAL, false));
         holder.orderbilllistrecyclerView.setAdapter(orderMenuSelectAdapter);
@@ -108,12 +108,12 @@ public class OrderWrapAdapter extends RecyclerView.Adapter<OrderWrapAdapter.Orde
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         //결재시 진행될 행동.
-                                        String payfor = "pay";
-                                        Intent intent = new Intent("custom-message");
-                                        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                                        intent.putExtra("quantity",payfor);
 
-                                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                                        orderMenuSelectAdapter.saveItem();
+                                        orderarrayList.remove(position);
+                                        notifyDataSetChanged();
+
+
 
                                         }
 
