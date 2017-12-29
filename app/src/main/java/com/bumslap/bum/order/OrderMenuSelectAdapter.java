@@ -53,6 +53,7 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     String payfor;
     Intent intent;
     String detailfor;
+    String totalgain;
     public OrderMenuSelectAdapter(ArrayList<Order> orderArrayList, Context context) {
         try {
             k = orderArrayList.size();
@@ -88,14 +89,11 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
     public void cancelItem(){
         notifyDataSetChanged();
         payfor = "cancel";
-        //String detailfor = "detail";
-        //String po = String.valueOf(menuitem.getOrder_FK_menuId());
 
         Intent intent = new Intent("custom-message");
-        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+
         intent.putExtra("quantity",payfor);
-        //intent.putExtra("detailvalue",detailfor);
-        //intent.putExtra("detailposition", po);
+
         LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
     }
 
@@ -128,18 +126,20 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
             newdbforAnalysis.addOrder(putOrder);
             currentTotalgain = currentTotalgain + Integer.parseInt(getordermenuamount) * Integer.parseInt(getordermenuprice);
         }
-        //Menuitems.clear();
+
         Toast.makeText(OrderActivity.context, "결재 완료", Toast.LENGTH_SHORT).show();
         notifyDataSetChanged();
         payfor = "pay";
         detailfor = "detail";
-        //String po = String.valueOf(menuitem.getOrder_FK_menuId());
+        totalgain = String.valueOf(currentTotalgain);
+
 
         Intent intent = new Intent("custom-message");
-        //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+
         intent.putExtra("quantity",payfor);
         intent.putExtra("detailvalue",detailfor);
-        //intent.putExtra("detailposition", po);
+        intent.putExtra("totalgain",totalgain);
+
         LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
 
     }
@@ -162,24 +162,11 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
             @Override
             public void onClick(View view) {
 
-                if (Integer.parseInt(menuitem.getOrder_amount())==0){
-                    /*
-                    menuitem.setOrder_amount("0");
-                    Menuitems.remove(position);
-
-
-                    notifyDataSetChanged();
-                   */
-                }else{
+                if (Integer.parseInt(menuitem.getOrder_amount())!=0){
                     holder.MenuAmount.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))-1));
                     menuitem.setOrder_amount(String.valueOf(Integer.parseInt(String.valueOf(holder.MenuAmount.getText()))));
                     BroadcastingTotalValue();
-                    /*
-                    Intent intent = new Intent("custom-message");
-                    //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                    intent.putExtra("quantity","decreaseAmount");
-                    LocalBroadcastManager.getInstance(contextbro).sendBroadcast(intent);
-                    */
+
                     notifyDataSetChanged();
                 }
 

@@ -108,7 +108,7 @@ public class OrderActivity extends AppCompatActivity
 
 
 
-
+    int newtotalgain = 0;
     int currentTotalgain = 0;
     TextView currentgainView;
     int OrderTableNumber=1, saveOrderTableNum=1;
@@ -378,9 +378,9 @@ try{
             switch (qty){
                 case "pay":
 
-                    totalgain = intent.getStringExtra("currentTotalgain");
-
-                    currentgainView.setText("현재 매출 : " + totalgain);
+                    totalgain = intent.getStringExtra("totalgain");
+                    newtotalgain = newtotalgain + Integer.parseInt(totalgain);
+                    currentgainView.setText("현재 매출 : " + String.valueOf(newtotalgain));
                     try {
                         String detailfor = intent.getStringExtra("detailvalue");
                         if(detailfor.equals("detail")){
