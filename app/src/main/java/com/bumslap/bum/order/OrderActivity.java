@@ -377,7 +377,6 @@ try{
 
             switch (qty){
                 case "pay":
-
                     totalgain = intent.getStringExtra("totalgain");
                     newtotalgain = newtotalgain + Integer.parseInt(totalgain);
                     currentgainView.setText("현재 매출 : " + String.valueOf(newtotalgain));
@@ -389,15 +388,10 @@ try{
                     }
                     catch (Exception epep){}
 
-
-
-
                     billRecyclerView.setLayoutManager(layoutManager);
                     orderWrapAdapter.notifyDataSetChanged();
                     billRecyclerView.setAdapter(orderWrapAdapter);
                     billRecyclerView.scrollToPosition(billnumberposition);
-
-
 
                     break;
 

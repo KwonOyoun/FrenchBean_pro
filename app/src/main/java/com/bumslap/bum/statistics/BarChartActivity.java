@@ -83,7 +83,6 @@ public class BarChartActivity extends AppCompatActivity implements GestureDetect
         totalsales = (TextView)findViewById(R.id.totalpayprice);
         totalsales.setText(String.valueOf(Totalsales) + " 원");
     }
-
     public void AddValuesToBARENTRY() {
         a_list = new ArrayList<>(); b_list = new ArrayList<>(); c_list = new ArrayList<>();
         d_list = new ArrayList<>(); e_list = new ArrayList<>(); f_list = new ArrayList<>();

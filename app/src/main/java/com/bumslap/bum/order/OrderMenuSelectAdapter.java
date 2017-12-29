@@ -112,7 +112,7 @@ public class OrderMenuSelectAdapter extends RecyclerView.Adapter<OrderMenuViewHo
             CurrentTimeCall = System.currentTimeMillis();
             CurrentDateCall = new Date(CurrentTimeCall);
             CurrentDate = new SimpleDateFormat("yyyy-MM-dd");
-            CurrentTime = new SimpleDateFormat("hh-mm-ss");
+            CurrentTime = new SimpleDateFormat("kk-mm-ss");
             CurrentDates = CurrentDate.format(CurrentDateCall);
             CurrentTimes = CurrentTime.format(CurrentDateCall);
 

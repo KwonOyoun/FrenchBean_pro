@@ -153,8 +153,6 @@ public class MenuSettingActivity extends AppCompatActivity implements GestureDet
                 byte[] image = cursor.getBlob(2);
                 String price = cursor.getString(3);
                 String cost = cursor.getString(4);
-
-
                 menulist.add(new com.bumslap.bum.DB.Menu(id, name, image, price, cost));
             }
 
