@@ -228,6 +228,8 @@ public class MenuUpdateActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
             }
+
+
         }
 
 
@@ -266,11 +268,14 @@ public class MenuUpdateActivity extends AppCompatActivity {
                                     intent.setAction(Intent.ACTION_GET_CONTENT);
                                     startActivityForResult(intent, LOAD_IMAGE);
                                     break;
+
                             }
                             dialog.dismiss();
                         }
                     }
+
             );
+
             // 다이얼로그 생성
             android.app.AlertDialog alertDialog = alertDialogBuilder.create();
 
@@ -306,14 +311,17 @@ public class MenuUpdateActivity extends AppCompatActivity {
         }
     }
 
+
+
+
     private byte[] imgaeViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
-    }
 
+    }
     protected InputFilter filterNum = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {

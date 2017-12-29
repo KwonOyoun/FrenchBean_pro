@@ -378,7 +378,9 @@ try{
             switch (qty){
                 case "pay":
                     totalgain = intent.getStringExtra("totalgain");
-                    newtotalgain = newtotalgain + Integer.parseInt(totalgain);
+                    try{
+                        newtotalgain = newtotalgain + Integer.parseInt(totalgain);
+                    }catch (Exception exxx){}
                     currentgainView.setText("현재 매출 : " + String.valueOf(newtotalgain));
                     try {
                         String detailfor = intent.getStringExtra("detailvalue");
