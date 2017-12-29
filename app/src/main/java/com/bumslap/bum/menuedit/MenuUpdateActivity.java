@@ -103,48 +103,6 @@ public class MenuUpdateActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Integer mar =0;
-        String s = UpdateMenuCost.getText().toString();
-        if(UpdateMenuCost.getText().toString().equals("")){
-            //mar = Integer.parseInt(UpdateMenuPrice.getText().toString()) - 0;
-            UpdateMenuCost.setText("0");
-        }else {
-            mar = Integer.parseInt(UpdateMenuPrice.getText().toString()) - Integer.parseInt(UpdateMenuCost.getText().toString());
-        }
-        margin.setText(String.valueOf(mar));
-
-        UpdateMenuPrice.addTextChangedListener(new TextWatcher() {
-
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String price = UpdateMenuPrice.getText().toString();
-                String cost = UpdateMenuCost.getText().toString();
-                Integer mar = 0;
-                if(cost.equals("")) {
-                    mar = Integer.parseInt(price) - 0;
-                }
-                else if(price.equals("")){
-                    mar = 0- Integer.parseInt(cost);
-                }
-                else {
-                    mar = Integer.parseInt(price) - Integer.parseInt(cost);
-                }
-                margin.setText(String.valueOf(mar));
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-
 
     }
 
